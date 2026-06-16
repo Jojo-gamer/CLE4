@@ -2,9 +2,8 @@ import { ImageSource, Sound, Resource, Loader } from 'excalibur'
 
 // voeg hier jouw eigen resources toe
 const Resources = {
+    Tiles: new ImageSource('/images/tileset.png')
 }
-
-
 
 
 const ResourceLoader = new Loader()

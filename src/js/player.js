@@ -1,8 +1,7 @@
 import { Actor, CollisionType, Color, Keys, Vector } from "excalibur"
 
 export class Player extends Actor {
-    speed = 200
-    maxSpeed = 100
+    speed = 450
 
     constructor() {
         super({
@@ -10,13 +9,12 @@ export class Player extends Actor {
             height: 100,
             color: Color.Black
         })
-        this.body.mass = 10
+        // this.body.mass = 10
         this.body.collisionType = CollisionType.Active
-        this.body.friction = 1;
     }
 
     onInitialize(engine) {
-        this.pos = new Vector(640, 360)
+        this.pos = new Vector(100, 100)
     }
 
     onPreUpdate(engine, delta) {
@@ -36,6 +34,6 @@ export class Player extends Actor {
             yVel = this.speed;
         }
 
-        this.body.applyLinearImpulse(new Vector(xVel, yVel))
+        this.vel = new Vector(xVel, yVel)
     }
 }
