@@ -21,17 +21,7 @@ export class Game extends Engine {
     }
 
     startGame() {
-        const spriteSheet = SpriteSheet.fromImageSource({
-            image: Resources.Tiles,
-            grid: {
-                spriteWidth: 32,
-                spriteHeight: 32,
-                columns: 8,
-                rows: 8,
-            }
-        })
-        console.log(spriteSheet.sprites)
-        this.add(new Background(spriteSheet))
+        this.add(new Background())
 
         this.player = new Player()
         this.add(this.player)

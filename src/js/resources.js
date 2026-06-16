@@ -1,4 +1,4 @@
-import { ImageSource, Sound, Resource, Loader } from 'excalibur'
+import { ImageSource, Sound, Resource, Loader, SpriteSheet } from 'excalibur'
 
 // voeg hier jouw eigen resources toe
 const Resources = {
@@ -8,6 +8,15 @@ const Resources = {
     Tiles: new ImageSource('/images/tileTest.png')
 }
 
+export const spriteSheet = SpriteSheet.fromImageSource({
+            image: Resources.Tiles,
+            grid: {
+                spriteWidth: 32,
+                spriteHeight: 32,
+                columns: 8,
+                rows: 8,
+            }
+        })
 
 const ResourceLoader = new Loader()
 for (let res of Object.values(Resources)) {
