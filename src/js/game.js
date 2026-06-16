@@ -28,19 +28,19 @@ export class Game extends Engine {
         this.currentScene.camera.strategy.lockToActor(this.player)
         this.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
 
-        let enemyCount = 0
-        const spawnTimer = new Timer({
-            fcn: () => {
-                if(enemyCount < 10) {
-                    this.add(new Enemy(this.player))
-                    enemyCount++;
-                }
-            },
-            interval: 500,
-            repeats: true,
-        })
-        this.addTimer(spawnTimer)
-        spawnTimer.start();
+            let enemyCount = 0
+            const spawnTimer = new Timer({
+                fcn: () => {
+                    if(enemyCount < 10) {
+                        this.add(new Enemy(this.player))
+                        enemyCount++;
+                    }
+                },
+                interval: 500,
+                repeats: true,
+            })
+            this.addTimer(spawnTimer)
+            spawnTimer.start();
     }
 }
 
