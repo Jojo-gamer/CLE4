@@ -1,5 +1,5 @@
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer } from "excalibur"
+import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer, SpriteSheet } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { Player } from './player.js'
 import { Enemy } from './enemy.js'
@@ -21,7 +21,16 @@ export class Game extends Engine {
     }
 
     startGame() {
-        this.add(new background())
+        const spriteSheet = SpriteSheet.fromImageSource({
+            image: Resources.Tiles,
+            grid: {
+                spriteWidth: 16,
+                spriteHeight: 16,
+                columns: 10,
+                rows: 10,
+            }
+        })
+        this.add(new background(spriteSheet))
         this.player = new Player()
         this.add(this.player)
 
@@ -40,7 +49,7 @@ export class Game extends Engine {
                 repeats: true,
             })
             this.addTimer(spawnTimer)
-            spawnTimer.start();
+            // spawnTimer.start();
     }
 }
 
