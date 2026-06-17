@@ -4,6 +4,8 @@ import { Resources } from "./resources"
 export class Player extends Actor {
     speed = 450
 
+
+
     //for sprite orientation
     dirUp;
     dirDown;
@@ -17,6 +19,7 @@ export class Player extends Actor {
             color: Color.Black
         })
         // this.body.mass = 10
+        this.name = "player"
         this.body.collisionType = CollisionType.Active
     }
 
@@ -67,7 +70,6 @@ export class Player extends Actor {
         this.dirLeft = false;
         this.dirLeft = false;
 
-        this.pos = new Vector(100, 100)
     }
 
     onPreUpdate(engine, delta) {

@@ -1,11 +1,11 @@
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer, CollisionType, randomInRange } from "excalibur"
+import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { Player } from './player.js'
 import { Enemy } from './enemy.js'
 import { background } from './background.js'
-import { TableVertical } from './tablevertical.js'
-import { TableHorizontal } from './tablehorizontal.js'
+import { DoorTrigger } from './doorTrigger.js'
+import { Cafetaria } from './Cafetaria.js'
 
 export class Game extends Engine {
 
@@ -23,7 +23,8 @@ export class Game extends Engine {
     }
 
     startGame() {
-        
+        this.addScene("Cafetaria", new Cafetaria())
+
 
         this.add(new background())
         this.player = new Player()
@@ -32,21 +33,22 @@ export class Game extends Engine {
         this.currentScene.camera.strategy.lockToActor(this.player)
         this.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
 
-            let enemyCount = 0
-            const spawnTimer = new Timer({
-                fcn: () => {
-                    if(enemyCount < 10) {
-                        this.add(new Enemy(this.player))
-                        enemyCount++;
-                    }
-                },
-                interval: 500,
-                repeats: true,
-            })
-            this.addTimer(spawnTimer)
-            spawnTimer.start();
+        this.add(new DoorTrigger(0, 70, 50,50,"Cafetaria", 400, 600));
+        
 
-            
+            // let enemyCount = 0
+            // const spawnTimer = new Timer({
+            //     fcn: () => {
+            //         if(enemyCount < 10) {
+            //             this.add(new Enemy(this.player))
+            //             enemyCount++;
+            //         }
+            //     },
+            //     interval: 500,
+            //     repeats: true,
+            // })
+            // this.addTimer(spawnTimer)
+            // spawnTimer.start();
     }
 }
 
