@@ -6,7 +6,12 @@ import { TableHorizontal } from "./tablehorizontal.js";
 
 export class Cafetaria extends Scene {
     constructor() {
-        super();
+        super({
+            width: 800,
+            height: 1000,
+            color: Color.Black
+        });
+        
 
     }
     onInitialize() {
