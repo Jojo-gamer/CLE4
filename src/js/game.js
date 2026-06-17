@@ -1,9 +1,11 @@
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer } from "excalibur"
+import { Actor, Engine, Vector, DisplayMode, BoundingBox, SolverStrategy, Timer } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { Player } from './player.js'
 import { Enemy } from './enemy.js'
-import { background } from './background.js'
+import { Background } from './background.js'
+import { Dog } from './dog.js'
+import { Table } from './obstacle.js'
 import { DoorTrigger } from './doorTrigger.js'
 import { Cafetaria } from './Cafetaria.js'
 
@@ -21,14 +23,21 @@ export class Game extends Engine {
         })
         this.start(ResourceLoader).then(() => this.startGame())
     }
-
     startGame() {
+        this.add(new Background())
+
         this.addScene("Cafetaria", new Cafetaria())
 
 
-        this.add(new background())
         this.player = new Player()
         this.add(this.player)
+
+        this.dog = new Dog()
+        this.add(this.dog)
+
+        this.add(new Table(new Vector(200, 200), true))
+        this.add(new Table(new Vector(500, 200), false))
+
 
         this.currentScene.camera.strategy.lockToActor(this.player)
         this.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
