@@ -5,7 +5,8 @@ const Resources = {
     SackUp: new ImageSource('/images/entities/player/moving/sack-walking-backturn-600x1000px.png'),
     SackHorizontal: new ImageSource('/images/entities/player/moving/sack-walking-horizontal-600x1000px.png'),
     SackDown: new ImageSource('/images/entities/player/moving/sack-walking-down600x1000px.png'),
-    Tiles: new ImageSource('/images/tileTest.png')
+    Tiles: new ImageSource('/images/tileTest.png'),
+    Table: new ImageSource('./images/entities/props/table-horizontal-500x500px.png')
 }
 
 export const spriteSheet = SpriteSheet.fromImageSource({

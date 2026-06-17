@@ -14,7 +14,8 @@ export class Player extends Actor {
         super({
             width: 60,
             height: 100,
-            color: Color.Black
+            color: Color.Black,
+            z: 2,
         })
         // this.body.mass = 10
         this.body.collisionType = CollisionType.Active
