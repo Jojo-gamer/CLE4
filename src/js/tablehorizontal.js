@@ -20,6 +20,7 @@ export class TableHorizontal extends Actor {
         this.graphics.use(this.tableSprite);
         // this.body.collisionType = CollisionType.Fixed
         this.prop = true
+        this.z = 1
     }
     onInitialize() {
         this.body.collisionType = CollisionType.Fixed

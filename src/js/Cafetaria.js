@@ -37,6 +37,7 @@ export class Cafetaria extends Scene {
 
         for (let i = 0; i < 10; i++) {
             const isReal = Math.random() > 0.25;
+            
             this.placePropRandomly(new TableVertical(isReal));
         }
 
