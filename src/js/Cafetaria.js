@@ -25,8 +25,8 @@ export class Cafetaria extends Scene {
 
         
 
-        console.log(spawnPoint.x)
-        console.log(spawnPoint.y)
+        // console.log(spawnPoint.x)
+        // console.log(spawnPoint.y)
 
         this.player.pos = new Vector(spawnPoint.x,spawnPoint.y)
 
