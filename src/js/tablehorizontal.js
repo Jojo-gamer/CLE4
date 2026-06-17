@@ -2,13 +2,16 @@ import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy,
 import { Resources, ResourceLoader } from './resources.js'
 
 export class TableHorizontal extends Actor {
-    
+
     constructor(isReal = true) {
-        
+
         const scale = 0.4;
         const width = Resources.TableHorizontal.width * scale;
         const height = Resources.TableHorizontal.height * scale;
-        super({ width, height });
+        super({
+            width: 130,
+            height: 80,
+        });
 
         this.isReal = isReal;
 
@@ -20,18 +23,13 @@ export class TableHorizontal extends Actor {
         this.z = 1
     }
     onInitialize() {
-        if(this.isReal) {
-            this.body.collisionType = CollisionType.Fixed
-        } else {
-            this.body.collisionType = CollisionType.Passive
-        }
-
+        this.body.collisionType = CollisionType.Fixed
     }
-    
-    
-    
-    
-    
+
+
+
+
+
 
 
 }
