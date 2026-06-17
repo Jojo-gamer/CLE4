@@ -1,9 +1,11 @@
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer } from "excalibur"
+import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer, CollisionType, randomInRange } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { Player } from './player.js'
 import { Enemy } from './enemy.js'
 import { background } from './background.js'
+import { TableVertical } from './tablevertical.js'
+import { TableHorizontal } from './tablehorizontal.js'
 
 export class Game extends Engine {
 
@@ -21,6 +23,8 @@ export class Game extends Engine {
     }
 
     startGame() {
+        
+
         this.add(new background())
         this.player = new Player()
         this.add(this.player)
@@ -41,6 +45,8 @@ export class Game extends Engine {
             })
             this.addTimer(spawnTimer)
             spawnTimer.start();
+
+            
     }
 }
 

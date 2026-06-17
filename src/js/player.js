@@ -79,24 +79,28 @@ export class Player extends Actor {
             yVel = -this.speed;
             this.dirUp = true;
             this.dirDown = false;
+            console.log(this.pos)
         } 
 
         if (engine.input.keyboard.isHeld(Keys.A)) {
             xVel = -this.speed;
             this.dirLeft = true;
             this.dirRight = false;
+            console.log(this.pos)
         } 
 
         if (engine.input.keyboard.isHeld(Keys.D)) {
             xVel = this.speed;
             this.dirRight = true;
             this.dirLeft = false;
+            console.log(this.pos)
         } 
 
         if (engine.input.keyboard.isHeld(Keys.S)) {
             yVel = this.speed;
             this.dirDown = true;
             this.dirUp = false;
+            console.log(this.pos)
         }
 
         if (engine.input.keyboard.wasReleased(Keys.D)) {
