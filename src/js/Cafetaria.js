@@ -12,8 +12,7 @@ export class Cafetaria extends Scene {
             width: 800,
             height: 1000,
             color: Color.Black
-        }
-        );super();
+        });
 
     }
     onInitialize() {
@@ -45,10 +44,7 @@ export class Cafetaria extends Scene {
         const tH4 = new TableHorizontal(); tH4.pos = new Vector(randomInRange(100, 1000), randomInRange(100, 1000)); this.add(tH4);
 
         
-
-        this.add(new background())
-                this.player = new Player()
-                this.add(this.player)
+          
         
                 this.camera.strategy.lockToActor(this.player)
                 this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
