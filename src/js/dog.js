@@ -1,4 +1,5 @@
-import { Actor, CollisionType, Color, Keys, Ray, Vector } from "excalibur";
+import { Actor, CollisionType, Color, Keys, Ray, Sound, Vector } from "excalibur";
+import { Resources } from "./resources";
 
 export class Dog extends Actor {
     constructor() {
@@ -41,6 +42,7 @@ export class Dog extends Actor {
                     owner.body.collisionType = CollisionType.Passive
                 } else {
                     console.log('WOOF')
+                    Resources.BarkSound.play()
                 }
 
             }
