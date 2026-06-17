@@ -115,7 +115,6 @@ export class Player extends Actor {
                 this.dirRight = false;
                 this.graphics.use(this.movingUp)
             } else {
-                console.log("no longer uppies")
                 this.graphics.use(this.idleUp)
             }
         }

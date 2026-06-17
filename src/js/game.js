@@ -4,8 +4,6 @@ import { Resources, ResourceLoader } from './resources.js'
 import { Player } from './player.js'
 import { Enemy } from './enemy.js'
 import { Background } from './background.js'
-import { Dog } from './dog.js'
-import { Table } from './obstacle.js'
 import { DoorTrigger } from './doorTrigger.js'
 import { Cafetaria } from './Cafetaria.js'
 
@@ -17,47 +15,20 @@ export class Game extends Engine {
             height: 1080,
             maxFps: 60,
             displayMode: DisplayMode.FitScreen,
-            // physics: {
-            //     solver: SolverStrategy.Arcade,
-            // }
         })
         this.start(ResourceLoader).then(() => this.startGame())
     }
     startGame() {
-        this.add(new Background())
-
         this.addScene("Cafetaria", new Cafetaria())
 
-
-        this.player = new Player()
+        this.player = new Player();
         this.add(this.player)
-
-        this.dog = new Dog()
-        this.add(this.dog)
-
-        this.add(new Table(new Vector(200, 200), true))
-        this.add(new Table(new Vector(500, 200), false))
-
 
         this.currentScene.camera.strategy.lockToActor(this.player)
         this.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
 
-        this.add(new DoorTrigger(20, 100, 50,50,"Cafetaria", 400, 600));
-        
+        this.add(new DoorTrigger(20, 100, 50, 50, "Cafetaria", 400, 600));
 
-            // let enemyCount = 0
-            // const spawnTimer = new Timer({
-            //     fcn: () => {
-            //         if(enemyCount < 10) {
-            //             this.add(new Enemy(this.player))
-            //             enemyCount++;
-            //         }
-            //     },
-            //     interval: 500,
-            //     repeats: true,
-            // })
-            // this.addTimer(spawnTimer)
-            // spawnTimer.start();
     }
 }
 

@@ -11,13 +11,13 @@ export class Dog extends Actor {
     }
 
     onInitialize(engine) {
-        this.actions.follow(this.scene.engine.player, 75)
+        this.actions.follow(this.scene.player, 75)
         this.body.collisionType = CollisionType.Passive
     }
 
     onPreUpdate(engine) {
         if (engine.input.keyboard.wasPressed(Keys.Space)) {
-            const player = this.scene.engine.player
+            const player = this.scene.player
             let dir = Vector.Up
             if (player.dirUp) dir = Vector.Up
             if (player.dirDown) dir = Vector.Down
