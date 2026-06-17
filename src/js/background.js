@@ -8,14 +8,15 @@ export class Background extends Actor {
 
         const tilemap = new TileMap({
             pos: new Vector(0, 0),
-            tileWidth: 32,
-            tileHeight: 32,
-            columns: Math.ceil(3000 / 32),
-            rows: Math.ceil(2000 / 32),
+            tileWidth: 128,
+            tileHeight: 128,
+            columns: Math.ceil(3000 / 128),
+            rows: Math.ceil(2000 / 128),
         })
 
         for (let tile of tilemap.tiles) {
-            tile.addGraphic(spriteSheet.getSprite(2, 2));
+            // tile.addGraphic(spriteSheet.getSprite(2, 2));
+            tile.addGraphic(Resources.CafTile.toSprite());
         }
 
         this.addChild(tilemap)

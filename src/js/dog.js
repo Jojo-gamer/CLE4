@@ -1,4 +1,4 @@
-import { Actor, CollisionType, Color, Vector } from "excalibur";
+import { Actor, CollisionType, Color, Keys, Ray, Vector } from "excalibur";
 
 export class Dog extends Actor {
     constructor() {
@@ -13,5 +13,37 @@ export class Dog extends Actor {
     onInitialize(engine) {
         this.actions.follow(this.scene.engine.player, 75)
         this.body.collisionType = CollisionType.Passive
+    }
+
+    onPreUpdate(engine) {
+        if (engine.input.keyboard.wasPressed(Keys.Space)) {
+            const player = this.scene.engine.player
+            let dir = Vector.Up
+            if (player.dirUp) dir = Vector.Up
+            if (player.dirDown) dir = Vector.Down
+            if (player.dirLeft) dir = Vector.Left
+            if (player.dirRight) dir = Vector.Right
+
+            const ray = new Ray(this.pos, dir);
+            const hits = this.scene.physics.rayCast(ray, {
+                searchAllColliders: false, // Stop direct bij het eerste doelwit
+                maxDistance: 225,
+                filter: (hit) => {
+                    if (hit.collider.owner !== player && hit.collider.owner !== this) {
+                        return true
+                    }
+                }
+            });
+            if (hits.length > 0) {
+                const owner = hits[0].collider.owner
+                if (!owner.isReal) {
+                    console.log(owner)
+                    owner.body.collisionType = CollisionType.Passive
+                } else {
+                    console.log('WOOF')
+                }
+
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@ const Resources = {
     SackHorizontal: new ImageSource('/images/entities/player/moving/sack-walking-horizontal-600x1000px.png'),
     SackDown: new ImageSource('/images/entities/player/moving/sack-walking-down600x1000px.png'),
     Tiles: new ImageSource('/images/tileTest.png'),
+    CafTile: new ImageSource('./images/cafetaria-tiles.png'),
     Table: new ImageSource('./images/entities/props/table-horizontal-500x500px.png')
 }
 
