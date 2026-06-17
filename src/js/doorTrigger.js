@@ -1,7 +1,7 @@
 import { Actor, CollisionType, Color } from "excalibur";
 
 export class DoorTrigger extends Actor {
-  constructor(x, y, width, height, destinationScene, spawnPoint) {
+  constructor(x, y, width, height, destinationScene, spawnX, spawnY) {
     super({
       x,
       y,
@@ -11,13 +11,19 @@ export class DoorTrigger extends Actor {
     });
 
     this.destinationScene = destinationScene;
-    this.spawnPoint = spawnPoint;
+    this.spawnX = spawnX;
+    this.spawnY = spawnY
     this.body.collisionType = CollisionType.Passive;
   }
 
   onInitialize(engine) {
     this.on("collisionstart", (evt) => {
-      if (evt.other.name === "player") {
+      console.log(evt.other.owner.name);
+      if (evt.other.owner.name === "player") {
+        engine.nextSpawn = {
+          x: this.spawnX,
+          y: this.spawnY
+        }
         engine.goToScene(this.destinationScene);
       }
     });
