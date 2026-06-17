@@ -3,7 +3,8 @@ import { Player } from "./player";
 
 export class Enemy extends Actor {
     //Variable to stop moving once making contact with player
-    playerContact;
+    #playerContact;
+    #counter;
 
     constructor(player) {
         super({
@@ -18,38 +19,39 @@ export class Enemy extends Actor {
     onInitialize(engine) {
         this.spawn()
         this.playerContact = false;
+        this.counter = 0;
 
         this.on('collisionstart', (e) => this.hitPlayer(e))
-        this.on('collisionend', (e) => this.endColl(e))
     }
 
-    onPreUpdate(engine) {
+
+    onPostUpdate(engine) {
         const direction = this.scene.player.pos.sub(this.pos).normalize() // sub is subtraction, normalize zet een vector om naar een vector met lengte 1, maar met dezelfde richting.
         const speed = 200 // pixels per seconde
 
         if (!this.playerContact) {
-            this.vel = direction.scale(speed) // scale verm. de vector met de speed
-        } else {
-            this.vel = direction.scale(0)
+            this.vel = direction.scale(speed)
         }
-    }
+
+        if (this.playerContact) {
+            this.vel = direction.scale(0)
+            engine.clock.schedule(() => {this.playerContact = false}, 800)
+        }
+
+}
+
+        
+
+
 
     spawn() {
-        this.pos = new Vector(randomIntInRange(200, 2500), randomIntInRange(300, 2000))
+        this.pos = new Vector(randomIntInRange(200, 2500), randomIntInRange(300, 1500))
         if (this.scene.player.pos.distance(this.pos) <= 700) this.spawn();
     }
 
     hitPlayer(e) {
         if (e.other.owner instanceof Player) {
             this.playerContact = true;
-            console.log(this.playerContact)
-        }
-    }
-
-    endColl(e) {
-        if (e.other.owner instanceof Player) {
-this.playerContact = false;
-console.log(this.playerContact)
         }
     }
 }
