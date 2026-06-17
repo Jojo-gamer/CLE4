@@ -62,8 +62,8 @@ export class Cafetaria extends Scene {
         const padding = 10;
 
         for (let attempt = 0; attempt < maxAttempts; attempt++) {
-            const randomX = randomInRange(100, 1500);
-            const randomY = randomInRange(100, 1500);
+            const randomX = randomInRange(300, 2600);
+            const randomY = randomInRange(300, 1600);
 
             // Calculate proposed Bounding Box based on this specific prop's dimensions
             const halfW = (propInstance.width / 2) + padding;
