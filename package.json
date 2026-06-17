@@ -1,7 +1,7 @@
 {
   "name": "CLE4",
   "version": "0.0.1",
-  "author":"CMGT",
+  "author": "CMGT",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,7 @@
     "preview": "vite preview --outDir docs"
   },
   "devDependencies": {
-    "vite": "^8.0.1"
+    "vite": "^8.0.16"
   },
   "dependencies": {
     "excalibur": "^0.32.0"

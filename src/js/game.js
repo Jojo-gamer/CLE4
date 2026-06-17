@@ -6,6 +6,8 @@ import { Enemy } from './enemy.js'
 import { Background } from './background.js'
 import { Dog } from './dog.js'
 import { Table } from './obstacle.js'
+import { DoorTrigger } from './doorTrigger.js'
+import { Cafetaria } from './Cafetaria.js'
 
 export class Game extends Engine {
 
@@ -24,6 +26,9 @@ export class Game extends Engine {
     startGame() {
         this.add(new Background())
 
+        this.addScene("Cafetaria", new Cafetaria())
+
+
         this.player = new Player()
         this.add(this.player)
 
@@ -37,19 +42,22 @@ export class Game extends Engine {
         this.currentScene.camera.strategy.lockToActor(this.player)
         this.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
 
-        let enemyCount = 0
-        const spawnTimer = new Timer({
-            fcn: () => {
-                if (enemyCount < 10) {
-                    this.add(new Enemy(this.player))
-                    enemyCount++;
-                }
-            },
-            interval: 500,
-            repeats: true,
-        })
-        this.addTimer(spawnTimer)
-        // spawnTimer.start();
+        this.add(new DoorTrigger(20, 100, 50,50,"Cafetaria", 400, 600));
+        
+
+            // let enemyCount = 0
+            // const spawnTimer = new Timer({
+            //     fcn: () => {
+            //         if(enemyCount < 10) {
+            //             this.add(new Enemy(this.player))
+            //             enemyCount++;
+            //         }
+            //     },
+            //     interval: 500,
+            //     repeats: true,
+            // })
+            // this.addTimer(spawnTimer)
+            // spawnTimer.start();
     }
 }
 

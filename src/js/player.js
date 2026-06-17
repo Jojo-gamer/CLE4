@@ -4,6 +4,8 @@ import { Resources } from "./resources"
 export class Player extends Actor {
     speed = 450
 
+
+
     //for sprite orientation
     dirUp;
     dirDown;
@@ -15,9 +17,10 @@ export class Player extends Actor {
             width: 60,
             height: 100,
             color: Color.Black,
-            z: 2,
+            z: 1
         })
         // this.body.mass = 10
+        this.name = "player"
         this.body.collisionType = CollisionType.Active
     }
 
@@ -68,7 +71,6 @@ export class Player extends Actor {
         this.dirLeft = false;
         this.dirLeft = false;
 
-        this.pos = new Vector(100, 100)
     }
 
     onPreUpdate(engine, delta) {
@@ -80,45 +82,48 @@ export class Player extends Actor {
             yVel = -this.speed;
             this.dirUp = true;
             this.dirDown = false;
+            
         } 
 
         if (engine.input.keyboard.isHeld(Keys.A)) {
             xVel = -this.speed;
             this.dirLeft = true;
             this.dirRight = false;
+       
         } 
 
         if (engine.input.keyboard.isHeld(Keys.D)) {
             xVel = this.speed;
             this.dirRight = true;
             this.dirLeft = false;
+        
         } 
 
         if (engine.input.keyboard.isHeld(Keys.S)) {
             yVel = this.speed;
             this.dirDown = true;
             this.dirUp = false;
+           
         }
 
-        if (engine.input.keyboard.wasReleased(Keys.D)) {
-            this.dirRight = false;
-        }
-
-        if (engine.input.keyboard.wasReleased(Keys.A)) {
-            this.dirLeft = false;
-        }
+        
 
         //Change sprite depending on movement and direction
         if (this.dirUp) {
             if (yVel < 0 && xVel == 0) {
+                this.dirLeft = false;
+                this.dirRight = false;
                 this.graphics.use(this.movingUp)
             } else {
+                console.log("no longer uppies")
                 this.graphics.use(this.idleUp)
             }
         }
 
         if (this.dirDown) {
             if (yVel > 0 && xVel == 0) {
+                this.dirLeft = false;
+                this.dirRight = false;
                 this.graphics.use(this.movingDown)
             } else {
                 this.graphics.use(this.idleDown)
