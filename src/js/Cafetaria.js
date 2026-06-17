@@ -6,6 +6,7 @@ import { Player } from "./player.js";
 import { TableVertical } from "./tablevertical.js";
 import { TableHorizontal } from "./tablehorizontal.js";
 import { Dog } from './dog.js'
+import { Enemy } from "./enemy.js";
 
 
 export class Cafetaria extends Scene {
@@ -46,6 +47,9 @@ export class Cafetaria extends Scene {
             const isReal = Math.random() > 0.25;
             this.placePropRandomly(new TableHorizontal(isReal));
         }
+
+        const testEnemy = new Enemy()
+        this.add(testEnemy)
 
 
         this.camera.strategy.lockToActor(this.player)
