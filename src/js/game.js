@@ -33,7 +33,7 @@ export class Game extends Engine {
         this.currentScene.camera.strategy.lockToActor(this.player)
         this.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
 
-        this.add(new DoorTrigger(0, 70, 50,50,"Cafetaria", 400, 600));
+        this.add(new DoorTrigger(20, 100, 50,50,"Cafetaria", 400, 600));
         
 
             // let enemyCount = 0
