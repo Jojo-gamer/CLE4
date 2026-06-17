@@ -7,12 +7,14 @@ import { TableVertical } from "./tablevertical.js";
 import { TableHorizontal } from "./tablehorizontal.js";
 
 export class Cafetaria extends Scene {
+    isReal;
     constructor() {
         super({
             width: 800,
             height: 1000,
             color: Color.Black
         });
+        this.placedProps = [];
 
     }
     onInitialize() {
@@ -32,19 +34,22 @@ export class Cafetaria extends Scene {
 
         this.add(this.player);
 
-        const tV1 = new TableVertical(); tV1.pos = new Vector(randomInRange(100, 1000), randomInRange(100, 1000)); this.add(tV1); 
-        const tV2 = new TableVertical(); tV2.pos = new Vector(randomInRange(100, 1000), randomInRange(100, 1000)); this.add(tV2); 
-        const tV3 = new TableVertical(); tV3.pos = new Vector(randomInRange(100, 1000), randomInRange(100, 1000)); this.add(tV3); 
-        const tV4 = new TableVertical(); tV4.pos = new Vector(randomInRange(100, 1000), randomInRange(100, 1000)); this.add(tV4);
 
 
-        const tH1 = new TableHorizontal(); tH1.pos = new Vector(randomInRange(100, 1000), randomInRange(100, 1000)); this.add(tH1); 
-        const tH2 = new TableHorizontal(); tH2.pos = new Vector(randomInRange(100, 1000), randomInRange(100, 1000)); this.add(tH2); 
-        const tH3 = new TableHorizontal(); tH3.pos = new Vector(randomInRange(100, 1000), randomInRange(100, 1000)); this.add(tH3); 
-        const tH4 = new TableHorizontal(); tH4.pos = new Vector(randomInRange(100, 1000), randomInRange(100, 1000)); this.add(tH4);
+        for (let i = 0; i < 10; i++) {
+            const isReal = Math.random() > 0.25;
+            this.placePropRandomly(new TableVertical(isReal));
+        }
 
         
-          
+        for (let i = 0; i < 10; i++) {
+            const isReal = Math.random() > 0.25;
+            this.placePropRandomly(new TableHorizontal(isReal));
+        }
+
+        
+        
+           
         
                 this.camera.strategy.lockToActor(this.player)
                 this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
@@ -56,6 +61,57 @@ export class Cafetaria extends Scene {
 
 
     }
+
+    placePropRandomly(propInstance) {
+        const maxAttempts = 50; 
+        const padding = 10;     
+
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            const randomX = randomInRange(100, 1500);
+            const randomY = randomInRange(100, 1500);
+            
+            // Calculate proposed Bounding Box based on this specific prop's dimensions
+            const halfW = (propInstance.width / 2) + padding;
+            const halfH = (propInstance.height / 2) + padding;
+            
+            const proposedBox = new BoundingBox({
+                left: randomX - halfW,
+                top: randomY - halfH,
+                right: randomX + halfW,
+                bottom: randomY + halfH
+            });
+
+            // Check for overlaps with ALL already placed props
+            let isOverlapping = false;
+            for (const placed of this.placedProps) {
+                const pW = (placed.width / 2) + padding;
+                const pH = (placed.height / 2) + padding;
+                
+                const placedBox = new BoundingBox({
+                    left: placed.pos.x - pW,
+                    top: placed.pos.y - pH,
+                    right: placed.pos.x + pW,
+                    bottom: placed.pos.y + pH
+                });
+
+                if (proposedBox.intersect(placedBox)) {
+                    isOverlapping = true;
+                    break; 
+                }
+            }
+
+            // If no overlap, set position, save it, and add to scene
+            if (!isOverlapping) {
+                propInstance.pos = new Vector(randomX, randomY);
+                this.placedProps.push(propInstance); // Add to the master list
+                this.add(propInstance);
+                return; 
+            }
+        }
+
+        console.warn("Could not find a free spot for a prop after 50 attempts!");
+    }
+    
 
 
     
