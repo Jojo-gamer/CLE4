@@ -1,5 +1,4 @@
 import { ImageSource, Sound, Resource, Loader } from 'excalibur'
-import { TableHorizontal } from './tablehorizontal'
 
 // voeg hier jouw eigen resources toe
 const Resources = {
