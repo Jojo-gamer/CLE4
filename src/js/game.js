@@ -1,5 +1,5 @@
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode, BoundingBox, SolverStrategy, Timer } from "excalibur"
+import { Actor, Engine, Vector, DisplayMode, BoundingBox, SolverStrategy, Timer, Color } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { Player } from './player.js'
 import { Enemy } from './enemy.js'
@@ -14,6 +14,7 @@ export class Game extends Engine {
             width: 1920,
             height: 1080,
             maxFps: 60,
+            backgroundColor: Color.Black,
             displayMode: DisplayMode.FitScreen,
         })
         this.start(ResourceLoader).then(() => this.startGame())

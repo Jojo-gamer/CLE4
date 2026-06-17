@@ -28,7 +28,7 @@ export class Dog extends Actor {
             const ray = new Ray(this.pos, dir);
             const hits = this.scene.physics.rayCast(ray, {
                 searchAllColliders: false, // Stop direct bij het eerste doelwit
-                maxDistance: 225,
+                maxDistance: 350,
                 filter: (hit) => {
                     if (hit.collider.owner !== player && hit.collider.owner !== this) {
                         return true
@@ -38,13 +38,11 @@ export class Dog extends Actor {
             if (hits.length > 0) {
                 const owner = hits[0].collider.owner
                 if (!owner.isReal) {
-                    console.log(owner)
                     owner.body.collisionType = CollisionType.Passive
                 } else {
                     console.log('WOOF')
                     Resources.BarkSound.play()
                 }
-
             }
         }
     }
