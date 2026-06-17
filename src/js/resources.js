@@ -13,6 +13,7 @@ const Resources = {
     Table: new ImageSource('./images/entities/props/table-horizontal-500x500px.png'),
     TableVertical: new ImageSource('/images/entities/props/table-vertical-500x500px.png'),
     TableHorizontal: new ImageSource('/images/entities/props/table-horizontal-500x500px.png'),
+    BarkSound: new Sound('/images/entities/sounds/minecraft-dog-bark.mp3'),
 }
 
 export const spriteSheet = SpriteSheet.fromImageSource({
