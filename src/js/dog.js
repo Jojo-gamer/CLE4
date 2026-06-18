@@ -56,7 +56,7 @@ export class Dog extends Actor {
                     owner.body.collisionType = CollisionType.Passive
                     owner.actions.fade(0.3, 1000)
                 } else {
-                    console.log('WOOF')
+                    // console.log('WOOF')
                     Resources.BarkSound.play()
                 }
             }

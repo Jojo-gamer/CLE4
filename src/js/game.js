@@ -6,6 +6,8 @@ import { Enemy } from './enemy.js'
 import { Background } from './background.js'
 import { DoorTrigger } from './doorTrigger.js'
 import { Cafetaria } from './Cafetaria.js'
+import { GameOver } from './gameover.js'
+import { Reception } from './reception.js'
 
 export class Game extends Engine {
     timer = 0;
@@ -13,8 +15,8 @@ export class Game extends Engine {
 
     constructor() {
         super({
-            width: 1920,
-            height: 1080,
+            width: 1280,
+            height: 720,
             maxFps: 60,
             backgroundColor: Color.Black,
             displayMode: DisplayMode.FitScreen,
@@ -26,7 +28,11 @@ export class Game extends Engine {
         this.setupLivesHud()
         this.updateLivesHud()
 
+        this.addScene("Reception", new Reception())
         this.addScene("Cafetaria", new Cafetaria())
+        this.addScene("GameOver", new GameOver())
+
+        // this.goToScene("Reception")
 
         this.player = new Player();
         this.add(this.player)
@@ -56,11 +62,11 @@ export class Game extends Engine {
         const hud = document.createElement('div')
         hud.id = 'lives-hud'
 
-        hud.style.position = 'absolute'; 
-        hud.style.top = '20px';          
-        hud.style.right = '20px';        
-        hud.style.display = 'flex';      
-        hud.style.gap = '10px';          
+        hud.style.position = 'absolute';
+        hud.style.top = '20px';
+        hud.style.right = '20px';
+        hud.style.display = 'flex';
+        hud.style.gap = '10px';
         hud.style.zIndex = '1000';
 
         document.body.appendChild(hud)
@@ -68,23 +74,23 @@ export class Game extends Engine {
     }
 
     updateLivesHud() {
-            if (!this.livesHud) {
-                return
-            }
+        if (!this.livesHud) {
+            return
+        }
 
-            const lives = Math.max(0, Math.min(5, this.lives ?? 5))
-            this.livesHud.innerHTML = ''
+        const lives = Math.max(0, Math.min(5, this.lives ?? 5))
+        this.livesHud.innerHTML = ''
 
-            for (let index = 0; index < 5; index++) {
-                const heart = document.createElement('img')
-                heart.src = index < lives ? 'images/entities/UI/fullheart.png' : 'images/entities/UI/emptyheart.png'
-                heart.alt = index < lives ? 'Full heart' : 'Empty heart'
+        for (let index = 0; index < 5; index++) {
+            const heart = document.createElement('img')
+            heart.src = index < lives ? 'images/entities/UI/fullheart.png' : 'images/entities/UI/emptyheart.png'
+            heart.alt = index < lives ? 'Full heart' : 'Empty heart'
 
-                heart.style.width = '40px';  // Verkleint het hartje (pas het getal aan naar wens!)
-                heart.style.height = 'auto';
-                
-                this.livesHud.appendChild(heart)
-            }
+            heart.style.width = '40px';  // Verkleint het hartje (pas het getal aan naar wens!)
+            heart.style.height = 'auto';
+
+            this.livesHud.appendChild(heart)
+        }
     }
 }
 
