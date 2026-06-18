@@ -3,15 +3,19 @@ import { Resources, cafWalls } from "./resources.js";
 
 
 export class Background extends Actor {
-    constructor() {
+    constructor(width, height) {
         super();
 
+        const tileWidth = 128
+        const tileHeight = 128
+        const columns = Math.floor(width / tileWidth)
+        const rows = Math.floor(height / tileHeight)
+        const mapWidth = columns * tileWidth
+        const mapHeight = rows * tileHeight
+
         const tilemap = new TileMap({
-            pos: new Vector(0, 0),
-            tileWidth: 128,
-            tileHeight: 128,
-            columns: Math.floor(3000 / 128),
-            rows: Math.floor(2000 / 128),
+            tileWidth, tileHeight, columns, rows,
+            pos: new Vector((width - mapWidth) / 2, (height - mapHeight) / 2),
         })
 
         let index = 0
@@ -29,7 +33,7 @@ export class Background extends Actor {
                 tile.solid = true
             } else if (index % columns === columns - 1) {   //right wall
                 tile.addGraphic(cafWalls.getSprite(1, 0));
-                tilemap.tiles[tileCount-1].addGraphic(cafWalls.getSprite(3, 0))
+                tilemap.tiles[tileCount - 1].addGraphic(cafWalls.getSprite(3, 0))
                 tile.solid = true
             } else if (index > tileCount - columns) {    //bottom wall
                 tile.addGraphic(cafWalls.getSprite(0, 0));
