@@ -14,6 +14,8 @@ const Resources = {
     DogFront: new ImageSource('./images/entities/dog/dog-front.png'),
     DogBack: new ImageSource('./images/entities/dog/dog-back.png'),
     DogSide: new ImageSource('./images/entities/dog/dog-horizontal.png'),
+    FullHeart: new ImageSource('/images/entities/UI/fullheart.png'),
+    EmptyHeart: new ImageSource('/images/entities/UI/emptyheart.png'),
 }
 
 export const cafWalls = SpriteSheet.fromImageSource({

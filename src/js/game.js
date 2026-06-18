@@ -19,9 +19,13 @@ export class Game extends Engine {
             backgroundColor: Color.Black,
             displayMode: DisplayMode.FitScreen,
         })
+        this.lives = 5;
         this.start(ResourceLoader).then(() => this.startGame())
     }
     startGame() {
+        this.setupLivesHud()
+        this.updateLivesHud()
+
         this.addScene("Cafetaria", new Cafetaria())
 
         this.player = new Player();
@@ -40,6 +44,47 @@ export class Game extends Engine {
             this.timer++
             console.log(this.timer)
         }
+    }
+
+    setupLivesHud() {
+        const existingHud = document.getElementById('lives-hud')
+        if (existingHud) {
+            this.livesHud = existingHud
+            return
+        }
+
+        const hud = document.createElement('div')
+        hud.id = 'lives-hud'
+
+        hud.style.position = 'absolute'; 
+        hud.style.top = '20px';          
+        hud.style.right = '20px';        
+        hud.style.display = 'flex';      
+        hud.style.gap = '10px';          
+        hud.style.zIndex = '1000';
+
+        document.body.appendChild(hud)
+        this.livesHud = hud
+    }
+
+    updateLivesHud() {
+            if (!this.livesHud) {
+                return
+            }
+
+            const lives = Math.max(0, Math.min(5, this.lives ?? 5))
+            this.livesHud.innerHTML = ''
+
+            for (let index = 0; index < 5; index++) {
+                const heart = document.createElement('img')
+                heart.src = index < lives ? 'images/entities/UI/fullheart.png' : 'images/entities/UI/emptyheart.png'
+                heart.alt = index < lives ? 'Full heart' : 'Empty heart'
+
+                heart.style.width = '40px';  // Verkleint het hartje (pas het getal aan naar wens!)
+                heart.style.height = 'auto';
+                
+                this.livesHud.appendChild(heart)
+            }
     }
 }
 
