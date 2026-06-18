@@ -1,4 +1,4 @@
-import { Actor, CollisionType, Color, Keys, Ray, Sound, Vector } from "excalibur";
+import { Actor, CollisionType, Color, Keys, Ray, Sound, TileMap, Vector } from "excalibur";
 import { Resources } from "./resources";
 
 export class Dog extends Actor {
@@ -40,7 +40,7 @@ export class Dog extends Actor {
         }
 
         if (engine.input.keyboard.wasPressed(Keys.Space)) {
-            const ray = new Ray(this.pos, this.dir);
+            const ray = new Ray(this.player.pos, this.dir);
             const hits = this.scene.physics.rayCast(ray, {
                 searchAllColliders: false, // Stop direct bij het eerste doelwit
                 maxDistance: 350,
@@ -52,7 +52,7 @@ export class Dog extends Actor {
             });
             if (hits.length > 0) {
                 const owner = hits[0].collider.owner
-                if (!owner.isReal) {
+                if (!owner.isReal && !(owner instanceof TileMap)) {
                     owner.body.collisionType = CollisionType.Passive
                     owner.actions.fade(0.3, 1000)
                 } else {

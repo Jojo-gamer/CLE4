@@ -5,6 +5,7 @@ export class Enemy extends Actor {
     //Variable to stop moving once making contact with player
     #playerContact;
     #counter;
+    isReal = true;
 
     constructor(player) {
         super({

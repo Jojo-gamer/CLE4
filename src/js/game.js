@@ -8,6 +8,8 @@ import { DoorTrigger } from './doorTrigger.js'
 import { Cafetaria } from './Cafetaria.js'
 
 export class Game extends Engine {
+    timer = 0;
+    framecount = 0;
 
     constructor() {
         super({
@@ -29,7 +31,15 @@ export class Game extends Engine {
         this.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
 
         this.add(new DoorTrigger(20, 100, 50, 50, "Cafetaria", 400, 600));
+    }
 
+    onPostUpdate(engine) {
+        this.framecount++
+        if (this.framecount === 60) {
+            this.framecount = 0;
+            this.timer++
+            console.log(this.timer)
+        }
     }
 }
 
