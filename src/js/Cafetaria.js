@@ -55,6 +55,12 @@ export class Cafetaria extends Scene {
         this.camera.strategy.lockToActor(this.player)
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
 
+
+    }
+
+    onPreUpdate(engine, delta) {
+        this.playerOutOfBounds();
+        this.playerInBounds();
     }
 
     placePropRandomly(propInstance) {
@@ -107,7 +113,26 @@ export class Cafetaria extends Scene {
         console.warn("Could not find a free spot for a prop after 50 attempts!");
     }
 
+    playerOutOfBounds() {
+        if (this.player.pos.x < 157 || this.player.pos.x > 2790 || this.player.pos.y < 178 || this.player.pos.y > 1750 ) {
+            
+            
+            if (!Resources.OutOfBoundsSound.isPlaying()) {
+                Resources.OutOfBoundsSound.play();
+            }
+    }
 
+    }
 
-
+    playerInBounds() {
+        
+        if (this.player.pos.x > 157 && this.player.pos.x < 2790 && this.player.pos.y > 178 && this.player.pos.y < 1745 ) {
+            
+           
+            if (Resources.OutOfBoundsSound.isPlaying()) {
+                
+                Resources.OutOfBoundsSound.stop(); 
+            }
+        }
+    }
 }
