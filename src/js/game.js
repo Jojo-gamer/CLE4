@@ -6,6 +6,7 @@ import { Enemy } from './enemy.js'
 import { background } from './background.js'
 import { DoorTrigger } from './doorTrigger.js'
 import { Cafetaria } from './Cafetaria.js'
+import { Easthall } from './easthall.js'
 
 export class Game extends Engine {
 
@@ -15,6 +16,7 @@ export class Game extends Engine {
             height: 1080,
             maxFps: 60,
             displayMode: DisplayMode.FitScreen,
+            color: Color.Black
             // physics: {
             //     solver: SolverStrategy.Arcade,
             // }
@@ -24,16 +26,20 @@ export class Game extends Engine {
 
     startGame() {
         this.addScene("Cafetaria", new Cafetaria())
+        this.addScene("EastHall", new Easthall())
 
 
         this.add(new background())
         this.player = new Player()
         this.add(this.player)
 
+        this.player.pos = new Vector( 200, 200)
+
         this.currentScene.camera.strategy.lockToActor(this.player)
         this.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
 
         this.add(new DoorTrigger(0, 70, 50,50,"Cafetaria", 400, 600));
+        this.add(new DoorTrigger(100, 0, 50, 50, "EastHall", 100, 100))
         
 
             // let enemyCount = 0

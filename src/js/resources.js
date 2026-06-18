@@ -5,7 +5,9 @@ const Resources = {
     SackUp: new ImageSource('/images/entities/player/moving/sack-walking-backturn-600x1000px.png'),
     SackHorizontal: new ImageSource('/images/entities/player/moving/sack-walking-horizontal-600x1000px.png'),
     SackDown: new ImageSource('/images/entities/player/moving/sack-walking-down600x1000px.png'),
-    Tiles: new ImageSource('/images/tileset.png')
+    Tiles: new ImageSource('/images/tileset.png'),
+
+    EastHallMap: new ImageSource('/images/East-hall.map.png')
 }
 
 

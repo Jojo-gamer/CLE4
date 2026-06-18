@@ -21,6 +21,9 @@ export class Player extends Actor {
         // this.body.mass = 10
         this.name = "player"
         this.body.collisionType = CollisionType.Active
+        this.offset = new Vector(0,25)
+
+        this.collider.useBoxCollider(40, 50, Vector.Half, new Vector(0, 50));
     }
 
     onInitialize(engine) {
