@@ -25,6 +25,19 @@ export class Player extends Actor {
     }
 
     onInitialize(engine) {
+        this.spawnPoint = new Vector(this.pos.x, this.pos.y)
+
+        this.gameEngine = engine
+
+        if (this.gameEngine.lives === undefined) {
+            this.gameEngine.lives = 5
+        }
+
+        this.lives = this.gameEngine.lives
+        if (this.gameEngine.updateLivesHud) {
+            this.gameEngine.updateLivesHud()
+        }
+        
         //Importing Spritesheets
         const playerUp = SpriteSheet.fromImageSource({
             image: Resources.SackUp,
@@ -96,8 +109,12 @@ export class Player extends Actor {
             xVel = this.speed;
             this.dirRight = true;
             this.dirLeft = false;
+            
         
         } 
+        if (engine.input.keyboard.wasReleased(Keys.D)) {
+            console.log(this.pos)
+        }
 
         if (engine.input.keyboard.isHeld(Keys.S)) {
             yVel = this.speed;
@@ -151,5 +168,50 @@ export class Player extends Actor {
     
 
         this.vel = new Vector(xVel, yVel)
+    }
+
+    loseLife() {
+        if (this.isInvulnerable) return;
+
+        this.isInvulnerable = true
+        this.gameEngine.lives--
+        this.lives = this.gameEngine.lives
+
+        if (this.gameEngine.updateLivesHud) {
+            this.gameEngine.updateLivesHud()
+        }
+
+        if (this.gameEngine.lives <= 0) {
+            this.gameOver();
+        } else {
+            this.respawn()
+            this.actions.delay(600).callMethod(() => {
+                this.isInvulnerable = false
+            })
+        }
+    }
+
+    respawn() {
+        this.pos = new Vector(this.spawnPoint.x, this.spawnPoint.y)
+        this.vel = new Vector(0, 0)
+        
+    }
+
+    gameOver() {
+        this.gameEngine.lives = 5; 
+        this.lives = 5;
+
+        if (this.gameEngine.updateLivesHud) {
+            this.gameEngine.updateLivesHud();
+        }
+
+        const receptie = this.gameEngine.scenes['receptie'];
+
+        if (this.gameEngine.currentScene === receptie) {
+            this.respawn();
+            this.isInvulnerable = false;
+        } else {
+            this.gameEngine.goToScene('receptie');
+        }
     }
 }
