@@ -6,6 +6,7 @@ import { Player } from "./player.js";
 import { TableVertical } from "./tablevertical.js";
 import { TableHorizontal } from "./tablehorizontal.js";
 import { Dog } from './dog.js'
+import { Enemy } from "./enemy.js";
 
 
 export class Cafetaria extends Scene {
@@ -47,6 +48,9 @@ export class Cafetaria extends Scene {
             this.placePropRandomly(new TableHorizontal(isReal));
         }
 
+        const testEnemy = new Enemy()
+        this.add(testEnemy)
+
 
         this.camera.strategy.lockToActor(this.player)
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
@@ -58,8 +62,8 @@ export class Cafetaria extends Scene {
         const padding = 10;
 
         for (let attempt = 0; attempt < maxAttempts; attempt++) {
-            const randomX = randomInRange(100, 1500);
-            const randomY = randomInRange(100, 1500);
+            const randomX = randomInRange(300, 2600);
+            const randomY = randomInRange(300, 1600);
 
             // Calculate proposed Bounding Box based on this specific prop's dimensions
             const halfW = (propInstance.width / 2) + padding;
