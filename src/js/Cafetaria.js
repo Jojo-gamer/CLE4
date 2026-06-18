@@ -36,14 +36,14 @@ export class Cafetaria extends Scene {
         this.add(this.dog)
 
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             const isReal = Math.random() > 0.25;
             
             this.placePropRandomly(new TableVertical(isReal));
         }
 
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             const isReal = Math.random() > 0.25;
             this.placePropRandomly(new TableHorizontal(isReal));
         }
@@ -114,7 +114,7 @@ export class Cafetaria extends Scene {
     }
 
     playerOutOfBounds() {
-        if (this.player.pos.x < 157 || this.player.pos.x > 2790 || this.player.pos.y < 178 || this.player.pos.y > 1750 ) {
+        if (this.player.pos.x < 150 || this.player.pos.x > 2798 || this.player.pos.y < 170 || this.player.pos.y > 1760 ) {
             
             
             if (!Resources.OutOfBoundsSound.isPlaying()) {
@@ -126,7 +126,7 @@ export class Cafetaria extends Scene {
 
     playerInBounds() {
         
-        if (this.player.pos.x > 157 && this.player.pos.x < 2790 && this.player.pos.y > 178 && this.player.pos.y < 1745 ) {
+        if (this.player.pos.x > 157 && this.player.pos.x < 2790 && this.player.pos.y > 176 && this.player.pos.y < 1745 ) {
             
            
             if (Resources.OutOfBoundsSound.isPlaying()) {
