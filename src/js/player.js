@@ -103,6 +103,9 @@ export class Player extends Actor {
             this.dirLeft = true;
             this.dirRight = false;
        
+        }
+        if (engine.input.keyboard.wasReleased(Keys.A)) {
+            console.log(this.pos)
         } 
 
         if (engine.input.keyboard.isHeld(Keys.D)) {
