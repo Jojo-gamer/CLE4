@@ -10,8 +10,8 @@ export class mazewall extends Actor {
     
     
             const scale = 0.4;
-            const width = Resources.TableVertical.width * scale;
-            const height = Resources.TableVertical.height * scale;
+            const width = Resources.MazeWall.width * scale;
+            const height = Resources.MazeWall.height * scale;
             super({
                 width: 80,
                 height: 130,
@@ -19,7 +19,7 @@ export class mazewall extends Actor {
     
             this.isReal = isReal;
     
-            this.tableSprite = Resources.TableVertical.toSprite();
+            this.tableSprite = Resources.MazeWall.toSprite();
             this.tableSprite.scale = new Vector(scale, scale);
             this.graphics.use(this.tableSprite);
             this.body.collisionType = CollisionType.Fixed
@@ -27,7 +27,10 @@ export class mazewall extends Actor {
             this.z = 1
         }
         onInitialize() {
+            if (!this.isReal) {
+            this.body.collisionType = CollisionType.Passive
+        } else {
             this.body.collisionType = CollisionType.Fixed
         }
-
+    }
 }
