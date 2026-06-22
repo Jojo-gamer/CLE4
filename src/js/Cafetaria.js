@@ -41,7 +41,6 @@ export class Cafetaria extends Scene {
 
         for (let i = 0; i < 30; i++) {
             const isReal = Math.random() > 0.25;
-
             this.placePropRandomly(new TableVertical(isReal));
         }
 
@@ -51,16 +50,18 @@ export class Cafetaria extends Scene {
             this.placePropRandomly(new TableHorizontal(isReal));
         }
 
-        const testEnemy = new Enemy()
-        this.add(testEnemy)
-
+        for (let i = 0; i < 5; i++) {
+            const isReal = Math.random() > 0.25;
+            const enemy = new Enemy(isReal)
+            this.add(enemy)
+        }
 
         this.camera.strategy.lockToActor(this.player)
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
 
-        this.add(new DoorTrigger(100, 1000, 50, 150, "EastWing", 1300, 300));
+        this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 1300, 300));
 
-        this.add(new DoorTrigger(1500, 100, 150, 50, "CourtYard", 1500, 1940));
+        this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940));
 
 
     }
@@ -154,24 +155,17 @@ export class Cafetaria extends Scene {
     }
 
     playerOutOfBounds() {
-        if (this.player.pos.x < 150 || this.player.pos.x > 2798 || this.player.pos.y < 170 || this.player.pos.y > 1760 ) {
-            
-            
+        if (this.player.pos.x < 100 || this.player.pos.x > 2940 || this.player.pos.y < 100 || this.player.pos.y > 1900) {
             if (!Resources.OutOfBoundsSound.isPlaying()) {
                 Resources.OutOfBoundsSound.play();
             }
-    }
-
+        }
     }
 
     playerInBounds() {
-        
-        if (this.player.pos.x > 157 && this.player.pos.x < 2790 && this.player.pos.y > 176 && this.player.pos.y < 1745 ) {
-            
-           
+        if (this.player.pos.x > 180 && this.player.pos.x < 2814 && this.player.pos.y > 218 && this.player.pos.y < 1782) {
             if (Resources.OutOfBoundsSound.isPlaying()) {
-                
-                Resources.OutOfBoundsSound.stop(); 
+                Resources.OutOfBoundsSound.stop();
             }
         }
     }

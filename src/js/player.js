@@ -28,7 +28,9 @@ export class Player extends Actor {
         this.collider.useBoxCollider(40, 50, Vector.Half, new Vector(0, 50));
         this.events.on("collisionstart", (e) => {
             if (e.other.owner instanceof Enemy) {
-                this.loseLife();
+                if(e.other.owner.body.collisionType === CollisionType.Active) {
+                    this.loseLife();
+                }
             }
         })
     }
@@ -176,7 +178,7 @@ export class Player extends Actor {
         this.vel = new Vector(xVel, yVel)
     }
 
-    loseLife() {
+    loseLife(e) {
         if (this.isInvulnerable) return;
 
         this.isInvulnerable = true
@@ -190,18 +192,16 @@ export class Player extends Actor {
         if (this.gameEngine.lives <= 0) {
             this.gameOver();
         } else {
-            this.respawn()
-            this.actions.delay(600).callMethod(() => {
+            this.actions.blink(150, 100, 4).callMethod(() => {
                 this.isInvulnerable = false
             })
         }
     }
 
-    respawn() {
-        this.pos = new Vector(this.spawnPoint.x, this.spawnPoint.y)
-        this.vel = new Vector(0, 0)
-
-    }
+    // respawn() {
+    //     this.pos = new Vector(this.spawnPoint.x, this.spawnPoint.y)
+    //     this.vel = new Vector(0, 0)
+    // }
 
     gameOver() {
         this.gameEngine.lives = 5;
