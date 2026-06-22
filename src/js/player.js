@@ -37,7 +37,7 @@ export class Player extends Actor {
             if (e.other.owner instanceof Keyfragment) {
                 e.other.owner.kill();
                 this.keyfragmentCount++
-                if (this.keyfragmentCount >= 1) {
+                if (this.keyfragmentCount >= 2) {
                     for (let actor of this.scene.actors) {
                         if (actor instanceof DoorTrigger) {
                             actor.triggerEnabled = true

@@ -65,15 +65,15 @@ export class Cafetaria extends Scene {
         this.placePropRandomly(new TableHorizontal(false, true))
         this.placePropRandomly(new TableHorizontal(false, true))
 
-        // for (let i = 0; i < 15; i++) {
-        //     const isReal = Math.random() > 0.25;
-        //     this.placePropRandomly(new TableVertical(isReal));
-        // }
+        for (let i = 0; i < 15; i++) {
+            const isReal = Math.random() > 0.25;
+            this.placePropRandomly(new TableVertical(isReal));
+        }
 
-        // for (let i = 0; i < 15; i++) {
-        //     const isReal = Math.random() > 0.25;
-        //     this.placePropRandomly(new TableHorizontal(isReal));
-        // }
+        for (let i = 0; i < 15; i++) {
+            const isReal = Math.random() > 0.25;
+            this.placePropRandomly(new TableHorizontal(isReal));
+        }
 
     }
 
