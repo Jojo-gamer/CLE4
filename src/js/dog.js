@@ -1,5 +1,6 @@
 import { Actor, CollisionType, Color, Keys, Ray, Sound, TileMap, Vector } from "excalibur";
 import { Resources } from "./resources";
+import { Enemy } from "./enemy";
 
 export class Dog extends Actor {
     constructor() {
@@ -58,6 +59,15 @@ export class Dog extends Actor {
                 } else {
                     // console.log('WOOF')
                     Resources.BarkSound.play()
+
+                    //chance to spawn new enemy
+                    if (Math.random() > 0.25) {
+                        console.log('spawn')
+
+                        const isReal = Math.random() > 0.50;
+                        const enemy = new Enemy(isReal)
+                        this.scene.add(enemy)
+                    }
                 }
             }
         }
