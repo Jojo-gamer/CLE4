@@ -6,6 +6,7 @@ import { Enemy } from './enemy.js'
 import { Background } from './background.js'
 import { DoorTrigger } from './doorTrigger.js'
 import { Cafetaria } from './Cafetaria.js'
+import { CourtYard } from './courtyard.js'
 
 export class Game extends Engine {
     timer = 0;
@@ -30,6 +31,8 @@ export class Game extends Engine {
 
         this.player = new Player();
         this.add(this.player)
+
+        this.addScene("CourtYard", new CourtYard())
 
         this.currentScene.camera.strategy.lockToActor(this.player)
         this.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
