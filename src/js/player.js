@@ -1,8 +1,9 @@
-import { Actor, CollisionType, Color, Keys, Vector, SpriteSheet, Animation, range, FadeInOut } from "excalibur"
+import { Actor, CollisionType, Color, Keys, Vector, SpriteSheet, Animation, range, FadeInOut, Label } from "excalibur"
 import { Resources } from "./resources"
 import { Enemy } from "./enemy";
 import { Keyfragment } from "./keyfragment";
 import { DoorTrigger } from "./doorTrigger";
+import { Message } from "./message";
 
 export class Player extends Actor {
     speed = 450
@@ -36,13 +37,13 @@ export class Player extends Actor {
             if (e.other.owner instanceof Keyfragment) {
                 e.other.owner.kill();
                 this.keyfragmentCount++
-                if (this.keyfragmentCount >= 2) {
+                if (this.keyfragmentCount >= 1) {
                     for (let actor of this.scene.actors) {
                         if (actor instanceof DoorTrigger) {
                             actor.triggerEnabled = true
-                            // console.log('active')
                         }
                     }
+                    this.scene.add(new Message())
                 }
             }
         })

@@ -11,6 +11,7 @@ import { CourtYard } from './courtyard.js'
 import { GameOver } from './gameover.js'
 import { Reception } from './reception.js'
 import { EastWing } from './eastwing.js'
+import { Message } from './message.js'
 
 export class Game extends Engine {
     timer = 0;
