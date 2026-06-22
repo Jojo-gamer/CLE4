@@ -63,24 +63,39 @@ export class Dog extends Actor {
     onPreUpdate(engine) {
         if (this.player.dirUp) {
             this.dir = Vector.Up
-            if (this.dir.y < 0) {
+            if (this.vel.y < 0) {
                 this.graphics.use(this.movingDown)
             } else {
                 this.graphics.use(this.idleDown)
             }
         }
+
         if (this.player.dirDown) {
             this.dir = Vector.Down
-            this.graphics.use(this.movingUp)
+            if (this.vel.y > 0) {
+                this.graphics.use(this.movingUp)
+            } else {
+                this.graphics.use(this.idleUp)
+            }
         }
+
         if (this.player.dirLeft) {
             this.dir = Vector.Left
-            this.graphics.use(this.movingSide)
+            if (this.vel.x < 0) {
+                this.graphics.use(this.movingSide)
+            } else {
+                this.graphics.use(this.idleSide)
+            }
             this.graphics.flipHorizontal = true;
         }
+
         if (this.player.dirRight) {
             this.dir = Vector.Right
-            this.graphics.use(this.movingSide)
+            if (this.vel.x > 0) {
+                this.graphics.use(this.movingSide)
+            } else {
+                this.graphics.use(this.idleSide)
+            }
             this.graphics.flipHorizontal = false;
         }
 
