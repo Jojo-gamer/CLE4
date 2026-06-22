@@ -1,6 +1,7 @@
 import { Actor, CollisionType, Color, Keys, Ray, Sound, SpriteSheet, TileMap, Vector, range, Animation } from "excalibur";
 import { Resources } from "./resources";
 import { Enemy } from "./enemy";
+import { Keyfragment } from "./keyfragment";
 
 export class Dog extends Actor {
     constructor() {
@@ -115,6 +116,10 @@ export class Dog extends Actor {
                 if (!owner.isReal && !(owner instanceof TileMap)) {
                     owner.body.collisionType = CollisionType.Passive
                     owner.actions.fade(0.3, 1000)
+                    // console.log(owner)
+                    if (owner.hasKeyFragment) {
+                        this.scene.add(new Keyfragment(owner.pos))
+                    }
                 } else {
                     // console.log('WOOF')
                     Resources.BarkSound.play()
