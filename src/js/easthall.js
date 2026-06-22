@@ -3,7 +3,7 @@ import { Resources, ResourceLoader } from './resources.js'
 import { background } from "./background.js"
 import { DoorTrigger } from "./doorTrigger.js";
 import { Player } from "./player.js";
-import { MazeCollisionBuilder } from './collisionbuilder.js'
+import { MazeTileCollisionBuilder } from './collisionbuilder.js'
 
 
 
@@ -11,7 +11,7 @@ import { MazeCollisionBuilder } from './collisionbuilder.js'
 export class Easthall extends Scene {
     constructor() {
         super({
-            width: 2560,
+            width: 4480,
             height: 1440,
             queueMicrotaskcolor: Color.Black
         }
@@ -21,7 +21,7 @@ export class Easthall extends Scene {
     async onInitialize(){
 // In your scene's onInitialize:
 
-const WORLD_WIDTH = 2560
+const WORLD_WIDTH = 4480
 const WORLD_HEIGHT = 1440
 
 this.player = new Player();
@@ -58,19 +58,18 @@ this.add(bg)
 
 
 
- const rects = await MazeCollisionBuilder.fromImage(
+const rects = await MazeTileCollisionBuilder.fromImage(
   "/images/East-hall.map.png",
   WORLD_WIDTH,
   WORLD_HEIGHT,
   {
-    wallColors: [
-      { r: 0, g: 0, b: 0 }
-    ],
-    tolerance: 10
+    tileSize: 16,
+    tolerance: 15,
+    treatBlackAsCollision: false
   }
 )
 
-const walls = MazeCollisionBuilder.createCollisionActors(rects)
+const walls = MazeTileCollisionBuilder.createCollisionActors(rects)
 for (const wall of walls) {
   this.add(wall)
 }
@@ -79,3 +78,5 @@ for (const wall of walls) {
 
     }
 }
+
+
