@@ -13,17 +13,21 @@ import { CourtYard } from "./courtyard.js";
 export class Cafetaria extends Scene {
     isReal;
     constructor() {
+        const sceneWidth = 3000
+        const sceneHeight = 2000
+
         super({
-            width: 800,
-            height: 1000,
+            width: sceneWidth,
+            height: sceneHeight,
             color: Color.Black
         });
-        this.placedProps = [];
 
+        this.placedProps = [];
+        this.sceneWidth = sceneWidth
+        this.sceneHeight = sceneHeight
     }
     onInitialize() {
-
-        this.add(new Background())
+        this.add(new Background(this.sceneWidth, this.sceneHeight))
 
         this.player = new Player();
         const spawnPoint = this.engine.nextSpawn
@@ -37,7 +41,7 @@ export class Cafetaria extends Scene {
 
         for (let i = 0; i < 30; i++) {
             const isReal = Math.random() > 0.25;
-            
+
             this.placePropRandomly(new TableVertical(isReal));
         }
 
@@ -52,7 +56,7 @@ export class Cafetaria extends Scene {
 
 
         this.camera.strategy.lockToActor(this.player)
-        this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
+        this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
 
         this.add(new DoorTrigger(100, 1000, 50, 150, "EastWing", 1300, 300));
 

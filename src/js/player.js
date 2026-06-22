@@ -1,5 +1,6 @@
-import { Actor, CollisionType, Color, Keys, Vector, SpriteSheet, Animation, range } from "excalibur"
+import { Actor, CollisionType, Color, Keys, Vector, SpriteSheet, Animation, range, FadeInOut } from "excalibur"
 import { Resources } from "./resources"
+import { Enemy } from "./enemy";
 
 export class Player extends Actor {
     speed = 450
@@ -22,6 +23,11 @@ export class Player extends Actor {
         // this.body.mass = 10
         this.name = "player"
         this.body.collisionType = CollisionType.Active
+        this.events.on("collisionstart", (e) => {
+            if (e.other.owner instanceof Enemy) {
+                this.loseLife();
+            }
+        })
     }
 
     onInitialize(engine) {
@@ -37,35 +43,35 @@ export class Player extends Actor {
         if (this.gameEngine.updateLivesHud) {
             this.gameEngine.updateLivesHud()
         }
-        
+
         //Importing Spritesheets
         const playerUp = SpriteSheet.fromImageSource({
             image: Resources.SackUp,
-            grid: {rows:1, columns: 4, spriteWidth: 60, spriteHeight: 100}
+            grid: { rows: 1, columns: 4, spriteWidth: 60, spriteHeight: 100 }
         })
 
         const playerDown = SpriteSheet.fromImageSource({
             image: Resources.SackDown,
-            grid: {rows:1, columns: 4, spriteWidth: 60, spriteHeight: 100}
+            grid: { rows: 1, columns: 4, spriteWidth: 60, spriteHeight: 100 }
         })
 
         const playerHorizontal = SpriteSheet.fromImageSource({
             image: Resources.SackHorizontal,
-            grid: {rows:1, columns: 4, spriteWidth: 60, spriteHeight: 100}
+            grid: { rows: 1, columns: 4, spriteWidth: 60, spriteHeight: 100 }
         })
 
-        const movingDown = Animation.fromSpriteSheet(playerDown, range(0,3), 160)
-        const movingUp = Animation.fromSpriteSheet(playerUp, range(0,3), 160)
-        const movingHorizontal = Animation.fromSpriteSheet(playerHorizontal, range(0,3), 160)
+        const movingDown = Animation.fromSpriteSheet(playerDown, range(0, 3), 160)
+        const movingUp = Animation.fromSpriteSheet(playerUp, range(0, 3), 160)
+        const movingHorizontal = Animation.fromSpriteSheet(playerHorizontal, range(0, 3), 160)
 
-        const idleDown = playerDown.getSprite(0,0)
-        const idleUp = playerUp.getSprite(0,0)
-        const idleHorizontal = playerHorizontal.getSprite(0,0)
+        const idleDown = playerDown.getSprite(0, 0)
+        const idleUp = playerUp.getSprite(0, 0)
+        const idleHorizontal = playerHorizontal.getSprite(0, 0)
 
         this.graphics.add("movingDown", movingDown)
         this.graphics.add("movingUp", movingUp)
         this.graphics.add("movingHorizontal", movingHorizontal)
-        
+
         this.graphics.add("idleDown", idleDown)
         this.graphics.add("idleUp", idleUp)
         this.graphics.add("idleHorizontal", idleHorizontal)
@@ -77,7 +83,7 @@ export class Player extends Actor {
         this.idleDown = this.graphics.use(idleDown)
         this.idleUp = this.graphics.use(idleUp)
         this.idleHorizontal = this.graphics.use(idleHorizontal)
-        
+
         //Variables to determine sprite orientation
         this.dirUp = false;
         this.dirDown = false;
@@ -90,31 +96,28 @@ export class Player extends Actor {
         let xVel = 0;
         let yVel = 0;
 
-        
+
         if (engine.input.keyboard.isHeld(Keys.W)) {
             yVel = -this.speed;
             this.dirUp = true;
             this.dirDown = false;
-            
-        } 
+
+        }
 
         if (engine.input.keyboard.isHeld(Keys.A)) {
             xVel = -this.speed;
             this.dirLeft = true;
             this.dirRight = false;
-       
+
         }
-        if (engine.input.keyboard.wasReleased(Keys.A)) {
-            console.log(this.pos)
-        } 
 
         if (engine.input.keyboard.isHeld(Keys.D)) {
             xVel = this.speed;
             this.dirRight = true;
             this.dirLeft = false;
-            
-        
-        } 
+
+
+        }
         if (engine.input.keyboard.wasReleased(Keys.D)) {
             console.log(this.pos)
         }
@@ -123,10 +126,10 @@ export class Player extends Actor {
             yVel = this.speed;
             this.dirDown = true;
             this.dirUp = false;
-           
+
         }
 
-        
+
 
         //Change sprite depending on movement and direction
         if (this.dirUp) {
@@ -149,7 +152,7 @@ export class Player extends Actor {
             }
         }
 
-         if (this.dirRight) {
+        if (this.dirRight) {
             if (xVel > 0) {
                 this.graphics.use(this.movingHorizontal)
                 this.graphics.flipHorizontal = false;
@@ -166,9 +169,6 @@ export class Player extends Actor {
                 this.graphics.use(this.idleHorizontal)
             }
         }
-
-        
-    
 
         this.vel = new Vector(xVel, yVel)
     }
@@ -197,24 +197,29 @@ export class Player extends Actor {
     respawn() {
         this.pos = new Vector(this.spawnPoint.x, this.spawnPoint.y)
         this.vel = new Vector(0, 0)
-        
+
     }
 
     gameOver() {
-        this.gameEngine.lives = 5; 
+        this.gameEngine.lives = 5;
         this.lives = 5;
 
         if (this.gameEngine.updateLivesHud) {
             this.gameEngine.updateLivesHud();
         }
 
-        const receptie = this.gameEngine.scenes['receptie'];
+        this.scene.engine.goToScene("GameOver", {
+            sceneActivationData: { TimeScore: this.scene.engine.timer },
+            destinationIn: new FadeInOut({ duration: 2000, direction: 'in' })
+        })
 
-        if (this.gameEngine.currentScene === receptie) {
-            this.respawn();
-            this.isInvulnerable = false;
-        } else {
-            this.gameEngine.goToScene('receptie');
-        }
+        // const receptie = this.gameEngine.scenes['receptie'];
+
+        // if (this.gameEngine.currentScene === receptie) {
+        //     this.respawn();
+        //     this.isInvulnerable = false;
+        // } else {
+        //     this.gameEngine.goToScene('receptie');
+        // }
     }
 }
