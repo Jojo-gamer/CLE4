@@ -12,17 +12,21 @@ import { Enemy } from "./enemy.js";
 export class Cafetaria extends Scene {
     isReal;
     constructor() {
+        const sceneWidth = 3000
+        const sceneHeight = 2000
+
         super({
-            width: 800,
-            height: 1000,
+            width: sceneWidth,
+            height: sceneHeight,
             color: Color.Black
         });
-        this.placedProps = [];
 
+        this.placedProps = [];
+        this.sceneWidth = sceneWidth
+        this.sceneHeight = sceneHeight
     }
     onInitialize() {
-
-        this.add(new Background())
+        this.add(new Background(this.sceneWidth, this.sceneHeight))
 
         this.player = new Player();
         const spawnPoint = this.engine.nextSpawn
@@ -36,14 +40,14 @@ export class Cafetaria extends Scene {
         this.add(this.dog)
 
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             const isReal = Math.random() > 0.25;
-            
+
             this.placePropRandomly(new TableVertical(isReal));
         }
 
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             const isReal = Math.random() > 0.25;
             this.placePropRandomly(new TableHorizontal(isReal));
         }
@@ -53,8 +57,14 @@ export class Cafetaria extends Scene {
 
 
         this.camera.strategy.lockToActor(this.player)
-        this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
+        this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
 
+
+    }
+
+    onPreUpdate(engine, delta) {
+        this.playerOutOfBounds();
+        this.playerInBounds();
     }
 
     placePropRandomly(propInstance) {
@@ -107,7 +117,26 @@ export class Cafetaria extends Scene {
         console.warn("Could not find a free spot for a prop after 50 attempts!");
     }
 
+    playerOutOfBounds() {
+        if (this.player.pos.x < 150 || this.player.pos.x > 2798 || this.player.pos.y < 170 || this.player.pos.y > 1760 ) {
+            
+            
+            if (!Resources.OutOfBoundsSound.isPlaying()) {
+                Resources.OutOfBoundsSound.play();
+            }
+    }
 
+    }
 
-
+    playerInBounds() {
+        
+        if (this.player.pos.x > 157 && this.player.pos.x < 2790 && this.player.pos.y > 176 && this.player.pos.y < 1745 ) {
+            
+           
+            if (Resources.OutOfBoundsSound.isPlaying()) {
+                
+                Resources.OutOfBoundsSound.stop(); 
+            }
+        }
+    }
 }
