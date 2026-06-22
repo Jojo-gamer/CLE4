@@ -17,6 +17,8 @@ const Resources = {
     FullHeart: new ImageSource('/images/entities/UI/fullheart.png'),
     EmptyHeart: new ImageSource('/images/entities/UI/emptyheart.png'),
     OutOfBoundsSound: new Sound('/images/entities/sounds/outofbounds.mp3'),
+    WallVertical: new ImageSource('/images/wall-vertical.png'),
+    MazeWall: new ImageSource('/images/wall-tiles-128x128.png'),
 }
 
 export const cafWalls = SpriteSheet.fromImageSource({

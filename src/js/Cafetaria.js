@@ -7,6 +7,7 @@ import { TableVertical } from "./tablevertical.js";
 import { TableHorizontal } from "./tablehorizontal.js";
 import { Dog } from './dog.js'
 import { Enemy } from "./enemy.js";
+import { CourtYard } from "./courtyard.js";
 
 
 export class Cafetaria extends Scene {
@@ -30,8 +31,6 @@ export class Cafetaria extends Scene {
 
         this.player = new Player();
         const spawnPoint = this.engine.nextSpawn
-        // console.log(spawnPoint.x)
-        // console.log(spawnPoint.y)
         this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
         this.add(this.player);
 
@@ -40,14 +39,14 @@ export class Cafetaria extends Scene {
         this.add(this.dog)
 
 
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 30; i++) {
             const isReal = Math.random() > 0.25;
 
             this.placePropRandomly(new TableVertical(isReal));
         }
 
 
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 30; i++) {
             const isReal = Math.random() > 0.25;
             this.placePropRandomly(new TableHorizontal(isReal));
         }
@@ -59,7 +58,44 @@ export class Cafetaria extends Scene {
         this.camera.strategy.lockToActor(this.player)
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
 
+        this.add(new DoorTrigger(100, 1000, 50, 150, "EastWing", 1300, 300));
 
+        this.add(new DoorTrigger(1500, 100, 150, 50, "CourtYard", 1500, 1940));
+
+
+    }
+
+    onActivate(ctx) {
+
+     
+        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 }; 
+        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
+        this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
+
+        
+        this.clearProps();
+
+        
+        for (let i = 0; i < 15; i++) {
+            const isReal = Math.random() > 0.25;
+            this.placePropRandomly(new TableVertical(isReal));
+        }
+
+        for (let i = 0; i < 15; i++) {
+            const isReal = Math.random() > 0.25;
+            this.placePropRandomly(new TableHorizontal(isReal));
+        }
+
+    }
+
+    clearProps() {
+        
+        this.placedProps.forEach(prop => {
+            prop.kill(); 
+        });
+        
+        
+        this.placedProps = []; 
     }
 
     onPreUpdate(engine, delta) {
