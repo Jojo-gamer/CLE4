@@ -151,7 +151,7 @@ export class Cafetaria extends Scene {
     }
 
     playerOutOfBounds() {
-        if (this.player.pos.x < 150 || this.player.pos.x > 2798 || this.player.pos.y < 130 || this.player.pos.y > 1760 ) {
+        if (this.player.pos.x < 150 || this.player.pos.x > 2840 || this.player.pos.y < 130 || this.player.pos.y > 1760 ) {
             
             
             if (!Resources.OutOfBoundsSound.isPlaying()) {
@@ -162,7 +162,7 @@ export class Cafetaria extends Scene {
 
     playerInBounds() {
         
-        if (this.player.pos.x > 157 && this.player.pos.x < 2790 && this.player.pos.y > 155 && this.player.pos.y < 1745 ) {
+        if (this.player.pos.x > 157 && this.player.pos.x < 2830 && this.player.pos.y > 155 && this.player.pos.y < 1745 ) {
             
            
             if (Resources.OutOfBoundsSound.isPlaying()) {

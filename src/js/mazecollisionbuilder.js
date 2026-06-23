@@ -139,12 +139,35 @@ export class MazeWallCollisionBuilder {
         width: rect.width,
         height: rect.height,
         anchor: Vector.Zero,
-        collisionType: rect.isReal ? CollisionType.Fixed : CollisionType.Passive
+        collisionType: CollisionType.Fixed
       })
-      actor.isReal = rect.isReal
+      
+
+      actor.isReal = rect.isReal 
+      
       return actor
     })
   }
+
+
+
+
+
+
+//   static createCollisionActors(rects) {
+//     return rects.map((rect) => {
+//       const actor = new Actor({
+//         x: rect.x,
+//         y: rect.y,
+//         width: rect.width,
+//         height: rect.height,
+//         anchor: Vector.Zero,
+//         collisionType: rect.isReal ? CollisionType.Fixed : CollisionType.Passive
+//       })
+//       actor.isReal = rect.isReal
+//       return actor
+//     })
+//   }
 
   static sampleTile(data, imageWidth, imageHeight, startX, startY, tileSize) {
     let wallPixels  = 0
