@@ -2,7 +2,7 @@ import { Actor, Vector, BoundingBox, Color, Scene, CollisionType } from "excalib
 import { Resources } from './resources.js'
 import { DoorTrigger } from "./doorTrigger.js"
 import { Player } from "./player.js"
-import { MazeTileCollisionBuilder } from './mazecollisionbuilder.js'
+import { MazeWallCollisionBuilder } from './mazecollisionbuilder.js'
 
 const TILE_SIZE = 128 // grootte van wall-tiles-128x128.png
 
@@ -50,7 +50,7 @@ export class EastHallWay extends Scene {
         this.add(bg)
 
         // Collision rects op native resolutie
-        const rects = await MazeTileCollisionBuilder.fromImage(
+        const rects = await MazeWallCollisionBuilder.fromImage(
             "/images/East-maze.png",
             MAP_WIDTH,
             MAP_HEIGHT,
@@ -64,7 +64,7 @@ export class EastHallWay extends Scene {
             }
         )
 
-        const walls = MazeTileCollisionBuilder.createCollisionActors(rects)
+        const walls = MazeWallCollisionBuilder.createCollisionActors(rects)
 
         for (const wall of walls) {
             wall.z = 10

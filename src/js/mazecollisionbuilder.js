@@ -1,6 +1,6 @@
 import { Actor, Vector, CollisionType } from "excalibur"
 
-export class MazeTileCollisionBuilder {
+export class MazeWallCollisionBuilder {
   /**
    * Laad een collision map en genereer hitbox-rechthoeken.
    *
