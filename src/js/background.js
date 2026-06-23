@@ -3,15 +3,27 @@ import { Resources, cafWalls } from "./resources.js";
 
 
 export class Background extends Actor {
-    constructor(width, height) {
+    constructor(width, height, location) {
         super();
 
+    
         const tileWidth = 128
         const tileHeight = 128
         const columns = Math.floor(width / tileWidth)
         const rows = Math.floor(height / tileHeight)
         const mapWidth = columns * tileWidth
         const mapHeight = rows * tileHeight
+
+        console.log(location)
+        let floorTiles;
+
+        if (location == "Cafetaria") {
+            floorTiles = Resources.CafTile.toSprite()
+        }
+
+        if (location == "EastWing") {
+            floorTiles = Resources.WingTile.toSprite()
+        }
 
         const tilemap = new TileMap({
             tileWidth, tileHeight, columns, rows,
@@ -39,7 +51,7 @@ export class Background extends Actor {
                 tile.addGraphic(cafWalls.getSprite(0, 0));
                 tile.solid = true
             } else {
-                tile.addGraphic(Resources.CafTile.toSprite());  //floor
+                tile.addGraphic(floorTiles);  //floor
             }
             index++
         }

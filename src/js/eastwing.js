@@ -22,8 +22,10 @@ export class EastWing extends Scene {
         this.sceneHeight = sceneHeight
     }
 
-    onInitialize() {
-         this.add(new Background(this.sceneWidth, this.sceneHeight))
+    onInitialize(engine) {
+        this.location = engine.currentSceneName
+        
+         this.add(new Background(this.sceneWidth, this.sceneHeight, this.location))
 
          this.player = new Player();
                  const spawnPoint = this.engine.nextSpawn
