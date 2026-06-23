@@ -6,7 +6,7 @@ export class Background extends Actor {
     constructor(width, height, location) {
         super();
 
-    
+
         const tileWidth = 128
         const tileHeight = 128
         const columns = Math.floor(width / tileWidth)
@@ -32,7 +32,6 @@ export class Background extends Actor {
 
         let index = 0
         for (let tile of tilemap.tiles) {
-            // tile.addGraphic(spriteSheet.getSprite(2, 2));
             const columns = tilemap.columns
             const tileCount = tilemap.tiles.length
             if (index < columns && index !== 0 && index !== columns - 1) {  //upperwal
