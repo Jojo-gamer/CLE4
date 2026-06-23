@@ -1,5 +1,6 @@
 import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer, Scene, randomInRange, CollisionType } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
+import { Background } from "./background.js"
 import { DoorTrigger } from "./doorTrigger.js";
 import { Player } from "./player.js";
 import { MazeTileCollisionBuilder } from './collisionbuilder.js'

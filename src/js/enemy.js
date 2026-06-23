@@ -5,15 +5,15 @@ export class Enemy extends Actor {
     //Variable to stop moving once making contact with player
     #playerContact;
     #counter;
-    isReal = true;
+    isReal;
 
-    constructor(player) {
+    constructor(isReal) {
         super({
             width: 40,
             height: 40,
             color: Color.Green,
         })
-        this.player = player
+        this.isReal = isReal;
         this.body.collisionType = CollisionType.Active
     }
 
@@ -40,10 +40,6 @@ export class Enemy extends Actor {
         }
 
 }
-
-        
-
-
 
     spawn() {
         this.pos = new Vector(randomIntInRange(200, 2500), randomIntInRange(300, 1500))

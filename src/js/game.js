@@ -10,6 +10,8 @@ import { Easthall } from './easthall.js'
 import { CourtYard } from './courtyard.js'
 import { GameOver } from './gameover.js'
 import { Reception } from './reception.js'
+import { EastWing } from './eastwing.js'
+import { Message } from './message.js'
 
 export class Game extends Engine {
     timer = 0;
@@ -38,15 +40,15 @@ export class Game extends Engine {
         this.addScene("Cafetaria", new Cafetaria())
         this.addScene("GameOver", new GameOver())
         this.addScene("EastHall", new Easthall())
+        this.addScene("EastWing", new EastWing())
+        this.addScene("CourtYard", new CourtYard())
 
         // this.goToScene("Reception")
 
         this.player = new Player();
         this.add(this.player)
 
-        this.player.pos = new Vector( 200, 200)
-
-        this.addScene("CourtYard", new CourtYard())
+        this.player.pos = new Vector(200, 200)
 
         this.currentScene.camera.strategy.lockToActor(this.player)
         this.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))

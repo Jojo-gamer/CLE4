@@ -1,11 +1,13 @@
-import { Actor, CollisionType, Color, Keys, Vector, SpriteSheet, Animation, range, FadeInOut } from "excalibur"
+import { Actor, CollisionType, Color, Keys, Vector, SpriteSheet, Animation, range, FadeInOut, Label } from "excalibur"
 import { Resources } from "./resources"
 import { Enemy } from "./enemy";
+import { Keyfragment } from "./keyfragment";
+import { DoorTrigger } from "./doorTrigger";
+import { Message } from "./message";
 
 export class Player extends Actor {
     speed = 450
-
-
+    keyfragmentCount = 0;
 
     //for sprite orientation
     dirUp;
@@ -23,12 +25,26 @@ export class Player extends Actor {
         // this.body.mass = 10
         this.name = "player"
         this.body.collisionType = CollisionType.Active
-        this.offset = new Vector(0,25)
+        this.offset = new Vector(0, 25)
 
         this.collider.useBoxCollider(40, 50, Vector.Half, new Vector(0, 50));
         this.events.on("collisionstart", (e) => {
             if (e.other.owner instanceof Enemy) {
-                this.loseLife();
+                if (e.other.owner.body.collisionType === CollisionType.Active) {
+                    this.loseLife();
+                }
+            }
+            if (e.other.owner instanceof Keyfragment) {
+                e.other.owner.kill();
+                this.keyfragmentCount++
+                if (this.keyfragmentCount >= 2) {
+                    for (let actor of this.scene.actors) {
+                        if (actor instanceof DoorTrigger) {
+                            actor.triggerEnabled = true
+                        }
+                    }
+                    this.scene.add(new Message())
+                }
             }
         })
     }
@@ -124,9 +140,9 @@ export class Player extends Actor {
 
 
         }
-        if (engine.input.keyboard.wasReleased(Keys.D)) {
-            console.log(this.pos)
-        }
+        // if (engine.input.keyboard.wasReleased(Keys.D)) {
+        //     console.log(this.pos)
+        // }
 
         if (engine.input.keyboard.isHeld(Keys.S)) {
             yVel = this.speed;
@@ -179,7 +195,7 @@ export class Player extends Actor {
         this.vel = new Vector(xVel, yVel)
     }
 
-    loseLife() {
+    loseLife(e) {
         if (this.isInvulnerable) return;
 
         this.isInvulnerable = true
@@ -193,18 +209,16 @@ export class Player extends Actor {
         if (this.gameEngine.lives <= 0) {
             this.gameOver();
         } else {
-            this.respawn()
-            this.actions.delay(600).callMethod(() => {
+            this.actions.blink(150, 100, 4).callMethod(() => {
                 this.isInvulnerable = false
             })
         }
     }
 
-    respawn() {
-        this.pos = new Vector(this.spawnPoint.x, this.spawnPoint.y)
-        this.vel = new Vector(0, 0)
-
-    }
+    // respawn() {
+    //     this.pos = new Vector(this.spawnPoint.x, this.spawnPoint.y)
+    //     this.vel = new Vector(0, 0)
+    // }
 
     gameOver() {
         this.gameEngine.lives = 5;
