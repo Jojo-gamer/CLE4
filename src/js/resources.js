@@ -27,7 +27,8 @@ const Resources = {
     MazeWall: new ImageSource('/images/wall-tiles-128x128.png'),
     Reception: new ImageSource('./images/reception-map.png'),
     EastHallMap: new ImageSource('/images/East-hall-map.png'),
-    floorTile: new ImageSource('/images/floortile.png')
+    floorTile: new ImageSource('/images/floortile.png'),
+    Rubble: new ImageSource('./images/rubble.png'),
 }
 
 export const cafWalls = SpriteSheet.fromImageSource({

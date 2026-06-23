@@ -1,9 +1,10 @@
-import { Actor, BoundingBox, CollisionType, Color, CompositeCollider, Scene, Shape, vec, Vector } from "excalibur";
+import { Actor, BoundingBox, CollisionType, Color, CompositeCollider, EdgeCollider, Scene, Shape, vec, Vector } from "excalibur";
 import { Background } from "./background";
 import { Player } from "./player";
 import { Resources } from "./resources";
 import { MazeTileCollisionBuilder } from "./collisionbuilder";
 import { DoorTrigger } from "./doorTrigger";
+import { Dog } from "./dog";
 
 export class Reception extends Scene {
     constructor() {
@@ -38,9 +39,13 @@ export class Reception extends Scene {
         this.addCollision()
 
         this.player = new Player();
-        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
+        const spawnPoint = this.engine.nextSpawn || { x: 640, y: 700 };
         this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
         this.add(this.player);
+
+        this.dog = new Dog(false)
+        this.dog.pos = new Vector(760, 430)
+        this.add(this.dog)
 
         this.camera.strategy.lockToActor(this.player)
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
@@ -55,12 +60,14 @@ export class Reception extends Scene {
     addCollision(engine) {
         const tileWidth = 80
         const tileHeight = 62.5
+        const rubbleSprite = Resources.Rubble.toSprite()
+        this.add(new Actor({ width: rubbleSprite.width, height: rubbleSprite.height - 150, pos: vec(8 * tileWidth, 15 * tileHeight), graphic: rubbleSprite, scale: vec(0.7, 0.5), collisionType: CollisionType.Fixed }))
         this.add(new Actor({ width: 6 * tileWidth, height: tileHeight, anchor: vec(0, 0), color: Color.Black }))
         this.add(new Actor({ x: 10 * tileWidth, width: 6 * tileWidth, height: 1 * tileHeight, anchor: vec(0, 0), color: Color.Black }))
-        this.add(new Actor({ pos: new Vector(0, 13 * tileHeight), width: 5 * tileWidth, height: 3 * tileHeight + 2, anchor: vec(0, 0), color: Color.Black }))
-        this.add(new Actor({ pos: new Vector(11 * tileWidth, 13 * tileHeight), width: 5 * tileWidth, height: 3 * tileHeight + 2, anchor: new Vector(0, 0), color: Color.Black }))
+        this.add(new Actor({ pos: vec(0, 13 * tileHeight), width: 5 * tileWidth, height: 3 * tileHeight + 2, anchor: vec(0, 0), color: Color.Black }))
+        this.add(new Actor({ pos: vec(11 * tileWidth, 13 * tileHeight), width: 5 * tileWidth, height: 3 * tileHeight + 2, anchor: new Vector(0, 0), color: Color.Black }))
         this.add(new Actor({
-            pos: new Vector(5 * tileWidth, 6 * tileHeight), anchor: new Vector(0, 0), collisionType: CollisionType.Fixed, collider: new CompositeCollider([
+            pos: vec(5 * tileWidth, 6 * tileHeight), anchor: vec(0, 0), collisionType: CollisionType.Fixed, collider: new CompositeCollider([
                 Shape.Box(tileWidth, 3 * tileHeight, vec(0, 0)),
                 Shape.Box(4 * tileWidth, tileHeight, vec(0, 0), vec(tileWidth, 2 * tileHeight)),
                 Shape.Box(tileWidth, 3 * tileHeight, vec(0, 0), vec(5 * tileWidth, 0))
