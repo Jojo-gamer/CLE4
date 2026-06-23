@@ -49,7 +49,7 @@ export class Cafetaria extends Scene {
 
         this.add(new DoorTrigger(140, 1000, 50, 150, "EastWing", 1300, 300, false));
 
-        this.add(new DoorTrigger(140, 1300, 50, 150, "EastHallWay", 1400, 4400));
+        this.add(new DoorTrigger(140, 1300, 50, 150, "EastHallWay", 1300, 5350));
 
 
         if (this.player.key) {
