@@ -2,34 +2,32 @@ import { Actor, Vector, CollisionType } from "excalibur"
 
 export class MazeTileCollisionBuilder {
   static async fromImage(imagePath, width, height, options = {}) {
-    const {
-      tileSize = 16,
-      scale = 1,
-      treatBlackAsCollision = true,
-      treatGreenAsCollision = true,
-      blackIsSolid = false,
-      greenIsSolid = true
-    } = options
+  const {
+    tileSize = 16,
+    tolerance = 15,
+    scale = 1,
+    treatBlackAsCollision = true
+  } = options
 
-    return new Promise((resolve, reject) => {
-      const img = new Image()
+  return new Promise((resolve, reject) => {
+    const img = new Image()
 
-      img.onload = () => {
-        try {
-          const canvas = document.createElement("canvas")
-          canvas.width = width
-          canvas.height = height
+    img.onload = () => {
+      try {
+        const canvas = document.createElement("canvas")
+        canvas.width = width
+        canvas.height = height
 
-          const ctx = canvas.getContext("2d")
-          if (!ctx) {
-            reject(new Error("MazeTileCollisionBuilder: could not get 2D canvas context"))
-            return
-          }
+        const ctx = canvas.getContext("2d")
+        if (!ctx) {
+          reject(new Error("MazeTileCollisionBuilder: could not get 2D canvas context"))
+          return
+        }
 
-          ctx.drawImage(img, 0, 0, width, height)
+        ctx.drawImage(img, 0, 0, width, height)
 
-          const imageData = ctx.getImageData(0, 0, width, height)
-          const data = imageData.data
+        const imageData = ctx.getImageData(0, 0, width, height)
+        const data = imageData.data
 
         const tiles = []
 
@@ -64,13 +62,13 @@ export class MazeTileCollisionBuilder {
       }
     }
 
-      img.onerror = () => {
-        reject(new Error(`MazeTileCollisionBuilder: failed to load image ${imagePath}`))
-      }
+    img.onerror = () => {
+      reject(new Error(`MazeTileCollisionBuilder: failed to load image ${imagePath}`))
+    }
 
-      img.src = imagePath
-    })
-  }
+    img.src = imagePath
+  })
+}
 
   static createCollisionActors(rects) {
     return rects.map((rect) => {
@@ -82,17 +80,16 @@ export class MazeTileCollisionBuilder {
         width: rect.width,
         height: rect.height,
         anchor: Vector.Zero,
-        collisionType: rect.isReal ? CollisionType.Fixed : CollisionType.PreventCollision
+        collisionType: CollisionType.Passive
       })
-      actor.isReal = rect.isReal
-      return actor
     })
   }
 
-  static sampleTile(data, imageWidth, imageHeight, startX, startY, tileSize) {
-    let wallPixels = 0   // teal/groen: G dominant
-    let blackPixels = 0  // pikzwart
-    let validPixels = 0
+  static sampleTile(data, imageWidth, imageHeight, startX, startY, tileSize, tolerance) {
+    let totalR = 0
+    let totalG = 0
+    let totalB = 0
+    let count = 0
 
     const endX = Math.min(startX + tileSize, imageWidth)
     const endY = Math.min(startY + tileSize, imageHeight)
@@ -100,40 +97,88 @@ export class MazeTileCollisionBuilder {
     for (let y = startY; y < endY; y++) {
       for (let x = startX; x < endX; x++) {
         const index = (y * imageWidth + x) * 4
-        if (data[index + 3] === 0) continue
+        const a = data[index + 3]
+        if (a === 0) continue
 
-        const r = data[index]
-        const g = data[index + 1]
-        const b = data[index + 2]
-
-        // TEAL/GROEN muur: G is de dominante kleur, wint duidelijk van R
-        // Gebaseerd op gemeten waarden: R=37-47, G=80-128, B=83-121
-        // G wint altijd van R met marge van 20+, en B is nooit veel hoger dan G
-        if (g > r + 20 && g > 55 && b < r + 80) {
-          wallPixels++
-        }
-        // PIKZWART: alle kanalen <= 35
-        else if (r <= 35 && g <= 35 && b <= 35) {
-          blackPixels++
-        }
-
-        validPixels++
+        totalR += data[index]
+        totalG += data[index + 1]
+        totalB += data[index + 2]
+        count++
       }
     }
 
-    return { wallPixels, blackPixels, validPixels }
+    if (count === 0) {
+      return { r: 255, g: 255, b: 255, count: 0 }
+    }
+
+    return {
+      r: totalR / count,
+      g: totalG / count,
+      b: totalB / count,
+      count
+    }
   }
 
-  // Echte muur: teal/groen tegel
-  static isWallTile(stats) {
-    if (stats.validPixels === 0) return false
-    return stats.wallPixels > stats.validPixels * 0.25
+  static isBlackTile(color, tolerance) {
+    return (
+      color.r <= tolerance &&
+      color.g <= tolerance &&
+      color.b <= tolerance
+    )
   }
 
-  // Neppe muur: pikzwart, niet groen
-  static isBlackTile(stats) {
-    if (stats.validPixels === 0) return false
-    if (stats.wallPixels > stats.validPixels * 0.1) return false // groen heeft voorrang
-    return stats.blackPixels > stats.validPixels * 0.5
+static mergeRectangles(rects, maxSize = 100) {
+  const horizontal = this.mergeHorizontalRuns(rects, maxSize)
+  return this.mergeVerticalRuns(horizontal, maxSize)
+}
+
+static mergeHorizontalRuns(rects, maxWidth = 100) {
+  const sorted = [...rects].sort((a, b) => a.y - b.y || a.x - b.x)
+  const merged = []
+
+  for (const rect of sorted) {
+    const last = merged[merged.length - 1]
+
+    const touchesLast =
+      last &&
+      last.y === rect.y &&
+      last.height === rect.height &&
+      last.x + last.width === rect.x
+
+    const wouldStayWithinLimit = last && last.width + rect.width <= maxWidth
+
+    if (touchesLast && wouldStayWithinLimit) {
+      last.width += rect.width
+    } else {
+      merged.push({ ...rect })
+    }
   }
+
+  return merged
+}
+
+static mergeVerticalRuns(rects, maxHeight = 100) {
+  const sorted = [...rects].sort((a, b) => a.x - b.x || a.y - b.y)
+  const merged = []
+
+  for (const rect of sorted) {
+    const last = merged[merged.length - 1]
+
+    const touchesLast =
+      last &&
+      last.x === rect.x &&
+      last.width === rect.width &&
+      last.y + last.height === rect.y
+
+    const wouldStayWithinLimit = last && last.height + rect.height <= maxHeight
+
+    if (touchesLast && wouldStayWithinLimit) {
+      last.height += rect.height
+    } else {
+      merged.push({ ...rect })
+    }
+  }
+
+  return merged
+}
 }
