@@ -25,7 +25,7 @@ const Resources = {
     OutOfBoundsSound: new Sound('/images/entities/sounds/outofbounds.mp3'),
     WallVertical: new ImageSource('/images/wall-vertical.png'),
     MazeWall: new ImageSource('/images/wall-tiles-128x128.png'),
-    Reception: new ImageSource('./images/reception-map.png')
+    Reception: new ImageSource('./images/reception-map.png'),
     EastHallMap: new ImageSource('/images/East-hall-map.png'),
     floorTile: new ImageSource('/images/floortile.png')
 }
