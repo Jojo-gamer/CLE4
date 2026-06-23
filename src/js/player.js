@@ -151,6 +151,10 @@ export class Player extends Actor {
 
         }
 
+        if (engine.input.keyboard.wasPressed(Keys.E)) {
+            console.log(this.pos)
+        }
+
 
 
         //Change sprite depending on movement and direction
