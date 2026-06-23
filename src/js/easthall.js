@@ -21,6 +21,7 @@ export class Easthall extends Scene {
 
     async onInitialize(){
 // In your scene's onInitialize:
+this.currentPathTile = null;
 
 const WORLD_WIDTH = 4320
 const WORLD_HEIGHT = 1440
@@ -48,6 +49,7 @@ this.player.on('collisionstart', (e) => {
     //console.log(floorTile)
     if(floorTile.name === 'path') {
         this.player.pathContacts++
+        this.currentPathTile = floorTile;
         console.log(this.player.pathContacts);
     }
 })
@@ -57,6 +59,7 @@ this.player.on('collisionend', (e) => {
     const floorTile = e.other.owner
     if(floorTile.name === 'path') {
         this.player.pathContacts--
+        this.currentPathTile = null;
         if (this.player.pathContacts === 0) {
             this.player.loseLife()
             this.player.pos = new Vector(852, 710)
@@ -93,9 +96,13 @@ const rects = await MazeTileCollisionBuilder.fromImage(
 
 const walls = MazeTileCollisionBuilder.createCollisionActors(rects)
 for (const wall of walls) {
-     if(wall.pos.x >= 1080 && wall.pos.x <= 4000) {
-         wall.graphics.use(Resources.floorTile.toSprite())
+     if(wall.pos.x >= 1080 && wall.pos.x <= 3600) {
+                 wall.graphics.use(Resources.floorTile.toSprite())        
+                 if (Math.random() > 0.75) {
+                        wall.actions.fade(0.3, 100);
+        }
      }
+     wall.isReal = false
   this.add(wall)
 }
     }
