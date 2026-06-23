@@ -103,7 +103,7 @@ export class Dog extends Actor {
                     owner.actions.fade(0.3, 1000)
                     // console.log(owner)
                     if (owner.hasKeyFragment) {
-                        this.scene.add(new Keyfragment(owner.pos))
+                        this.scene.add(new Keyfragment(owner.pos, owner.keyfragmentPart))
                     }
                 } else {
                     // console.log('WOOF')

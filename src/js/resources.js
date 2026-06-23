@@ -11,6 +11,7 @@ const Resources = {
     Table: new ImageSource('./images/entities/props/table-horizontal-500x500px.png'),
     TableVertical: new ImageSource('/images/entities/props/table-vertical-500x500px.png'),
     TableHorizontal: new ImageSource('/images/entities/props/table-horizontal-500x500px.png'),
+    Key: new ImageSource('./images/key.png'),
     BarkSound: new Sound('/images/entities/sounds/minecraft-dog-bark.mp3'),
     DogFront: new ImageSource('./images/entities/dog/dog-front-128x128.png'),
     DogBack: new ImageSource('./images/entities/dog/dog-back-128x128.png'),
