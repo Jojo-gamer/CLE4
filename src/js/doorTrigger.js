@@ -29,6 +29,14 @@ export class DoorTrigger extends Actor {
         this.graphics.use(doors.getSprite(0, 0))
         this.graphics.offset = new Vector(0, -30)
         break;
+      case "down":
+        this.graphics.use(doors.getSprite(6, 0))
+        this.graphics.offset = new Vector(0, 30)
+        break;
+      case "right":
+        this.graphics.use(doors.getSprite(4, 0))
+        this.graphics.offset = new Vector(-90, 0)
+        break;
       default:
     }
 
@@ -52,6 +60,12 @@ export class DoorTrigger extends Actor {
           break;
         case "up":
           this.graphics.use(doors.getSprite(1, 0))
+          break;
+        case "right":
+          this.graphics.use(doors.getSprite(5, 0))
+          break;
+        case "down":
+          this.graphics.use(doors.getSprite(7, 0))
           break;
         default:
       }
