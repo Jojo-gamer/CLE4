@@ -1,5 +1,6 @@
-import { Actor, CollisionType, Color, randomIntInRange, Vector } from "excalibur";
+import { Actor, CollisionType, Color, randomIntInRange, SpriteSheet, Vector } from "excalibur";
 import { Player } from "./player";
+import { Resources } from "./resources";
 
 export class Enemy extends Actor {
     //Variable to stop moving once making contact with player
@@ -10,14 +11,49 @@ export class Enemy extends Actor {
     constructor(isReal) {
         super({
             width: 40,
-            height: 40,
+            height: 70,
             color: Color.Green,
+            z: 2
         })
         this.isReal = isReal;
         this.body.collisionType = CollisionType.Active
+        
     }
 
     onInitialize(engine) {
+        const knightUp = SpriteSheet.fromImageSource({
+            image: Resources.KnightFront,
+            grid: {rows: 1, columns: 1, spriteWidth: 640, spriteHeight: 640}
+        })
+
+        const knightSide = SpriteSheet.fromImageSource({
+            image: Resources.KnightSide,
+            grid: {rows: 1, columns: 1, spriteWidth: 640, spriteHeight: 640}
+        })
+
+        const knightBack = SpriteSheet.fromImageSource({
+            image: Resources.KnightBack,
+            grid: {rows: 1, columns: 1, spriteWidth: 640, spriteHeight: 640}
+        })
+
+        const idleFront = knightUp.getSprite(0,0)
+        const idleSide = knightSide.getSprite(0,0)
+        const idleBack = knightBack.getSprite(0,0)
+
+        this.graphics.add('idleFront', idleFront)
+        this.graphics.add('idleSide', idleSide)
+        this.graphics.add('idleBack', idleBack)
+
+        this.idleFront = this.graphics.use(idleFront)
+        this.idleSide = this.graphics.use(idleSide)
+        this.idleBack = this.graphics.use(idleBack)
+        
+        this.idleFront.scale = new Vector (0.25, 0.25)
+        this.idleSide.scale = new Vector (0.25, 0.25)
+        this.idleBack.scale = new Vector (0.25, 0.25)
+
+        this.anchor = new Vector(0.5, 0.67)
+
         this.spawn()
         this.playerContact = false;
         this.counter = 0;
@@ -28,7 +64,33 @@ export class Enemy extends Actor {
 
     onPostUpdate(engine) {
         const direction = this.scene.player.pos.sub(this.pos).normalize() // sub is subtraction, normalize zet een vector om naar een vector met lengte 1, maar met dezelfde richting.
-        const speed = 200 // pixels per seconde
+        const speed = 180 // pixels per seconde
+
+        //Sprite Logic
+
+        if (this.vel.y > 0) {
+            if (this.vel.x < 40 && this.vel.x > -40) {
+                this.graphics.use(this.idleFront)
+            } else if (this.vel.x > 40) {
+                this.graphics.use(this.idleSide)
+                this.graphics.flipHorizontal = false;
+            } else if (this.vel.x < -40) {
+                this.graphics.use(this.idleSide)
+                this.graphics.flipHorizontal = true;
+            }
+        }
+
+        if (this.vel.y < 0) {
+            if (this.vel.x < 40 && this.vel.x > -40) {
+                this.graphics.use(this.idleBack)
+            } else if (this.vel.x > 40) {
+                this.graphics.use(this.idleSide)
+                this.graphics.flipHorizontal = false;
+            } else if (this.vel.x < -40) {
+                this.graphics.use(this.idleSide)
+                this.graphics.flipHorizontal = true;
+            }
+        }
 
         if (!this.playerContact) {
             this.vel = direction.scale(speed)
