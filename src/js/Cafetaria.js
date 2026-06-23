@@ -38,33 +38,22 @@ export class Cafetaria extends Scene {
         this.dog.pos = this.player.pos
         this.add(this.dog)
 
-
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 5; i++) {
             const isReal = Math.random() > 0.25;
-
-            this.placePropRandomly(new TableVertical(isReal));
+            const enemy = new Enemy(isReal)
+            this.add(enemy)
         }
-
-
-        for (let i = 0; i < 30; i++) {
-            const isReal = Math.random() > 0.25;
-            this.placePropRandomly(new TableHorizontal(isReal));
-        }
-
-        const testEnemy = new Enemy()
-        this.add(testEnemy)
-
 
         this.camera.strategy.lockToActor(this.player)
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
 
-        this.add(new DoorTrigger(140, 1000, 50, 150, "EastWing", 1300, 300));
+        this.add(new DoorTrigger(140, 1000, 50, 150, "EastWing", 1300, 300, false));
 
         this.add(new DoorTrigger(140, 1300, 50, 150, "EastHallWay", 1400, 4400));
 
 
         if (this.player.key) {
-        this.add(new DoorTrigger(1500, 150, 150, 50, "CourtYard", 1500, 1900));
+        this.add(new DoorTrigger(1500, 150, 150, 50, "CourtYard", 1500, 1900, false));
         } else {
             // gesloten deur  sprite
         }
@@ -76,15 +65,17 @@ export class Cafetaria extends Scene {
 
     onActivate(ctx) {
 
-     
-        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 }; 
+
+        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
         this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
         this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
 
-        
+
         this.clearProps();
 
-        
+        this.placePropRandomly(new TableHorizontal(false, true))
+        this.placePropRandomly(new TableHorizontal(false, true))
+
         for (let i = 0; i < 15; i++) {
             const isReal = Math.random() > 0.25;
             this.placePropRandomly(new TableVertical(isReal));
@@ -98,13 +89,13 @@ export class Cafetaria extends Scene {
     }
 
     clearProps() {
-        
+
         this.placedProps.forEach(prop => {
-            prop.kill(); 
+            prop.kill();
         });
-        
-        
-        this.placedProps = []; 
+
+
+        this.placedProps = [];
     }
 
     onPreUpdate(engine, delta) {
@@ -163,24 +154,22 @@ export class Cafetaria extends Scene {
     }
 
     playerOutOfBounds() {
-        if (this.player.pos.x < 157 || this.player.pos.x > 2850 || this.player.pos.y < 130 || this.player.pos.y > 1760 ) {
+        if (this.player.pos.x < 150 || this.player.pos.x > 2798 || this.player.pos.y < 170 || this.player.pos.y > 1760 ) {
             
             
             if (!Resources.OutOfBoundsSound.isPlaying()) {
                 Resources.OutOfBoundsSound.play();
             }
-    }
-
+        }
     }
 
     playerInBounds() {
         
-        if (this.player.pos.x > 157 && this.player.pos.x < 2790 && this.player.pos.y > 150 && this.player.pos.y < 1745 ) {
+        if (this.player.pos.x > 157 && this.player.pos.x < 2790 && this.player.pos.y > 176 && this.player.pos.y < 1745 ) {
             
            
             if (Resources.OutOfBoundsSound.isPlaying()) {
-                
-                Resources.OutOfBoundsSound.stop(); 
+                Resources.OutOfBoundsSound.stop();
             }
         }
     }
