@@ -49,7 +49,7 @@ export class Cafetaria extends Scene {
         this.camera.strategy.lockToActor(this.player)
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
 
-        this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, 'left', false));
+        this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, 'left', true));
         this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', false));
     }
 
