@@ -243,7 +243,7 @@ export class MazeTileCollisionBuilder {
           }
         }
 
-        const merged = this.mergeRectangles(tiles, 80)
+        const merged = this.mergeRectangles(tiles, 90)
 
         resolve(
           merged.map((rect) => ({
@@ -269,6 +269,7 @@ export class MazeTileCollisionBuilder {
   static createCollisionActors(rects) {
     return rects.map((rect) => {
       return new Actor({
+        name: 'path',
         x: rect.x,
         y: rect.y,
         width: rect.width,

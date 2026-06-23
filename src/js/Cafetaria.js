@@ -12,6 +12,7 @@ import { CourtYard } from "./courtyard.js";
 
 export class Cafetaria extends Scene {
     isReal;
+    currentScene;
     constructor() {
         const sceneWidth = 3000
         const sceneHeight = 2000
@@ -26,8 +27,9 @@ export class Cafetaria extends Scene {
         this.sceneWidth = sceneWidth
         this.sceneHeight = sceneHeight
     }
-    onInitialize() {
-        this.add(new Background(this.sceneWidth, this.sceneHeight))
+    onInitialize(engine) {
+        this.location = engine.currentSceneName
+        this.add(new Background(this.sceneWidth, this.sceneHeight, this.location))
 
         this.player = new Player();
         const spawnPoint = this.engine.nextSpawn
@@ -48,7 +50,6 @@ export class Cafetaria extends Scene {
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
 
         this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 1300, 300, 'left', false));
-
         this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', false));
     }
 
@@ -65,15 +66,15 @@ export class Cafetaria extends Scene {
         this.placePropRandomly(new TableHorizontal(false, true, 0))
         this.placePropRandomly(new TableHorizontal(false, true, 1))
 
-        // for (let i = 0; i < 15; i++) {
-        //     const isReal = Math.random() > 0.25;
-        //     this.placePropRandomly(new TableVertical(isReal));
-        // }
+        for (let i = 0; i < 15; i++) {
+            const isReal = Math.random() > 0.25;
+            this.placePropRandomly(new TableVertical(isReal));
+        }
 
-        // for (let i = 0; i < 15; i++) {
-        //     const isReal = Math.random() > 0.25;
-        //     this.placePropRandomly(new TableHorizontal(isReal));
-        // }
+        for (let i = 0; i < 15; i++) {
+            const isReal = Math.random() > 0.25;
+            this.placePropRandomly(new TableHorizontal(isReal));
+        }
 
     }
 

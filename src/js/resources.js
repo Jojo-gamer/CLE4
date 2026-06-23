@@ -8,6 +8,7 @@ const Resources = {
     WallTiles: new ImageSource('/images/wall-assets-128x128.png'),
     CafTile: new ImageSource('./images/cafetaria-tiles.png'),
     Doors: new ImageSource('./images/door-assets-128x128.png'),
+    WingTile: new ImageSource('./images/wing-tiles-128x128.png'),
     Table: new ImageSource('./images/entities/props/table-horizontal-500x500px.png'),
     TableVertical: new ImageSource('/images/entities/props/table-vertical-500x500px.png'),
     TableHorizontal: new ImageSource('/images/entities/props/table-horizontal-500x500px.png'),

@@ -50,6 +50,9 @@ export class Player extends Actor {
     }
 
     onInitialize(engine) {
+
+        this.pathContacts = 0;
+
         this.spawnPoint = new Vector(this.pos.x, this.pos.y)
 
         this.gameEngine = engine
