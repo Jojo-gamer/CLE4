@@ -1,5 +1,5 @@
 import { Actor, Color, TileMap, Vector } from "excalibur";
-import { Resources, cafWalls } from "./resources.js";
+import { Resources, cafWalls, doors } from "./resources.js";
 
 
 export class Background extends Actor {
