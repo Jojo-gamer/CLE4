@@ -4,6 +4,7 @@ import { Background } from "./background.js"
 import { DoorTrigger } from "./doorTrigger.js";
 import { Player } from "./player.js";
 import { MazeTileCollisionBuilder } from './collisionbuilder.js'
+import { Dog } from "./dog.js";
 
 
 
@@ -37,6 +38,10 @@ this.add(this.player);
 this.camera.strategy.lockToActor(this.player)
 this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, WORLD_WIDTH, WORLD_HEIGHT))
 
+const dog = new Dog()
+dog.z = 999;
+this.add(dog)
+
 
 this.player.on('collisionstart', (e) => {
     const floorTile = e.other.owner
@@ -53,8 +58,9 @@ this.player.on('collisionend', (e) => {
     if(floorTile.name === 'path') {
         this.player.pathContacts--
         if (this.player.pathContacts === 0) {
-            this.player.lives--
-            this.player.pos = new Vector(500, 500)
+            this.player.loseLife()
+            this.player.pos = new Vector(852, 710)
+            dog.pos = new Vector(840, 710)
         }
     }
 })
@@ -75,11 +81,11 @@ this.add(bg)
 
 
 const rects = await MazeTileCollisionBuilder.fromImage(
-  "/images/afgrond.png",
+  "/images/East-hall-map.png",
   WORLD_WIDTH,
   WORLD_HEIGHT,
   {
-    tileSize: 2,
+    tileSize: 1,
     tolerance: 20,
     treatBlackAsCollision: false
   }
@@ -87,6 +93,9 @@ const rects = await MazeTileCollisionBuilder.fromImage(
 
 const walls = MazeTileCollisionBuilder.createCollisionActors(rects)
 for (const wall of walls) {
+     if(wall.pos.x >= 1080 && wall.pos.x <= 4000) {
+         wall.graphics.use(Resources.floorTile.toSprite())
+     }
   this.add(wall)
 }
     }
