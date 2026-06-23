@@ -22,8 +22,10 @@ export class EastWing extends Scene {
         this.sceneHeight = sceneHeight
     }
 
-    onInitialize() {
-         this.add(new Background(this.sceneWidth, this.sceneHeight))
+    onInitialize(engine) {
+        this.location = engine.currentSceneName
+        
+         this.add(new Background(this.sceneWidth, this.sceneHeight, this.location))
 
          this.player = new Player();
                  const spawnPoint = this.engine.nextSpawn
@@ -37,7 +39,7 @@ export class EastWing extends Scene {
                  this.camera.strategy.lockToActor(this.player)
                  this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth + 200, this.sceneHeight + 200))
 
-                 this.add(new DoorTrigger(2250, 350, 50, 150, "Cafetaria", 200, 960, true));
+                 this.add(new DoorTrigger(2250, 350, 50, 150, "Cafetaria", 200, 950, true));
         
     }
 }

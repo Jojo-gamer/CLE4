@@ -7,9 +7,12 @@ const Resources = {
     SackDown: new ImageSource('/images/entities/player/moving/sack-walking-down600x1000px.png'),
     WallTiles: new ImageSource('/images/wall-assets-128x128.png'),
     CafTile: new ImageSource('./images/cafetaria-tiles.png'),
+    Doors: new ImageSource('./images/door-assets-128x128.png'),
+    WingTile: new ImageSource('./images/wing-tiles-128x128.png'),
     Table: new ImageSource('./images/entities/props/table-horizontal-500x500px.png'),
     TableVertical: new ImageSource('/images/entities/props/table-vertical-500x500px.png'),
     TableHorizontal: new ImageSource('/images/entities/props/table-horizontal-500x500px.png'),
+    Key: new ImageSource('./images/key.png'),
     BarkSound: new Sound('/images/entities/sounds/minecraft-dog-bark.mp3'),
     DogFront: new ImageSource('./images/entities/dog/dog-front-128x128.png'),
     DogBack: new ImageSource('./images/entities/dog/dog-back-128x128.png'),
@@ -29,6 +32,16 @@ export const cafWalls = SpriteSheet.fromImageSource({
         spriteWidth: 128,
         spriteHeight: 128,
         columns: 6,
+        rows: 1,
+    }
+})
+
+export const doors = SpriteSheet.fromImageSource({
+    image: Resources.Doors,
+    grid: {
+        spriteWidth: 128,
+        spriteHeight: 128,
+        columns: 9,
         rows: 1,
     }
 })
