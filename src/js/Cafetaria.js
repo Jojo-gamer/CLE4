@@ -40,12 +40,6 @@ export class Cafetaria extends Scene {
         this.dog.pos = this.player.pos
         this.add(this.dog)
 
-        for (let i = 0; i < 5; i++) {
-            const isReal = Math.random() > 0.25;
-            const enemy = new Enemy(isReal)
-            this.add(enemy)
-        }
-
         this.camera.strategy.lockToActor(this.player)
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
 
@@ -54,17 +48,25 @@ export class Cafetaria extends Scene {
     }
 
     onActivate(ctx) {
-
-
         const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
         this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
         this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
 
-
+        for (let actor of this.actors) {
+            if (actor instanceof Enemy) {
+                actor.kill();
+            }
+        }
         this.clearProps();
 
         this.placePropRandomly(new TableHorizontal(false, true, 0))
         this.placePropRandomly(new TableHorizontal(false, true, 1))
+
+        for (let i = 0; i < 5; i++) {
+            const isReal = Math.random() > 0.25;
+            const enemy = new Enemy(isReal)
+            this.add(enemy)
+        }
 
         for (let i = 0; i < 15; i++) {
             const isReal = Math.random() > 0.25;

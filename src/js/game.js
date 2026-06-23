@@ -43,7 +43,7 @@ export class Game extends Engine {
         this.addScene("EastWing", new EastWing())
         this.addScene("CourtYard", new CourtYard())
 
-        // this.goToScene("Reception")
+        this.goToScene("Reception")
 
         this.player = new Player();
         this.add(this.player)

@@ -9,7 +9,8 @@ export class Dog extends Actor {
             width: 40,
             height: 50,
             pos: new Vector(0, 0),
-            scale: new Vector(0.6, 0.6)
+            scale: new Vector(0.6, 0.6),
+            z: 1
         })
     }
 
@@ -66,6 +67,7 @@ export class Dog extends Actor {
             this.dir = Vector.Up
             if (this.vel.y < 0) {
                 this.graphics.use(this.movingDown)
+                this.z = 2
             } else {
                 this.graphics.use(this.idleDown)
             }
@@ -75,6 +77,7 @@ export class Dog extends Actor {
             this.dir = Vector.Down
             if (this.vel.y > 0) {
                 this.graphics.use(this.movingUp)
+                this.z = 1
             } else {
                 this.graphics.use(this.idleUp)
             }
