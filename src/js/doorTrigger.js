@@ -1,7 +1,8 @@
-import { Actor, CollisionType, Color } from "excalibur";
+import { Actor, CollisionType, Color, Vector } from "excalibur";
+import { doors } from "./resources";
 
 export class DoorTrigger extends Actor {
-  constructor(x, y, width, height, destinationScene, spawnX, spawnY, active = true) {
+  constructor(x, y, width, height, destinationScene, spawnX, spawnY, location, active = true) {
     super({
       x,
       y,
@@ -14,11 +15,23 @@ export class DoorTrigger extends Actor {
     this.spawnX = spawnX;
     this.spawnY = spawnY
     this.body.collisionType = CollisionType.Passive;
-
+    this.location = location;
     this.triggerEnabled = active;
   }
 
   onInitialize(engine) {
+    switch (this.location) {
+      case "left":
+        this.graphics.use(doors.getSprite(2, 0))
+        this.graphics.offset = new Vector(90, 0)
+        break;
+      case "up":
+        this.graphics.use(doors.getSprite(0, 0))
+        this.graphics.offset = new Vector(0, -30)
+        break;
+      default:
+    }
+
     this.on("collisionstart", (evt) => {
       if (!this.triggerEnabled) return;
       if (evt.other.owner.name === "player") {
@@ -29,5 +42,19 @@ export class DoorTrigger extends Actor {
         engine.goToScene(this.destinationScene);
       }
     });
+  }
+
+  onPostUpdate(engine) {
+    if (this.triggerEnabled) {
+      switch (this.location) {
+        case "left":
+          this.graphics.use(doors.getSprite(3, 0))
+          break;
+        case "up":
+          this.graphics.use(doors.getSprite(1, 0))
+          break;
+        default:
+      }
+    }
   }
 }
