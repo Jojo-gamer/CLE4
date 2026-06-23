@@ -100,40 +100,49 @@ export class Dog extends Actor {
             this.graphics.flipHorizontal = false;
         }
 
-        if (engine.input.keyboard.wasPressed(Keys.Space)) {
-            const ray = new Ray(this.player.pos, this.dir);
-            const hits = this.scene.physics.rayCast(ray, {
-                searchAllColliders: false, // Stop direct bij het eerste doelwit
-                maxDistance: 350,
-                filter: (hit) => {
-                    if (hit.collider.owner !== this.player && hit.collider.owner !== this) {
-                        return true
-                    }
-                }
-            });
-            if (hits.length > 0) {
-                const owner = hits[0].collider.owner
-                if (!owner.isReal && !(owner instanceof TileMap)) {
-                    owner.body.collisionType = CollisionType.Passive
-                    owner.actions.fade(0.3, 1000)
-                    // console.log(owner)
-                    if (owner.hasKeyFragment) {
-                        this.scene.add(new Keyfragment(owner.pos, owner.keyfragmentPart))
-                    }
-                } else {
-                    // console.log('WOOF')
-                    Resources.BarkSound.play()
+        // if (engine.input.keyboard.wasPressed(Keys.Space)) {
+        //     const ray = new Ray(this.player.pos, this.dir);
+        //     const hits = this.scene.physics.rayCast(ray, {
+        //         searchAllColliders: true, // Stop direct bij het eerste doelwit
+        //         maxDistance: 350,
+        //         filter: (hit) => {
+        //             hit.collider.owner !== this.player && 
+        //             hit.collider.owner !== this &&
+        //             hit.collider.owner.name === "path"
+        //             }    
+        //         }
 
-                    //chance to spawn new enemy
-                    if (Math.random() > 0.25) {
-                        // console.log('spawn')
+        //     const targetHit = hits.find((hit) => hit.collider.owner !== this.scene.currentPathTile)
 
-                        const isReal = Math.random() > 0.50;
-                        const enemy = new Enemy(isReal)
-                        this.scene.add(enemy)
-                    }
-                }
-            }
-        }
+        //       if (targetHit) {
+        //         const owner = targetHit.collider.owner
+        //         owner.actions.fade(0.3, 1000)
+        //     }
+        // )
+
+            // if (hits.length > 0) {
+            //     const owner = hits[0].collider.owner
+            //     if (!owner.isReal && !(owner instanceof TileMap)) {
+            //         owner.body.collisionType = CollisionType.Passive
+            //         owner.actions.fade(0.3, 1000)
+            //         // console.log(owner)
+            //         if (owner.hasKeyFragment) {
+            //             this.scene.add(new Keyfragment(owner.pos, owner.keyfragmentPart))
+            //         }
+            //     } else {
+            //         // console.log('WOOF')
+            //         Resources.BarkSound.play()
+
+            //         //chance to spawn new enemy
+            //         if (Math.random() > 0.25) {
+            //             // console.log('spawn')
+
+            //             const isReal = Math.random() > 0.50;
+            //             const enemy = new Enemy(isReal)
+            //             this.scene.add(enemy)
+            //         }
+            //     }
+            // }
+        //}
     }
 }

@@ -75,6 +75,8 @@ export class MazeTileCollisionBuilder {
   static createCollisionActors(rects) {
     return rects.map((rect) => {
       return new Actor({
+        name: 'path',
+        isRayCastable: true,
         x: rect.x,
         y: rect.y,
         width: rect.width,
