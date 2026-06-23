@@ -19,7 +19,7 @@ const Resources = {
     OutOfBoundsSound: new Sound('/images/entities/sounds/outofbounds.mp3'),
     WallVertical: new ImageSource('/images/wall-vertical.png'),
     MazeWall: new ImageSource('/images/wall-tiles-128x128.png'),
-    EastHallMap: new ImageSource('/images/east-hall.map.jpg')
+    EastHallMap: new ImageSource('/images/East-hall.map.png')
 }
 
 export const cafWalls = SpriteSheet.fromImageSource({

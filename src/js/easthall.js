@@ -1,6 +1,5 @@
 import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer, Scene, randomInRange, CollisionType } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
-import { background } from "./background.js"
 import { DoorTrigger } from "./doorTrigger.js";
 import { Player } from "./player.js";
 import { MazeTileCollisionBuilder } from './collisionbuilder.js'
@@ -11,7 +10,7 @@ import { MazeTileCollisionBuilder } from './collisionbuilder.js'
 export class Easthall extends Scene {
     constructor() {
         super({
-            width: 4480,
+            width: 4320,
             height: 1440,
             queueMicrotaskcolor: Color.Black
         }
@@ -21,7 +20,7 @@ export class Easthall extends Scene {
     async onInitialize(){
 // In your scene's onInitialize:
 
-const WORLD_WIDTH = 4480
+const WORLD_WIDTH = 4320
 const WORLD_HEIGHT = 1440
 
 this.player = new Player();
@@ -37,11 +36,27 @@ this.add(this.player);
 this.camera.strategy.lockToActor(this.player)
 this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, WORLD_WIDTH, WORLD_HEIGHT))
 
-// const collisions = await CollisionMapGenerator.generateCollisionsFromImage(
-//   '/images/East-hall.map.png',
-//   WORLD_WIDTH,
-//   WORLD_HEIGHT
-// )
+
+this.player.on('collisionstart', (e) => {
+    const floorTile = e.other.owner
+    //console.log(floorTile)
+    if(floorTile.name === 'path') {
+        this.player.pathContacts++
+        console.log(this.player.pathContacts);
+    }
+})
+
+
+this.player.on('collisionend', (e) => {
+    const floorTile = e.other.owner
+    if(floorTile.name === 'path') {
+        this.player.pathContacts--
+        if (this.player.pathContacts === 0) {
+            this.player.lives--
+            this.player.pos = new Vector(500, 500)
+        }
+    }
+})
 
 const bg = new Actor({
     x: 0,
@@ -63,8 +78,8 @@ const rects = await MazeTileCollisionBuilder.fromImage(
   WORLD_WIDTH,
   WORLD_HEIGHT,
   {
-    tileSize: 16,
-    tolerance: 15,
+    tileSize: 2,
+    tolerance: 20,
     treatBlackAsCollision: false
   }
 )
@@ -73,10 +88,12 @@ const walls = MazeTileCollisionBuilder.createCollisionActors(rects)
 for (const wall of walls) {
   this.add(wall)
 }
-
-
-
     }
+
+
+    
+
+
 }
 
 

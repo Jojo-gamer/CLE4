@@ -14,7 +14,7 @@ import { Reception } from './reception.js'
 export class Game extends Engine {
     timer = 0;
     framecount = 0;
-
+    
     constructor() {
         super({
             width: 1280,
