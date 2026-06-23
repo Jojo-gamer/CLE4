@@ -66,6 +66,7 @@ export class Cafetaria extends Scene {
         const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
         this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
         this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
+        this.dog.z = 50
 
 
         this.clearProps();

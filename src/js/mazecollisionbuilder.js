@@ -1,20 +1,7 @@
 import { Actor, Vector, CollisionType } from "excalibur"
 
 export class MazeWallCollisionBuilder {
-  /**
-   * Laad een collision map en genereer hitbox-rechthoeken.
-   *
-   * BELANGRIJK: geef de NATIVE resolutie van de PNG mee als width/height,
-   * en gebruik 'scale' om naar wereldcoördinaten te vertalen.
-   *
-   * Voorbeeld voor een 256x1024 map in een 1440x5760 wereld:
-   *   fromImage("/images/East-maze.png", 256, 1024, { tileSize: 4, scale: 5.625, ... })
-   *
-   * Kleurconventie (gemeten):
-   *   Teal/groen muur  → R=40 G=80 B=80  (G>=R+20 AND B>=R+20)
-   *   Blauwe vloer     → R=40 G=48 B=104 (B dominant) → wordt genegeerd
-   *   Pikzwart nep     → R=0  G=0  B=0
-   */
+  
   static async fromImage(imagePath, width, height, options = {}) {
     const {
       tileSize = 4,
@@ -31,7 +18,7 @@ export class MazeWallCollisionBuilder {
       img.onload = () => {
         try {
           const canvas = document.createElement("canvas")
-          // Canvas op native resolutie — geen opschaling, geen pixel-bleeding
+          
           canvas.width = width
           canvas.height = height
 
@@ -41,7 +28,7 @@ export class MazeWallCollisionBuilder {
             return
           }
 
-          // Teken op native grootte (1:1), imageSmoothingEnabled doet er dan niet toe
+          
           ctx.imageSmoothingEnabled = false
           ctx.drawImage(img, 0, 0, width, height)
 
@@ -51,7 +38,7 @@ export class MazeWallCollisionBuilder {
           const cols = Math.ceil(width  / tileSize)
           const rows = Math.ceil(height / tileSize)
 
-          // Bouw 2D grid op native resolutie
+          
           const grid = []
           for (let row = 0; row < rows; row++) {
             grid.push([])
@@ -73,7 +60,7 @@ export class MazeWallCollisionBuilder {
             }
           }
 
-          // Greedy rectangle merging per type
+          
           const rects = []
 
           for (const type of ['real', 'fake']) {
@@ -83,13 +70,13 @@ export class MazeWallCollisionBuilder {
               for (let col = 0; col < cols; col++) {
                 if (used[row][col] || grid[row][col] !== type) continue
 
-                // Zo ver mogelijk naar rechts
+                
                 let maxCol = col
                 while (maxCol + 1 < cols && grid[row][maxCol + 1] === type && !used[row][maxCol + 1]) {
                   maxCol++
                 }
 
-                // Zo ver mogelijk naar beneden (volledige breedte moet vrij zijn)
+                
                 let maxRow = row
                 outer: while (maxRow + 1 < rows) {
                   for (let c = col; c <= maxCol; c++) {
@@ -98,14 +85,14 @@ export class MazeWallCollisionBuilder {
                   maxRow++
                 }
 
-                // Markeer als gebruikt
+                
                 for (let r = row; r <= maxRow; r++) {
                   for (let c = col; c <= maxCol; c++) {
                     used[r][c] = true
                   }
                 }
 
-                // Vertaal naar wereldcoördinaten via scale
+                
                 rects.push({
                   x:      col  * tileSize * scale,
                   y:      row  * tileSize * scale,
@@ -186,12 +173,11 @@ export class MazeWallCollisionBuilder {
         const g = data[index + 1]
         const b = data[index + 2]
 
-        // TEAL MUUR: G en B winnen allebei duidelijk van R
-        // Gemeten: R=40,G=80,B=80 | R=32,G=112,B=120 | R=40,G=128,B=104
+       
         if (g >= r + 20 && b >= r + 20) {
           wallPixels++
         }
-        // PIKZWART: alle kanalen <= 10
+        
         else if (r <= 10 && g <= 10 && b <= 10) {
           blackPixels++
         }
@@ -203,7 +189,7 @@ export class MazeWallCollisionBuilder {
     return { wallPixels, blackPixels, validPixels }
   }
 
-  // Op native resolutie geen bleeding → drempel hoog voor precisie
+  
   static isWallTile(stats) {
     if (stats.validPixels === 0) return false
     return stats.wallPixels > stats.validPixels * 0.25
