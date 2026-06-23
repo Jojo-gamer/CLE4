@@ -86,7 +86,7 @@ export class Reception extends Scene {
                 Shape.Box(tileWidth, 3 * tileHeight, vec(0, 0), vec(10 * tileWidth, 13 * tileHeight))
             ])
         }))
-        this.add(new DoorTrigger(8 * tileWidth, 0, 2 * tileWidth, tileHeight, "Cafetaria", 1500, 1700))
+        this.add(new DoorTrigger(8 * tileWidth, 10, 2 * tileWidth, tileHeight, "Cafetaria", 1500, 1700, 'up', true))
     }
 
 }
