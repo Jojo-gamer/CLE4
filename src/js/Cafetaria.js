@@ -12,6 +12,7 @@ import { CourtYard } from "./courtyard.js";
 
 export class Cafetaria extends Scene {
     isReal;
+    currentScene;
     constructor() {
         const sceneWidth = 3000
         const sceneHeight = 2000
@@ -26,8 +27,9 @@ export class Cafetaria extends Scene {
         this.sceneWidth = sceneWidth
         this.sceneHeight = sceneHeight
     }
-    onInitialize() {
-        this.add(new Background(this.sceneWidth, this.sceneHeight))
+    onInitialize(engine) {
+        this.location = engine.currentSceneName
+        this.add(new Background(this.sceneWidth, this.sceneHeight, this.location))
 
         this.player = new Player();
         const spawnPoint = this.engine.nextSpawn
@@ -47,20 +49,18 @@ export class Cafetaria extends Scene {
         this.camera.strategy.lockToActor(this.player)
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
 
-        this.add(new DoorTrigger(140, 1000, 50, 150, "EastWing", 1300, 300, false));
+       
 
         this.add(new DoorTrigger(140, 1300, 50, 150, "EastHallWay", 1300, 5350));
 
 
-        if (this.player.key) {
-        this.add(new DoorTrigger(1500, 150, 150, 50, "CourtYard", 1500, 1900, false));
-        } else {
-            // gesloten deur  sprite
-        }
+       
 
         this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 500, 400));
 
 
+        this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 1300, 300, 'left', false));
+        this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', false));
     }
 
     onActivate(ctx) {
@@ -73,8 +73,8 @@ export class Cafetaria extends Scene {
 
         this.clearProps();
 
-        this.placePropRandomly(new TableHorizontal(false, true))
-        this.placePropRandomly(new TableHorizontal(false, true))
+        this.placePropRandomly(new TableHorizontal(false, true, 0))
+        this.placePropRandomly(new TableHorizontal(false, true, 1))
 
         for (let i = 0; i < 15; i++) {
             const isReal = Math.random() > 0.25;

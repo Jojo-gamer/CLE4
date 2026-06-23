@@ -31,79 +31,38 @@ export class MazeTileCollisionBuilder {
           const imageData = ctx.getImageData(0, 0, width, height)
           const data = imageData.data
 
-          const cols = Math.ceil(width / tileSize)
-          const rows = Math.ceil(height / tileSize)
+        const tiles = []
 
-          // Build a 2D grid: null = floor, 'real' = solid wall, 'fake' = fake wall
-          const grid = []
-          for (let row = 0; row < rows; row++) {
-            grid.push([])
-            for (let col = 0; col < cols; col++) {
-              const x = col * tileSize
-              const y = row * tileSize
-              const tile = this.sampleTile(data, width, height, x, y, tileSize)
+        for (let y = 0; y < height; y += tileSize) {
+          for (let x = 0; x < width; x += tileSize) {
+            const tile = this.sampleTile(data, width, height, x, y, tileSize)
+            const isBlack = this.isBlackTile(tile, tolerance)
 
-              const isWall = this.isWallTile(tile)   // teal/groen
-              const isBlack = this.isBlackTile(tile) // pikzwart
-
-              if (isWall && treatGreenAsCollision) {
-                grid[row].push(greenIsSolid ? 'real' : 'fake')
-              } else if (isBlack && treatBlackAsCollision) {
-                grid[row].push(blackIsSolid ? 'real' : 'fake')
-              } else {
-                grid[row].push(null)
-              }
+            if ((treatBlackAsCollision && isBlack) || (!treatBlackAsCollision && !isBlack)) {
+              tiles.push({
+                x,
+                y,
+                width: Math.min(tileSize, width - x),
+                height: Math.min(tileSize, height - y)
+              })
             }
           }
-
-          // Greedy rectangle merging per type
-          const rects = []
-
-          for (const type of ['real', 'fake']) {
-            const used = Array.from({ length: rows }, () => new Array(cols).fill(false))
-
-            for (let row = 0; row < rows; row++) {
-              for (let col = 0; col < cols; col++) {
-                if (used[row][col] || grid[row][col] !== type) continue
-
-                // Expand right
-                let maxCol = col
-                while (maxCol + 1 < cols && grid[row][maxCol + 1] === type && !used[row][maxCol + 1]) {
-                  maxCol++
-                }
-
-                // Expand down — only if entire row width is free
-                let maxRow = row
-                outer: while (maxRow + 1 < rows) {
-                  for (let c = col; c <= maxCol; c++) {
-                    if (grid[maxRow + 1][c] !== type || used[maxRow + 1][c]) break outer
-                  }
-                  maxRow++
-                }
-
-                // Mark consumed
-                for (let r = row; r <= maxRow; r++) {
-                  for (let c = col; c <= maxCol; c++) {
-                    used[r][c] = true
-                  }
-                }
-
-                rects.push({
-                  x: col * tileSize * scale,
-                  y: row * tileSize * scale,
-                  width: (maxCol - col + 1) * tileSize * scale,
-                  height: (maxRow - row + 1) * tileSize * scale,
-                  isReal: type === 'real'
-                })
-              }
-            }
-          }
-
-          resolve(rects)
-        } catch (error) {
-          reject(error)
         }
+
+        const merged = this.mergeRectangles(tiles, 90)
+
+        resolve(
+          merged.map((rect) => ({
+            x: rect.x * scale,
+            y: rect.y * scale,
+            width: rect.width * scale,
+            height: rect.height * scale
+          }))
+        )
+      } catch (error) {
+        reject(error)
       }
+    }
 
       img.onerror = () => {
         reject(new Error(`MazeTileCollisionBuilder: failed to load image ${imagePath}`))
@@ -115,7 +74,7 @@ export class MazeTileCollisionBuilder {
 
   static createCollisionActors(rects) {
     return rects.map((rect) => {
-      const actor = new Actor({
+      return new Actor({
         x: rect.x,
         y: rect.y,
         width: rect.width,
