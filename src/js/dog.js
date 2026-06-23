@@ -3,21 +3,97 @@
     import { Enemy } from "./enemy";
     import { Keyfragment } from "./keyfragment";
 
-    export class Dog extends Actor {
-        constructor() {
-            super({
-                width: 40,
-                height: 50,
-                pos: new Vector(0, 0),
-                scale: new Vector(0.6, 0.6)
-            })
+export class Dog extends Actor {
+    constructor() {
+        super({
+            width: 40,
+            height: 50,
+            pos: new Vector(0, 0),
+            scale: new Vector(0.6, 0.6),
+            z: 1
+        })
+    }
+
+    onInitialize(engine) {
+        this.actions.follow(this.scene.player, 75)
+        this.body.collisionType = CollisionType.Passive
+        this.graphics.use(Resources.DogFront.toSprite())
+        this.player = this.scene.player
+        this.dir = Vector.Right
+
+        //Importing sprite sheets
+        const dogUp = SpriteSheet.fromImageSource({
+            image: Resources.DogFront,
+            grid: {rows:1 , columns: 4, spriteWidth: 128, spriteHeight: 128,}
+        })
+
+        const dogSide = SpriteSheet.fromImageSource({
+            image: Resources.DogSide,
+            grid: {rows:1 , columns: 4, spriteWidth: 128, spriteHeight: 128,}
+        })
+
+        const dogDown = SpriteSheet.fromImageSource({
+            image: Resources.DogBack,
+            grid: {rows:1 , columns: 4, spriteWidth: 128, spriteHeight: 128,}
+        })
+
+        const movingUp = Animation.fromSpriteSheet(dogUp, range(0, 3), 75)
+        const movingSide = Animation.fromSpriteSheet(dogSide, range(0, 3), 75)
+        const movingDown = Animation.fromSpriteSheet(dogDown, range(0, 3), 75)
+
+        const idleUp = dogUp.getSprite(0,0)
+        const idleSide = dogSide.getSprite(0,0)
+        const idleDown = dogDown.getSprite(0,0)
+
+        this.graphics.add("movingUp", movingUp)
+        this.graphics.add("movingSide", movingSide)
+        this.graphics.add("movingDown", movingDown)
+
+        this.graphics.add("idleUp", idleUp)
+        this.graphics.add("idleSide", idleSide)
+        this.graphics.add("idleDown", idleDown)
+
+        this.movingUp = this.graphics.use(movingUp)
+        this.movingSide = this.graphics.use(movingSide)
+        this.movingDown = this.graphics.use(movingDown)
+
+        this.idleUp = this.graphics.use(idleUp)
+        this.idleSide = this.graphics.use(idleSide)
+        this.idleDown = this.graphics.use(idleDown)
+    }
+
+    onPreUpdate(engine) {
+        if (this.player.dirUp) {
+            this.dir = Vector.Up
+            if (this.vel.y < 0) {
+                this.graphics.use(this.movingDown)
+                this.z = 2
+            } else {
+                this.graphics.use(this.idleDown)
+            }
         }
 
-        onInitialize(engine) {
-            this.actions.follow(this.scene.player, 75)
-            this.body.collisionType = CollisionType.Passive
-            this.graphics.use(Resources.DogFront.toSprite())
-            this.player = this.scene.player
+        if (this.player.dirDown) {
+            this.dir = Vector.Down
+            if (this.vel.y > 0) {
+                this.graphics.use(this.movingUp)
+                this.z = 1
+            } else {
+                this.graphics.use(this.idleUp)
+            }
+        }
+
+        if (this.player.dirLeft) {
+            this.dir = Vector.Left
+            if (this.vel.x < 0) {
+                this.graphics.use(this.movingSide)
+            } else {
+                this.graphics.use(this.idleSide)
+            }
+            this.graphics.flipHorizontal = true;
+        }
+
+        if (this.player.dirRight) {
             this.dir = Vector.Right
 
             //Importing sprite sheets
@@ -60,6 +136,7 @@
             this.idleSide = this.graphics.use(idleSide)
             this.idleDown = this.graphics.use(idleDown)
         }
+    }
 
         onPreUpdate(engine) {
             if (this.player.dirUp) {

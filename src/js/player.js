@@ -20,7 +20,7 @@ export class Player extends Actor {
             width: 60,
             height: 100,
             color: Color.Black,
-            z: 1
+            z: 2
         })
         // this.body.mass = 10
         this.name = "player"
@@ -151,6 +151,10 @@ export class Player extends Actor {
 
         }
 
+        if (engine.input.keyboard.wasPressed(Keys.E)) {
+            console.log(this.pos)
+        }
+
 
 
         //Change sprite depending on movement and direction
@@ -159,6 +163,7 @@ export class Player extends Actor {
                 this.dirLeft = false;
                 this.dirRight = false;
                 this.graphics.use(this.movingUp)
+                this.z = 1
             } else {
                 this.graphics.use(this.idleUp)
             }
@@ -169,6 +174,7 @@ export class Player extends Actor {
                 this.dirLeft = false;
                 this.dirRight = false;
                 this.graphics.use(this.movingDown)
+                this.z = 2
             } else {
                 this.graphics.use(this.idleDown)
             }
