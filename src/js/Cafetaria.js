@@ -56,7 +56,7 @@ export class Cafetaria extends Scene {
         this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 500, 400));
 
         this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, 'left', false));
-        
+
         this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', false));
     }
 
@@ -151,7 +151,7 @@ export class Cafetaria extends Scene {
     }
 
     playerOutOfBounds() {
-        if (this.player.pos.x < 150 || this.player.pos.x > 2798 || this.player.pos.y < 170 || this.player.pos.y > 1760 ) {
+        if (this.player.pos.x < 150 || this.player.pos.x > 2798 || this.player.pos.y < 130 || this.player.pos.y > 1760 ) {
             
             
             if (!Resources.OutOfBoundsSound.isPlaying()) {
@@ -162,7 +162,7 @@ export class Cafetaria extends Scene {
 
     playerInBounds() {
         
-        if (this.player.pos.x > 157 && this.player.pos.x < 2790 && this.player.pos.y > 176 && this.player.pos.y < 1745 ) {
+        if (this.player.pos.x > 157 && this.player.pos.x < 2790 && this.player.pos.y > 155 && this.player.pos.y < 1745 ) {
             
            
             if (Resources.OutOfBoundsSound.isPlaying()) {

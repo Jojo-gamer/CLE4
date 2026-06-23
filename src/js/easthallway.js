@@ -27,6 +27,8 @@ export class EastHallWay extends Scene {
 
         this.add(new DoorTrigger(1416, 350, 50, 150, "EastHall", 100, 150));
 
+        this.add(new DoorTrigger(1400, 5350, 50, 150, "EastWing", 230, 350));
+
         const spawnPoint = this.engine.nextSpawn || { x: 400, y: 400 }
         this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
         this.add(this.player)
