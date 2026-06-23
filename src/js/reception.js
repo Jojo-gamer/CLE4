@@ -1,5 +1,12 @@
-import { Color, Scene } from "excalibur";
-import { Background } from "./background";
+import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer, Scene, randomInRange } from "excalibur"
+import { Resources, ResourceLoader } from './resources.js'
+import { Background } from "./background.js"
+import { DoorTrigger } from "./doorTrigger.js";
+import { Player } from "./player.js";
+import { TableVertical } from "./tablevertical.js";
+import { TableHorizontal } from "./tablehorizontal.js";
+import { Dog } from './dog.js'
+import { Enemy } from "./enemy.js";
 
 export class Reception extends Scene {
     constructor() {
@@ -19,6 +26,16 @@ export class Reception extends Scene {
 
     onInitialize(engine) {
         this.add(new Background(this.sceneWidth, this.sceneHeight))
+
+        this.player = new Player();
+                const spawnPoint = this.engine.nextSpawn
+                this.player.pos = new Vector (900, 200)
+
+                this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
+                this.add(this.player);
+
+                this.add(new DoorTrigger(500,  150, 150, 50, "Cafetaria", 1500, 1750));
+
     }
 
 }

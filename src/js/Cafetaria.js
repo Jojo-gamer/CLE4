@@ -58,9 +58,18 @@ export class Cafetaria extends Scene {
         this.camera.strategy.lockToActor(this.player)
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
 
-        this.add(new DoorTrigger(100, 1000, 50, 150, "EastWing", 1300, 300));
+        this.add(new DoorTrigger(140, 1000, 50, 150, "EastWing", 1300, 300));
 
-        this.add(new DoorTrigger(1500, 100, 150, 50, "CourtYard", 1500, 1940));
+        this.add(new DoorTrigger(140, 1300, 50, 150, "EastHallWay", 1400, 4400));
+
+
+        if (this.player.key) {
+        this.add(new DoorTrigger(1500, 150, 150, 50, "CourtYard", 1500, 1900));
+        } else {
+            // gesloten deur  sprite
+        }
+
+        this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 500, 400));
 
 
     }
@@ -154,7 +163,7 @@ export class Cafetaria extends Scene {
     }
 
     playerOutOfBounds() {
-        if (this.player.pos.x < 150 || this.player.pos.x > 2798 || this.player.pos.y < 170 || this.player.pos.y > 1760 ) {
+        if (this.player.pos.x < 157 || this.player.pos.x > 2850 || this.player.pos.y < 130 || this.player.pos.y > 1760 ) {
             
             
             if (!Resources.OutOfBoundsSound.isPlaying()) {
@@ -166,7 +175,7 @@ export class Cafetaria extends Scene {
 
     playerInBounds() {
         
-        if (this.player.pos.x > 157 && this.player.pos.x < 2790 && this.player.pos.y > 176 && this.player.pos.y < 1745 ) {
+        if (this.player.pos.x > 157 && this.player.pos.x < 2790 && this.player.pos.y > 150 && this.player.pos.y < 1745 ) {
             
            
             if (Resources.OutOfBoundsSound.isPlaying()) {

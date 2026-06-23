@@ -10,6 +10,7 @@ import { Easthall } from './easthall.js'
 import { CourtYard } from './courtyard.js'
 import { GameOver } from './gameover.js'
 import { Reception } from './reception.js'
+import { EastHallWay } from './easthallway.js'
 
 export class Game extends Engine {
     timer = 0;
@@ -38,6 +39,7 @@ export class Game extends Engine {
         this.addScene("Cafetaria", new Cafetaria())
         this.addScene("GameOver", new GameOver())
         this.addScene("EastHall", new Easthall())
+        this.addScene("EastHallWay", new EastHallWay())
 
         // this.goToScene("Reception")
 

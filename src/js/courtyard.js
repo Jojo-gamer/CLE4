@@ -26,6 +26,7 @@ export class CourtYard extends Scene {
         this.camera.strategy.lockToActor(this.player)
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
 
+        
         this.add(new DoorTrigger(1500, 2000, 150, 50, "Cafetaria", 1500, 150));
 
     }
