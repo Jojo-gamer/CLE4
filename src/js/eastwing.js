@@ -8,7 +8,7 @@ import { EastMaze } from "./eastmaze.js";
 
 export class EastWing extends Scene {
     isReal;
-
+    addedRealDoor;
     constructor() {
         const sceneWidth = 2400
         const sceneHeight = 700 
@@ -21,6 +21,7 @@ export class EastWing extends Scene {
         this.placedProps = [];
         this.sceneWidth = sceneWidth
         this.sceneHeight = sceneHeight
+        this.addedRealDoor = false;
     }
 
     onInitialize(engine) {
@@ -44,12 +45,21 @@ export class EastWing extends Scene {
 
                  this.add(new DoorTrigger(150, 350, 50, 150, "EastMaze", 1300, 5350, 'left', false));
 
-                    this.add(new DoorTrigger(528, 130, 150,50, "EW_Room1", 500,467, 'up', true))
-
-                 this.add(new DoorTrigger(920, 130, 150,50, "EW_Room2",500,467, 'up', true))
+                 this.add(new DoorTrigger(528, 130, 150,50, "EW_Room1", 500,467, 'up', true))
+                
+                 this.add(new DoorTrigger(920, 130, 150,50, "EW_Room2",500,467, true))
 
                  this.add(new DoorTrigger(1480, 130, 150,50, "EW_Room3_4", 500,500, 'up', false))
         
                  this.add(new DoorTrigger(1880, 130, 150,50, "EW_Room3_4", 500,500, 'up', false))
+
+
+    }
+
+    onActivate(ctx) {
+        if (this.dog.wallCutscene && this.addedRealDoor == false) {
+            this.add(new DoorTrigger(920, 130, 150,50, "EW_Room2",500,467,"up", true))
+            this.addedRealDoor = true;
+        }
     }
 }
