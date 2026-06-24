@@ -76,6 +76,7 @@ export class DoorTrigger extends Actor {
           break;
         case "down":
           this.graphics.use(doors.getSprite(6, 0));
+          this.graphics.offset = new Vector(0, -90);
           break;
         default:
       }
