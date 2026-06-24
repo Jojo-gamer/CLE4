@@ -2,18 +2,28 @@ import { Actor, CollisionType, Color, Vector } from "excalibur";
 import { doors } from "./resources";
 
 export class DoorTrigger extends Actor {
-  constructor(x, y, width, height, destinationScene, spawnX, spawnY, location, active = true) {
+  constructor(
+    x,
+    y,
+    width,
+    height,
+    destinationScene,
+    spawnX,
+    spawnY,
+    location,
+    active = true,
+  ) {
     super({
       x,
       y,
       width,
       height,
-      color: Color.Transparent
+      color: Color.Transparent,
     });
 
     this.destinationScene = destinationScene;
     this.spawnX = spawnX;
-    this.spawnY = spawnY
+    this.spawnY = spawnY;
     this.body.collisionType = CollisionType.Passive;
     this.location = location;
     this.triggerEnabled = active;
@@ -22,20 +32,20 @@ export class DoorTrigger extends Actor {
   onInitialize(engine) {
     switch (this.location) {
       case "left":
-        this.graphics.use(doors.getSprite(2, 0))
-        this.graphics.offset = new Vector(90, 0)
+        this.graphics.use(doors.getSprite(2, 0));
+        this.graphics.offset = new Vector(90, 0);
         break;
       case "up":
-        this.graphics.use(doors.getSprite(0, 0))
-        this.graphics.offset = new Vector(0, -30)
+        this.graphics.use(doors.getSprite(0, 0));
+        this.graphics.offset = new Vector(0, -30);
         break;
       case "down":
-        this.graphics.use(doors.getSprite(6, 0))
-        this.graphics.offset = new Vector(0, 30)
+        this.graphics.use(doors.getSprite(6, 0));
+        this.graphics.offset = new Vector(0, 30);
         break;
       case "right":
-        this.graphics.use(doors.getSprite(4, 0))
-        this.graphics.offset = new Vector(-90, 0)
+        this.graphics.use(doors.getSprite(4, 0));
+        this.graphics.offset = new Vector(-90, 0);
         break;
       default:
     }
@@ -45,8 +55,8 @@ export class DoorTrigger extends Actor {
       if (evt.other.owner.name === "player") {
         engine.nextSpawn = {
           x: this.spawnX,
-          y: this.spawnY
-        }
+          y: this.spawnY,
+        };
         engine.goToScene(this.destinationScene);
       }
     });
@@ -56,16 +66,17 @@ export class DoorTrigger extends Actor {
     if (this.triggerEnabled) {
       switch (this.location) {
         case "left":
-          this.graphics.use(doors.getSprite(3, 0))
+          this.graphics.use(doors.getSprite(3, 0));
           break;
         case "up":
-          this.graphics.use(doors.getSprite(1, 0))
+          this.graphics.use(doors.getSprite(1, 0));
           break;
         case "right":
-          this.graphics.use(doors.getSprite(5, 0))
+          this.graphics.use(doors.getSprite(5, 0));
           break;
         case "down":
-          this.graphics.use(doors.getSprite(7, 0))
+          this.graphics.use(doors.getSprite(6, 0));
+          this.graphics.offset = new Vector(0, -90);
           break;
         default:
       }

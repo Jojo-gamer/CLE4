@@ -1,39 +1,42 @@
-    import '../css/style.css'
-    import { Actor, Engine, Vector, DisplayMode, BoundingBox, SolverStrategy, Timer, Color, Sound } from "excalibur"
-    import { Resources, ResourceLoader } from './resources.js'
-    import { Player } from './player.js'
-    import { Enemy } from './enemy.js'
-    import { Background } from './background.js'
-    import { DoorTrigger } from './doorTrigger.js'
-    import { Cafetaria } from './Cafetaria.js'
-    import { Easthall } from './easthall.js'
-    import { CourtYard } from './courtyard.js'
-    import { GameOver } from './gameover.js'
-    import { Reception } from './reception.js'
-    import { EastMaze} from './eastmaze.js'
-    import { EastWing } from './eastwing.js'
-    import { Message } from './message.js'
+import '../css/style.css'
+import { Actor, Engine, Vector, DisplayMode, BoundingBox, SolverStrategy, Timer, Color } from "excalibur"
+import { Resources, ResourceLoader } from './resources.js'
+import { Player } from './player.js'
+import { Enemy } from './enemy.js'
+import { Background } from './background.js'
+import { DoorTrigger } from './doorTrigger.js'
+import { Cafetaria } from './Cafetaria.js'
+import { Easthall } from './easthall.js'
+import { CourtYard } from './courtyard.js'
+import { GameOver } from './gameover.js'
+import { Reception } from './reception.js'
+import { EastMaze} from './eastmaze.js'
+import { EastWing } from './eastwing.js'
+import { Message } from './message.js'
+import { Crowbar } from './crowbar.js'
+import { EW_Room1, EW_Room2 } from './ew_room1_2.js'
 
-    export class Game extends Engine {
-        timer = 0;
-        framecount = 0;
-        
-        constructor() {
-            super({
-                width: 1280,
-                height: 720,
-                maxFps: 60,
-                backgroundColor: Color.Black,
-                displayMode: DisplayMode.FitScreen,
-                color: Color.Black
-                // physics: {
-                //     solver: SolverStrategy.Arcade,
-                // }
-            })
-            this.lives = 5;
-            this.start(ResourceLoader).then(() => this.startGame())
-        }
-        startGame() {
+export class Game extends Engine {
+    timer = 0;
+    framecount = 0;
+    collectedCrowbar = false;
+    
+    constructor() {
+        super({
+            width: 1280,
+            height: 720,
+            maxFps: 60,
+            backgroundColor: Color.Black,
+            displayMode: DisplayMode.FitScreen,
+            color: Color.Black
+            // physics: {
+            //     solver: SolverStrategy.Arcade,
+            // }
+        })
+        this.lives = 5;
+        this.start(ResourceLoader).then(() => this.startGame())
+    }
+    startGame() {
         this.setupLivesHud()
         this.updateLivesHud()
 
@@ -43,11 +46,15 @@
         this.addScene("EastHall", new Easthall())
         this.addScene("EastMaze", new EastMaze())
         this.addScene("EastWing", new EastWing())
+        this.addScene("EW_Room1", new EW_Room1())
+        this.addScene("EW_Room2", new EW_Room2())
         this.addScene("CourtYard", new CourtYard())
 
         // Zorg dat hij de eerste keer ook mooi in het midden spawnt
         this.nextSpawn = { x: 640, y: 700 };
         this.goToScene("Reception")
+
+        this.add(new Crowbar)
     }
 
         onPostUpdate(engine) {
