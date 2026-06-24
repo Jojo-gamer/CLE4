@@ -91,12 +91,9 @@ export class Cafetaria extends Scene {
        
 
         this.add(new DoorTrigger(140, 1300, 50, 150, "EastMaze", 1300, 5350));
-
         this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 650, 100));
-
         this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, 'left', false));
-
-        this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', false));
+        this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', true));
     }
 
     onActivate(ctx) {

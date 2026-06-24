@@ -1,16 +1,4 @@
-import {
-  Actor,
-  CollisionType,
-  Color,
-  Keys,
-  Ray,
-  Sound,
-  SpriteSheet,
-  TileMap,
-  Vector,
-  range,
-  Animation,
-} from "excalibur";
+import { Actor, CollisionType, Color, Keys, Ray, Sound, SpriteSheet, TileMap, Vector, range, Animation } from "excalibur";
 import { Resources } from "./resources";
 import { Enemy } from "./enemy";
 import { Keyfragment } from "./keyfragment";
