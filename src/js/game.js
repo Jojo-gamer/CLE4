@@ -12,10 +12,12 @@ import { GameOver } from './gameover.js'
 import { Reception } from './reception.js'
 import { EastWing } from './eastwing.js'
 import { Message } from './message.js'
+import { Crowbar } from './crowbar.js'
 
 export class Game extends Engine {
     timer = 0;
     framecount = 0;
+    collectedCrowbar = false;
     
     constructor() {
         super({
@@ -43,7 +45,8 @@ export class Game extends Engine {
         this.addScene("EastWing", new EastWing())
         this.addScene("CourtYard", new CourtYard())
 
-        this.goToScene("Reception")
+        // this.goToScene("Reception")
+        this.add(new Crowbar)
 
         this.player = new Player();
         this.add(this.player)
