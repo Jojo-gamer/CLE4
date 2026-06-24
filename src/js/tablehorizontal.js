@@ -3,7 +3,7 @@ import { Resources, ResourceLoader } from './resources.js'
 
 export class TableHorizontal extends Actor {
 
-    constructor(isReal = true, keyfragment = false, keyfragmentPart = 0 ) {
+    constructor(isReal = true, keyfragment = false, keyfragmentPart = 0) {
 
         const scale = 0.4;
         const width = Resources.TableHorizontal.width * scale;
@@ -12,7 +12,7 @@ export class TableHorizontal extends Actor {
             width: 130,
             height: 80,
         });
-
+        this.isRayCastable = true;
         this.isReal = isReal;
         this.hasKeyFragment = keyfragment;
         this.keyfragmentPart = keyfragmentPart;

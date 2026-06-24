@@ -1,67 +1,83 @@
-import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer, Scene, randomInRange } from "excalibur"
-import { Resources, ResourceLoader } from './resources.js'
-import { Background } from "./background.js"
+import {
+  Actor,
+  Engine,
+  Vector,
+  DisplayMode,
+  BoundingBox,
+  Color,
+  SolverStrategy,
+  Timer,
+  Scene,
+  randomInRange,
+} from "excalibur";
+import { Resources, ResourceLoader } from "./resources.js";
+import { Background } from "./background.js";
 import { DoorTrigger } from "./doorTrigger.js";
 import { Player } from "./player.js";
 import { TableVertical } from "./tablevertical.js";
 import { TableHorizontal } from "./tablehorizontal.js";
-import { Dog } from './dog.js'
+import { Dog } from "./dog.js";
 import { Enemy } from "./enemy.js";
 import { CourtYard } from "./courtyard.js";
 
-
 export class Cafetaria extends Scene {
-    isReal;
-    currentScene;
-    constructor() {
-        const sceneWidth = 3000
-        const sceneHeight = 2000
+  isReal;
+  currentScene;
+  constructor() {
+    const sceneWidth = 3000;
+    const sceneHeight = 2000;
 
-        super({
-            width: sceneWidth,
-            height: sceneHeight,
-            color: Color.Black
-        });
+    super({
+      width: sceneWidth,
+      height: sceneHeight,
+      color: Color.Black,
+    });
 
-        this.placedProps = [];
-        this.sceneWidth = sceneWidth
-        this.sceneHeight = sceneHeight
+    this.placedProps = [];
+    this.sceneWidth = sceneWidth;
+    this.sceneHeight = sceneHeight;
+  }
+  onInitialize(engine) {
+    this.location = engine.currentSceneName;
+    this.add(new Background(this.sceneWidth, this.sceneHeight, this.location));
+
+    this.player = new Player();
+    const spawnPoint = this.engine.nextSpawn;
+    this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
+    this.add(this.player);
+
+    this.dog = new Dog();
+    this.dog.pos = this.player.pos;
+    this.add(this.dog);
+
+    this.camera.strategy.lockToActor(this.player);
+    this.camera.strategy.limitCameraBounds(
+      new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight),
+    );
+
+    this.add(
+      new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", true),
+    );
+    this.add(
+      new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, "up", false),
+    );
+    this.add(new DoorTrigger(1500, 1855, 150, 50, "Reception", 650, 40));
+  }
+
+  onActivate(ctx) {
+    const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
+    this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
+    this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
+
+    for (let actor of this.actors) {
+      if (actor instanceof Enemy) {
+        actor.kill();
+      }
     }
-    onInitialize(engine) {
-        this.location = engine.currentSceneName
-        this.add(new Background(this.sceneWidth, this.sceneHeight, this.location))
+    this.clearProps();
 
-        this.player = new Player();
-        const spawnPoint = this.engine.nextSpawn
-        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
-        this.add(this.player);
-
-        this.dog = new Dog()
-        this.dog.pos = this.player.pos
-        this.add(this.dog)
-
-        this.camera.strategy.lockToActor(this.player)
-        this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
-
-        this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, 'left', true));
-        this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', false));
-        this.add(new DoorTrigger(1500, 1855, 150, 50, "Reception", 650, 40));
-    }
-
-    onActivate(ctx) {
-        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
-        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
-        this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
-
-        for (let actor of this.actors) {
-            if (actor instanceof Enemy) {
-                actor.kill();
-            }
-        }
-        this.clearProps();
-
-        this.placePropRandomly(new TableHorizontal(false, true, 0))
-        this.placePropRandomly(new TableHorizontal(false, true, 1))
+    this.placePropRandomly(new TableHorizontal(false, true, 0));
+    this.placePropRandomly(new TableHorizontal(false, true, 1));
 
         for (let i = 0; i < 5; i++) {
             const isReal = Math.random() > 0.25;
@@ -69,96 +85,131 @@ export class Cafetaria extends Scene {
             this.add(enemy)
         }
 
-        for (let i = 0; i < 15; i++) {
-            const isReal = Math.random() > 0.25;
-            this.placePropRandomly(new TableVertical(isReal));
-        }
+        this.camera.strategy.lockToActor(this.player)
+        this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
 
-        for (let i = 0; i < 15; i++) {
-            const isReal = Math.random() > 0.25;
-            this.placePropRandomly(new TableHorizontal(isReal));
-        }
+       
 
+        this.add(new DoorTrigger(140, 1300, 50, 150, "EastMaze", 1300, 5350));
+
+        this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 650, 100));
+
+        this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, 'left', false));
+
+        this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', false));
     }
 
-    clearProps() {
+    onActivate(ctx) {
 
-        this.placedProps.forEach(prop => {
-            prop.kill();
+
+        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
+        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
+        this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
+        this.dog.z = 50
+
+
+        this.clearProps();
+
+        this.placePropRandomly(new TableHorizontal(false, true, 0))
+        this.placePropRandomly(new TableHorizontal(false, true, 1))
+
+    for (let i = 0; i < 15; i++) {
+      const isReal = Math.random() > 0.25;
+      this.placePropRandomly(new TableVertical(isReal));
+    }
+
+    for (let i = 0; i < 15; i++) {
+      const isReal = Math.random() > 0.25;
+      this.placePropRandomly(new TableHorizontal(isReal));
+    }
+  }
+
+  clearProps() {
+    this.placedProps.forEach((prop) => {
+      prop.kill();
+    });
+
+    this.placedProps = [];
+  }
+
+  onPreUpdate(engine, delta) {
+    this.playerOutOfBounds();
+    this.playerInBounds();
+  }
+
+  placePropRandomly(propInstance) {
+    const maxAttempts = 50;
+    const padding = 10;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const randomX = randomInRange(300, 2600);
+      const randomY = randomInRange(300, 1600);
+
+      // Calculate proposed Bounding Box based on this specific prop's dimensions
+      const halfW = propInstance.width / 2 + padding;
+      const halfH = propInstance.height / 2 + padding;
+
+      const proposedBox = new BoundingBox({
+        left: randomX - halfW,
+        top: randomY - halfH,
+        right: randomX + halfW,
+        bottom: randomY + halfH,
+      });
+
+      // Check for overlaps with ALL already placed props
+      let isOverlapping = false;
+      for (const placed of this.placedProps) {
+        const pW = placed.width / 2 + padding;
+        const pH = placed.height / 2 + padding;
+
+        const placedBox = new BoundingBox({
+          left: placed.pos.x - pW,
+          top: placed.pos.y - pH,
+          right: placed.pos.x + pW,
+          bottom: placed.pos.y + pH,
         });
 
-
-        this.placedProps = [];
-    }
-
-    onPreUpdate(engine, delta) {
-        this.playerOutOfBounds();
-        this.playerInBounds();
-    }
-
-    placePropRandomly(propInstance) {
-        const maxAttempts = 50;
-        const padding = 10;
-
-        for (let attempt = 0; attempt < maxAttempts; attempt++) {
-            const randomX = randomInRange(300, 2600);
-            const randomY = randomInRange(300, 1600);
-
-            // Calculate proposed Bounding Box based on this specific prop's dimensions
-            const halfW = (propInstance.width / 2) + padding;
-            const halfH = (propInstance.height / 2) + padding;
-
-            const proposedBox = new BoundingBox({
-                left: randomX - halfW,
-                top: randomY - halfH,
-                right: randomX + halfW,
-                bottom: randomY + halfH
-            });
-
-            // Check for overlaps with ALL already placed props
-            let isOverlapping = false;
-            for (const placed of this.placedProps) {
-                const pW = (placed.width / 2) + padding;
-                const pH = (placed.height / 2) + padding;
-
-                const placedBox = new BoundingBox({
-                    left: placed.pos.x - pW,
-                    top: placed.pos.y - pH,
-                    right: placed.pos.x + pW,
-                    bottom: placed.pos.y + pH
-                });
-
-                if (proposedBox.intersect(placedBox)) {
-                    isOverlapping = true;
-                    break;
-                }
-            }
-
-            // If no overlap, set position, save it, and add to scene
-            if (!isOverlapping) {
-                propInstance.pos = new Vector(randomX, randomY);
-                this.placedProps.push(propInstance); // Add to the master list
-                this.add(propInstance);
-                return;
-            }
+        if (proposedBox.intersect(placedBox)) {
+          isOverlapping = true;
+          break;
         }
+      }
 
-        console.warn("Could not find a free spot for a prop after 50 attempts!");
+      // If no overlap, set position, save it, and add to scene
+      if (!isOverlapping) {
+        propInstance.pos = new Vector(randomX, randomY);
+        this.placedProps.push(propInstance); // Add to the master list
+        this.add(propInstance);
+        return;
+      }
     }
 
-    playerOutOfBounds() {
-        if (this.player.pos.x < 100 || this.player.pos.x > 2940 || this.player.pos.y < 100 || this.player.pos.y > 1900) {
-            if (!Resources.OutOfBoundsSound.isPlaying()) {
-                Resources.OutOfBoundsSound.play();
-            }
-        }
-    }
+    console.warn("Could not find a free spot for a prop after 50 attempts!");
+  }
 
-    playerInBounds() {
-        if (this.player.pos.x > 180 && this.player.pos.x < 2814 && this.player.pos.y > 218 && this.player.pos.y < 1782) {
-            if (Resources.OutOfBoundsSound.isPlaying()) {
-                Resources.OutOfBoundsSound.stop();
-            }
-        }
+  playerOutOfBounds() {
+    if (
+      this.player.pos.x < 100 ||
+      this.player.pos.x > 2940 ||
+      this.player.pos.y < 100 ||
+      this.player.pos.y > 1900
+    ) {
+      if (!Resources.OutOfBoundsSound.isPlaying()) {
+        Resources.OutOfBoundsSound.play();
+      }
     }
+  }
+
+  playerInBounds() {
+    if (
+      this.player.pos.x > 180 &&
+      this.player.pos.x < 2814 &&
+      this.player.pos.y > 218 &&
+      this.player.pos.y < 1782
+    ) {
+      if (Resources.OutOfBoundsSound.isPlaying()) {
+        Resources.OutOfBoundsSound.stop();
+      }
+    }
+  }
 }
