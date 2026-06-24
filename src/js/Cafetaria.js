@@ -8,6 +8,7 @@ import { TableHorizontal } from "./tablehorizontal.js";
 import { Dog } from './dog.js'
 import { Enemy } from "./enemy.js";
 import { CourtYard } from "./courtyard.js";
+import { EastMaze } from "./eastmaze.js";
 
 
 export class Cafetaria extends Scene {
@@ -73,7 +74,7 @@ export class Cafetaria extends Scene {
 
        
 
-        this.add(new DoorTrigger(140, 1300, 50, 150, "EastHallWay", 1300, 5350));
+        this.add(new DoorTrigger(140, 1300, 50, 150, "EastMaze", 1300, 5350));
 
         this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 500, 400));
 

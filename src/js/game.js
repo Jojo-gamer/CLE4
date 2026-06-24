@@ -10,7 +10,7 @@ import { Easthall } from './easthall.js'
 import { CourtYard } from './courtyard.js'
 import { GameOver } from './gameover.js'
 import { Reception } from './reception.js'
-import { EastHallWay } from './easthallway.js'
+import { EastMaze} from './eastmaze.js'
 import { EastWing } from './eastwing.js'
 import { Message } from './message.js'
 
@@ -41,7 +41,7 @@ export class Game extends Engine {
         this.addScene("Cafetaria", new Cafetaria())
         this.addScene("GameOver", new GameOver())
         this.addScene("EastHall", new Easthall())
-        this.addScene("EastHallWay", new EastHallWay())
+        this.addScene("EastHallWay", new EastMaze())
         this.addScene("EastWing", new EastWing())
         this.addScene("CourtYard", new CourtYard())
 

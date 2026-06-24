@@ -7,7 +7,7 @@ import { Dog } from "./dog.js"
 
 const TILE_SIZE = 128 
 
-export class EastHallWay extends Scene {
+export class EastMaze extends Scene {
     constructor() {
         super({
             width: 1440,

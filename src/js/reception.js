@@ -1,4 +1,4 @@
-import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer, Scene, randomInRange } from "excalibur"
+import { Actor, Engine, Vector, DisplayMode, BoundingBox, Color, SolverStrategy, Timer, Scene, randomInRange, vec, VerticalFirst, CollisionType, CompositeCollider, Shape } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { Background } from "./background.js"
 import { DoorTrigger } from "./doorTrigger.js";
@@ -7,12 +7,8 @@ import { TableVertical } from "./tablevertical.js";
 import { TableHorizontal } from "./tablehorizontal.js";
 import { Dog } from './dog.js'
 import { Enemy } from "./enemy.js";
-import { Actor, BoundingBox, CollisionType, Color, CompositeCollider, Scene, Shape, vec, Vector } from "excalibur";
-import { Background } from "./background";
-import { Player } from "./player";
-import { Resources } from "./resources";
 import { MazeTileCollisionBuilder } from "./collisionbuilder";
-import { DoorTrigger } from "./doorTrigger";
+
 
 export class Reception extends Scene {
     constructor() {
