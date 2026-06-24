@@ -46,11 +46,9 @@ this.add(dog)
 
 this.player.on('collisionstart', (e) => {
     const floorTile = e.other.owner
-    //console.log(floorTile)
     if(floorTile.name === 'path') {
         this.player.pathContacts++
-        this.currentPathTile = floorTile;
-        console.log(this.player.pathContacts);
+
     }
 })
 
@@ -59,7 +57,7 @@ this.player.on('collisionend', (e) => {
     const floorTile = e.other.owner
     if(floorTile.name === 'path') {
         this.player.pathContacts--
-        this.currentPathTile = null;
+
         if (this.player.pathContacts === 0) {
             this.player.loseLife()
             this.player.pos = new Vector(852, 710)
