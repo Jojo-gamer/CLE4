@@ -1,5 +1,5 @@
 import { Color, Font, FontUnit, Keys, Label, Scene, Vector } from "excalibur";
-
+import { Resources } from "./resources";
 export class GameOver extends Scene {
     #scoreLabel;
 
@@ -14,6 +14,8 @@ export class GameOver extends Scene {
                 color: Color.White
             }),
         })
+        message.graphics.use(Resources.GameOver.toSprite())
+        message.graphics.scale = new Vector (3,3)
         message.graphics.anchor = new Vector(0.5, 0.5)
         this.add(message)
 

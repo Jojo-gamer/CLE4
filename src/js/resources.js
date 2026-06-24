@@ -32,7 +32,8 @@ const Resources = {
     EastHallMap: new ImageSource('/images/East-hall-map.png'),
     floorTile: new ImageSource('/images/floortile.png'),
     Rubble: new ImageSource('./images/rubble.png'),
-    Crowbar: new ImageSource('./images/entities/utils/crowbar.png')
+    Crowbar: new ImageSource('./images/entities/utils/crowbar.png'),
+    GameOver: new ImageSource('./images/gameover.png')
 }
 
 export const cafWalls = SpriteSheet.fromImageSource({
