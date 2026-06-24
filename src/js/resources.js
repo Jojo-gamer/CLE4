@@ -34,7 +34,8 @@ const Resources = {
     Rubble: new ImageSource('./images/rubble.png'),
     Crowbar: new ImageSource('./images/entities/utils/crowbar.png'),
     GameOver: new ImageSource('./images/gameover.png'),
-    Keys: new ImageSource('/images/entities/utils/sleutels.png')
+    Keys: new ImageSource('/images/entities/utils/sleutels.png'),
+    GrassTile: new ImageSource('./images/grass-tiles-128x128.png'),
 }
 
 export const cafWalls = SpriteSheet.fromImageSource({
