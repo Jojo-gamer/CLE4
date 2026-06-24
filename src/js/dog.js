@@ -24,7 +24,7 @@ export class Dog extends Actor {
       scale: new Vector(0.6, 0.6),
       z: 1,
     });
-
+    this.isRayCastable = false;
     this.isReal = true;
     this.follow = follow;
   }
@@ -109,28 +109,51 @@ export class Dog extends Actor {
       this.graphics.flipHorizontal = true;
     }
 
-        if (this.player.dirRight) {
-            this.dir = Vector.Right
-        if (this.vel.x > 0) {
-                this.graphics.use(this.movingSide);
-              } else {
-                this.graphics.use(this.idleSide);
-              }
-              this.graphics.flipHorizontal = false;
-        }
+    if (this.player.dirRight) {
+      this.dir = Vector.Right;
+      if (this.vel.x > 0) {
+        this.graphics.use(this.movingSide);
+      } else {
+        this.graphics.use(this.idleSide);
+      }
+      this.graphics.flipHorizontal = false;
+    }
 
     if (engine.input.keyboard.wasPressed(Keys.Space)) {
-      const rayOrigin = this.player.pos;
-      console.log(rayOrigin);
+      const bounds = this.player.collider.bounds;
+      const centerX = (bounds.left + bounds.right) / 2;
+      const centerY = (bounds.top + bounds.bottom) / 2;
+      const offset = 5;
+      let rayOrigin;
+      if (this.dir.equals(Vector.Up)) {
+        rayOrigin = new Vector(
+          centerX,
+          bounds.top - offset,
+        );
+      } else if (this.dir.equals(Vector.Down)) {
+        rayOrigin = new Vector(
+          centerX,
+          bounds.bottom + offset,
+        );
+      } else if (this.dir.equals(Vector.Left)) {
+        rayOrigin = new Vector(
+          bounds.left - offset,
+          centerY,
+        );
+      } else if (this.dir.equals(Vector.Right)) {
+        rayOrigin = new Vector(
+          bounds.right + offset,
+          centerY,
+        );
+      }
+      
       const ray = new Ray(rayOrigin, this.dir.normalize());
       const hits = this.scene.physics.rayCast(ray, {
         searchAllColliders: true, // Stop direct bij het eerste doelwit
-        maxDistance: 350,
+        maxDistance: 500,
         filter: (hit) => {
           const owner = hit.collider.owner;
           return (
-            owner !== this.player &&
-            owner !== this &&
             owner.isRayCastable === true
           );
         },
