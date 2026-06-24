@@ -180,6 +180,7 @@ export class Dog extends Actor {
                     }
                 } else {
                     // console.log('WOOF')
+                    
                     Resources.BarkSound.play()
                     //chance to spawn new enemy
                     if (Math.random() > 0.25) {

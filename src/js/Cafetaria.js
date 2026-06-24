@@ -113,6 +113,11 @@ export class Cafetaria extends Scene {
 
     }
 
+    onDeactivate(ctx) {
+        
+        this.killEnemies();
+    }
+
     clearProps() {
 
         this.placedProps.forEach(prop => {
@@ -136,7 +141,7 @@ export class Cafetaria extends Scene {
             const randomX = randomInRange(300, 2600);
             const randomY = randomInRange(300, 1600);
 
-            // Calculate proposed Bounding Box based on this specific prop's dimensions
+           
             const halfW = (propInstance.width / 2) + padding;
             const halfH = (propInstance.height / 2) + padding;
 
@@ -147,7 +152,7 @@ export class Cafetaria extends Scene {
                 bottom: randomY + halfH
             });
 
-            // Check for overlaps with ALL already placed props
+           
             let isOverlapping = false;
             for (const placed of this.placedProps) {
                 const pW = (placed.width / 2) + padding;
@@ -197,5 +202,20 @@ export class Cafetaria extends Scene {
                 Resources.OutOfBoundsSound.stop();
             }
         }
+    }
+
+    killEnemies() {
+        
+        this.actors.forEach(element => {
+            
+            
+            if (element instanceof Enemy) {
+                
+                
+                element.kill(); 
+                
+                
+            }
+        });
     }
 }

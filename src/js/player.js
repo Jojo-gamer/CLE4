@@ -236,25 +236,29 @@ export class Player extends Actor {
     // }
 
     gameOver() {
-        this.gameEngine.lives = 5;
-        this.lives = 5;
+    this.scene.engine.isGameOver = true;
 
-        if (this.gameEngine.updateLivesHud) {
-            this.gameEngine.updateLivesHud();
-        }
+    // ✅ Kill the dog so it stops processing input
+    this.scene.actors
+        .filter(a => a.constructor.name === 'Dog')
+        .forEach(a => a.kill());
 
-        this.scene.engine.goToScene("GameOver", {
-            sceneActivationData: { TimeScore: this.scene.engine.timer },
-            destinationIn: new FadeInOut({ duration: 2000, direction: 'in' })
-        })
+    this.gameEngine.lives = 5;
 
-        // const receptie = this.gameEngine.scenes['receptie'];
+    
+    this.lives = 5;
+    this.isInvulnerable = false; 
+    this.keyfragmentCount = 0;   
 
-        // if (this.gameEngine.currentScene === receptie) {
-        //     this.respawn();
-        //     this.isInvulnerable = false;
-        // } else {
-        //     this.gameEngine.goToScene('receptie');
-        // }
+    if (this.gameEngine.updateLivesHud) {
+        this.gameEngine.updateLivesHud();
     }
+
+    Resources.BarkSound.stop();
+
+    this.scene.engine.goToScene("GameOver", {
+        sceneActivationData: { TimeScore: this.scene.engine.timer },
+        destinationIn: new FadeInOut({ duration: 2000, direction: 'in' })
+    })
+}
 }
