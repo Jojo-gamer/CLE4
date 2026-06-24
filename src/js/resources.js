@@ -17,13 +17,18 @@ const Resources = {
     DogFront: new ImageSource('./images/entities/dog/dog-front-128x128.png'),
     DogBack: new ImageSource('./images/entities/dog/dog-back-128x128.png'),
     DogSide: new ImageSource('./images/entities/dog/dog-side-128x128.png'),
+    KnightFront: new ImageSource('./images/entities/enemy/knight/knight-piece-640x640.png'),
+    KnightSide: new ImageSource('./images/entities/enemy/knight/knight-side-640x640.png'),
+    KnightBack: new ImageSource('./images/entities/enemy/knight/knight-back-640x640.png'),
     FullHeart: new ImageSource('/images/entities/UI/fullheart.png'),
     EmptyHeart: new ImageSource('/images/entities/UI/emptyheart.png'),
     OutOfBoundsSound: new Sound('/images/entities/sounds/outofbounds.mp3'),
     WallVertical: new ImageSource('/images/wall-vertical.png'),
     MazeWall: new ImageSource('/images/wall-tiles-128x128.png'),
+    Reception: new ImageSource('./images/reception-map.png'),
     EastHallMap: new ImageSource('/images/East-hall-map.png'),
-    floorTile: new ImageSource('/images/floortile.png')
+    floorTile: new ImageSource('/images/floortile.png'),
+    Rubble: new ImageSource('./images/rubble.png'),
 }
 
 export const cafWalls = SpriteSheet.fromImageSource({

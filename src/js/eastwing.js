@@ -39,7 +39,16 @@ export class EastWing extends Scene {
                  this.camera.strategy.lockToActor(this.player)
                  this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth + 200, this.sceneHeight + 200))
 
-                 this.add(new DoorTrigger(2250, 350, 50, 150, "Cafetaria", 200, 950, true));
+                 this.add(new DoorTrigger(2250, 350, 50, 150, "Cafetaria", 200, 950, 'right', true));
+
+                 this.add(new DoorTrigger(150, 350, 50, 150, "EastHall", 200, 950, 'left', false));
+
+                 this.add(new DoorTrigger(528, 130, 150,50, "EW_room1", 500,500, 'up', false))
+
+                 this.add(new DoorTrigger(920, 130, 150,50, "EW_room2", 500,500, 'up', false))
+
+                 this.add(new DoorTrigger(1480, 130, 150,50, "EW_room3", 500,500, 'up', false))
         
+                 this.add(new DoorTrigger(1880, 130, 150,50, "EW_room4", 500,500, 'up', false))
     }
 }

@@ -40,31 +40,34 @@ export class Cafetaria extends Scene {
         this.dog.pos = this.player.pos
         this.add(this.dog)
 
+        this.camera.strategy.lockToActor(this.player)
+        this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
+
+        this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, 'left', true));
+        this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', false));
+        this.add(new DoorTrigger(1500, 1855, 150, 50, "Reception", 650, 40));
+    }
+
+    onActivate(ctx) {
+        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
+        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
+        this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
+
+        for (let actor of this.actors) {
+            if (actor instanceof Enemy) {
+                actor.kill();
+            }
+        }
+        this.clearProps();
+
+        this.placePropRandomly(new TableHorizontal(false, true, 0))
+        this.placePropRandomly(new TableHorizontal(false, true, 1))
+
         for (let i = 0; i < 5; i++) {
             const isReal = Math.random() > 0.25;
             const enemy = new Enemy(isReal)
             this.add(enemy)
         }
-
-        this.camera.strategy.lockToActor(this.player)
-        this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
-
-        this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, 'left', false));
-        this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', false));
-    }
-
-    onActivate(ctx) {
-
-
-        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
-        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
-        this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
-
-
-        this.clearProps();
-
-        this.placePropRandomly(new TableHorizontal(false, true, 0))
-        this.placePropRandomly(new TableHorizontal(false, true, 1))
 
         for (let i = 0; i < 15; i++) {
             const isReal = Math.random() > 0.25;

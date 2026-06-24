@@ -4,19 +4,21 @@ import { Enemy } from "./enemy";
 import { Keyfragment } from "./keyfragment";
 
 export class Dog extends Actor {
-    constructor() {
+    constructor(follow = true) {
         super({
             width: 40,
             height: 50,
             pos: new Vector(0, 0),
-            scale: new Vector(0.6, 0.6)
+            scale: new Vector(0.6, 0.6),
+            z: 1
         })
 
         this.isReal = true;
+        this.follow = follow
     }
 
     onInitialize(engine) {
-        this.actions.follow(this.scene.player, 75)
+        if (this.follow) this.actions.follow(this.scene.player, 75)
         this.body.collisionType = CollisionType.Passive
         this.graphics.use(Resources.DogFront.toSprite())
         this.player = this.scene.player
@@ -25,26 +27,26 @@ export class Dog extends Actor {
         //Importing sprite sheets
         const dogUp = SpriteSheet.fromImageSource({
             image: Resources.DogFront,
-            grid: {rows:1 , columns: 4, spriteWidth: 128, spriteHeight: 128,}
+            grid: { rows: 1, columns: 4, spriteWidth: 128, spriteHeight: 128, }
         })
 
         const dogSide = SpriteSheet.fromImageSource({
             image: Resources.DogSide,
-            grid: {rows:1 , columns: 4, spriteWidth: 128, spriteHeight: 128,}
+            grid: { rows: 1, columns: 4, spriteWidth: 128, spriteHeight: 128, }
         })
 
         const dogDown = SpriteSheet.fromImageSource({
             image: Resources.DogBack,
-            grid: {rows:1 , columns: 4, spriteWidth: 128, spriteHeight: 128,}
+            grid: { rows: 1, columns: 4, spriteWidth: 128, spriteHeight: 128, }
         })
 
         const movingUp = Animation.fromSpriteSheet(dogUp, range(0, 3), 75)
         const movingSide = Animation.fromSpriteSheet(dogSide, range(0, 3), 75)
         const movingDown = Animation.fromSpriteSheet(dogDown, range(0, 3), 75)
 
-        const idleUp = dogUp.getSprite(0,0)
-        const idleSide = dogSide.getSprite(0,0)
-        const idleDown = dogDown.getSprite(0,0)
+        const idleUp = dogUp.getSprite(0, 0)
+        const idleSide = dogSide.getSprite(0, 0)
+        const idleDown = dogDown.getSprite(0, 0)
 
         this.graphics.add("movingUp", movingUp)
         this.graphics.add("movingSide", movingSide)
@@ -64,10 +66,12 @@ export class Dog extends Actor {
     }
 
     onPreUpdate(engine) {
+        if(!this.follow) return;
         if (this.player.dirUp) {
             this.dir = Vector.Up
             if (this.vel.y < 0) {
                 this.graphics.use(this.movingDown)
+                this.z = 2
             } else {
                 this.graphics.use(this.idleDown)
             }
@@ -77,6 +81,7 @@ export class Dog extends Actor {
             this.dir = Vector.Down
             if (this.vel.y > 0) {
                 this.graphics.use(this.movingUp)
+                this.z = 1
             } else {
                 this.graphics.use(this.idleUp)
             }

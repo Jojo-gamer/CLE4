@@ -4,6 +4,7 @@ import { Enemy } from "./enemy";
 import { Keyfragment } from "./keyfragment";
 import { DoorTrigger } from "./doorTrigger";
 import { Message } from "./message";
+import { Dog } from "./dog";
 
 export class Player extends Actor {
     speed = 450
@@ -20,7 +21,7 @@ export class Player extends Actor {
             width: 60,
             height: 100,
             color: Color.Black,
-            z: 1
+            z: 2
         })
         // this.body.mass = 10
         this.name = "player"
@@ -29,13 +30,21 @@ export class Player extends Actor {
 
         this.collider.useBoxCollider(40, 50, Vector.Half, new Vector(0, 50));
         this.events.on("collisionstart", (e) => {
-            if (e.other.owner instanceof Enemy) {
-                if (e.other.owner.body.collisionType === CollisionType.Active) {
+            const target = e.other.owner
+            if(target instanceof Dog) {
+                if(!target.follow) {
+                    target.follow = true;
+                    target.actions.follow(this, 75)
+                    //GO TO CUTSCENE
+                }
+            }
+            if (target instanceof Enemy) {
+                if (target.body.collisionType === CollisionType.Active) {
                     this.loseLife();
                 }
             }
-            if (e.other.owner instanceof Keyfragment) {
-                e.other.owner.kill();
+            if (target instanceof Keyfragment) {
+                target.kill();
                 this.keyfragmentCount++
                 if (this.keyfragmentCount >= 2) {
                     for (let actor of this.scene.actors) {
@@ -151,6 +160,10 @@ export class Player extends Actor {
 
         }
 
+        if (engine.input.keyboard.wasPressed(Keys.E)) {
+            console.log(this.pos)
+        }
+
 
 
         //Change sprite depending on movement and direction
@@ -159,6 +172,7 @@ export class Player extends Actor {
                 this.dirLeft = false;
                 this.dirRight = false;
                 this.graphics.use(this.movingUp)
+                this.z = 1
             } else {
                 this.graphics.use(this.idleUp)
             }
@@ -169,6 +183,7 @@ export class Player extends Actor {
                 this.dirLeft = false;
                 this.dirRight = false;
                 this.graphics.use(this.movingDown)
+                this.z = 2
             } else {
                 this.graphics.use(this.idleDown)
             }
