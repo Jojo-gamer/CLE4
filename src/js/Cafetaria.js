@@ -79,36 +79,37 @@ export class Cafetaria extends Scene {
     this.placePropRandomly(new TableHorizontal(false, true, 0));
     this.placePropRandomly(new TableHorizontal(false, true, 1));
 
-        for (let i = 0; i < 5; i++) {
-            const isReal = Math.random() > 0.25;
-            const enemy = new Enemy(isReal)
-            this.add(enemy)
-        }
-
-        this.camera.strategy.lockToActor(this.player)
-        this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
-
-       
-
-        this.add(new DoorTrigger(140, 1300, 50, 150, "EastMaze", 1300, 5350));
-        this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 650, 100));
-        this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, 'left', false));
-        this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', true));
+    for (let i = 0; i < 5; i++) {
+      const isReal = Math.random() > 0.25;
+      const enemy = new Enemy(isReal);
+      this.add(enemy);
     }
 
-    onActivate(ctx) {
+    this.camera.strategy.lockToActor(this.player);
+    this.camera.strategy.limitCameraBounds(
+      new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight),
+    );
 
+    this.add(new DoorTrigger(140, 1300, 50, 150, "EastMaze", 1300, 5350));
+    this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 650, 100));
+    this.add(
+      new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", false),
+    );
+    this.add(
+      new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, "up", true),
+    );
+  }
 
-        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
-        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
-        this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
-        this.dog.z = 50
+  onActivate(ctx) {
+    const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
+    this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
+    this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
+    this.dog.z = 50;
 
+    this.clearProps();
 
-        this.clearProps();
-
-        this.placePropRandomly(new TableHorizontal(false, true, 0))
-        this.placePropRandomly(new TableHorizontal(false, true, 1))
+    this.placePropRandomly(new TableHorizontal(false, true, 0));
+    this.placePropRandomly(new TableHorizontal(false, true, 1));
 
     for (let i = 0; i < 15; i++) {
       const isReal = Math.random() > 0.25;
