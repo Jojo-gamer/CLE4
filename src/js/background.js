@@ -21,7 +21,7 @@ export class Background extends Actor {
             floorTiles = Resources.CafTile.toSprite()
         }
 
-        if (location == "EastWing") {
+        if (location == "EastWing" || location == "EW_Room1" || location == "EW_Room2") {
             floorTiles = Resources.WingTile.toSprite()
         }
 
