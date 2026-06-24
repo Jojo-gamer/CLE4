@@ -53,6 +53,7 @@ export class Game extends Engine {
         // Zorg dat hij de eerste keer ook mooi in het midden spawnt
         this.nextSpawn = { x: 640, y: 700 };
         this.goToScene("Reception")
+        
 
         this.add(new Crowbar)
     }
