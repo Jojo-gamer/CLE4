@@ -59,7 +59,7 @@ export class Game extends Engine {
         this.currentScene.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 3000, 2000))
 
         this.add(new DoorTrigger(20, 100, 50, 50, "Cafetaria", 400, 600));
-        this.add(new DoorTrigger(100, 0, 50, 50, "EastHall", 100, 100))
+        this.add(new DoorTrigger(100, 0, 50, 50, "EastHall", 4000, 1000))
     }
 
     onPostUpdate(engine) {

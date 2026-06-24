@@ -129,12 +129,32 @@ export class Easthall extends Scene {
       }
     });
 
+    const keys = new Actor({
+        width: 45,
+        height: 45,
+    })
+    const keysSprite = Resources.Keys.toSprite()
+    keysSprite.scale = new Vector(45/keysSprite.width, 45/keysSprite.height)
+    keys.graphics.use(keysSprite)
+
+    keys.pos.x = 3282
+    keys.pos.y = 1310
+    keys.z = 100;
+    this.add(keys)
+
+    this.keys.on('collisionstart', (e) => {
+        if(e.other.owner.name === "player") {
+            keys.kill();
+            this.player.hasKeys = true;
+        }
+    })
+
     const doorHallway = new DoorTrigger(
       46,
       180,
       90,
       180,
-      "EastHallway",
+      "EastMaze",
       1300,
       500,
       "left",
@@ -142,6 +162,8 @@ export class Easthall extends Scene {
     );
     doorHallway.z = 10;
     this.add(doorHallway);
+
+    this.add(new DoorTrigger(4268, 1035, 90, 180, "CourtYard", 500,500,'right',false))
 
     const rects = await MazeTileCollisionBuilder.fromImage(
       "/images/East-hall-map.png",
