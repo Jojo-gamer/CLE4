@@ -1,0 +1,130 @@
+import { Actor, Vector, BoundingBox, Color, Scene, CollisionType } from "excalibur"
+import { Resources } from './resources.js'
+import { DoorTrigger } from "./doorTrigger.js"
+import { Player } from "./player.js"
+import { MazeWallCollisionBuilder } from './mazecollisionbuilder.js'
+import { Dog } from "./dog.js"
+
+const TILE_SIZE = 128 
+
+export class EastMaze extends Scene {
+    constructor() {
+        super({
+            width: 1440,
+            height: 5760,
+            color: Color.Black
+        })
+    }
+
+    async onInitialize() {
+        const WORLD_WIDTH  = 1440
+        const WORLD_HEIGHT = 5760
+        const MAP_WIDTH    = 256
+        const MAP_HEIGHT   = 1024
+        const MAP_SCALE    = WORLD_WIDTH / MAP_WIDTH  
+
+        this.player = new Player()
+        this.player.z = 998
+
+        
+                 
+                 
+
+        this.add(new DoorTrigger(1416, 350, 50, 150, "EastHall", 100, 150));
+
+        this.add(new DoorTrigger(1400, 5350, 50, 150, "EastWing", 230, 350));
+
+        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 400 }
+        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
+        this.add(this.player)
+        this.dog = new Dog()
+                 this.dog.z = 999
+                 this.dog.pos = this.player.pos
+                 this.add(this.dog)
+        this.camera.strategy.lockToActor(this.player)
+        this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, WORLD_WIDTH, WORLD_HEIGHT))
+
+       
+        const borderWalls = [
+            new Actor({ x: 0,           y: -10,          width: WORLD_WIDTH,  height: 10,          anchor: Vector.Zero, collisionType: CollisionType.Fixed }),
+            new Actor({ x: 0,           y: WORLD_HEIGHT,  width: WORLD_WIDTH,  height: 10,          anchor: Vector.Zero, collisionType: CollisionType.Fixed }),
+            new Actor({ x: -10,         y: 0,            width: 10,           height: WORLD_HEIGHT, anchor: Vector.Zero, collisionType: CollisionType.Fixed }),
+            new Actor({ x: WORLD_WIDTH, y: 0,            width: 10,           height: WORLD_HEIGHT, anchor: Vector.Zero, collisionType: CollisionType.Fixed })
+        ]
+        for (const wall of borderWalls) this.add(wall)
+
+        
+        const bg = new Actor({ x: 0, y: 0, width: WORLD_WIDTH, height: WORLD_HEIGHT, anchor: Vector.Zero })
+        const bgImg = Resources.EastHallWay.toSprite()
+        bgImg.scale = new Vector(WORLD_WIDTH / bgImg.width, WORLD_HEIGHT / bgImg.height)
+        bg.graphics.use(bgImg)
+        this.add(bg)
+
+        
+        const rects = await MazeWallCollisionBuilder.fromImage(
+            "/images/East-maze.png",
+            MAP_WIDTH,
+            MAP_HEIGHT,
+            {
+                tileSize: 4,
+                scale: MAP_SCALE,
+                treatGreenAsCollision: true,
+                greenIsSolid: true,
+                treatBlackAsCollision: true,
+                blackIsSolid: false
+            }
+        )
+
+        const walls = MazeWallCollisionBuilder.createCollisionActors(rects)
+
+        for (const wall of walls) {
+            wall.z = 10
+            this.add(wall)
+
+            
+            this.addTiledSprite(wall.pos.x, wall.pos.y, wall.width, wall.height)
+
+           
+            wall.graphics.opacity = 0
+        }
+    }
+
+   
+    addTiledSprite(x, y, w, h) {
+        for (let ty = 0; ty < h; ty += TILE_SIZE) {
+            for (let tx = 0; tx < w; tx += TILE_SIZE) {
+                const tileW = Math.min(TILE_SIZE, w - tx)
+                const tileH = Math.min(TILE_SIZE, h - ty)
+
+                const tileActor = new Actor({
+                    x: x + tx,
+                    y: y + ty,
+                    width:  tileW,
+                    height: tileH,
+                    anchor: Vector.Zero,
+                    collisionType: CollisionType.PreventCollision
+                })
+
+                const sprite = Resources.MazeWall.toSprite()
+
+                
+                if (tileW < TILE_SIZE || tileH < TILE_SIZE) {
+                    sprite.sourceView = {
+                        x: 0,
+                        y: 0,
+                        width:  tileW,
+                        height: tileH
+                    }
+                    sprite.destSize = {
+                        width:  tileW,
+                        height: tileH
+                    }
+                }
+
+                tileActor.graphics.use(sprite)
+                tileActor.z = 10
+                this.add(tileActor)
+            }
+        }
+    }
+}
