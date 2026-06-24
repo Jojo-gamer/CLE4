@@ -65,9 +65,7 @@ export class EastMaze extends Scene {
         this.add(new DoorTrigger(1416, 350, 50, 150, "EastHall", 100, 150));
         this.add(new DoorTrigger(1400, 5350, 50, 150, "EastWing", 230, 350));
 
-        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 400 }
-        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
-        this.add(this.player)
+        
         
         this.dog = new Dog()
         this.dog.z = 999
@@ -114,6 +112,43 @@ export class EastMaze extends Scene {
             // GEWIJZIGD: We maken de hitbox NIET onzichtbaar, maar plakken de graphics er direct op!
             this.applyTiledGraphics(wall)
         }
+    }
+
+    onActivate(ctx) {
+        // 1. Haal de centrale speler op
+        if (!this.engine.player) {
+            this.engine.player = new Player();
+        }
+        this.player = this.engine.player;
+
+        // 2. Voeg de speler toe als hij er nog niet in zit
+        if (!this.player.scene) {
+            this.add(this.player);
+        }
+
+        // 3. Speler positie
+        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 400 };
+        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
+
+        // 4. Hond setup (haal uit engine of maak aan)
+        if (!this.engine.dog) {
+            this.engine.dog = new Dog(true); // Zet follow op true
+        }
+        this.dog = this.engine.dog;
+
+        if (!this.dog.scene) {
+            this.add(this.dog);
+        }
+        this.dog.pos = this.player.pos;
+
+        // ✅ DE BELANGRIJKSTE STAP: 
+        // Forceer de hond om de speler weer te gaan volgen in deze nieuwe scene
+        this.dog.actions.clearActions();
+        this.dog.actions.follow(this.player, 75);
+
+        // Camera
+        this.camera.strategy.lockToActor(this.player);
+        this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 1440, 5760));
     }
 
     onDeactivate(ctx) {
