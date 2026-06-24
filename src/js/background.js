@@ -14,15 +14,19 @@ export class Background extends Actor {
         const mapWidth = columns * tileWidth
         const mapHeight = rows * tileHeight
 
-        console.log(location)
         let floorTiles;
+        let wallTiles = cafWalls
 
-        if (location == "Cafetaria") {
-            floorTiles = Resources.CafTile.toSprite()
-        }
-
-        if (location == "EastWing" || location == "EW_Room1" || location == "EW_Room2") {
-            floorTiles = Resources.WingTile.toSprite()
+        switch (location) {
+            case "Cafetaria":
+                floorTiles = Resources.CafTile.toSprite()
+                break;
+            case "Eastwing" || "EW_Room1" || "EW_Room2":
+                floorTiles = Resources.WingTile.toSprite()
+                break;
+            case "CourtYard":
+                floorTiles = Resources.GrassTile.toSprite()
+                wallTiles = doors
         }
 
         const tilemap = new TileMap({
@@ -35,7 +39,8 @@ export class Background extends Actor {
             const columns = tilemap.columns
             const tileCount = tilemap.tiles.length
             if (index < columns && index !== 0 && index !== columns - 1) {  //upperwal
-                tile.addGraphic(cafWalls.getSprite(0, 0));
+                tile.addGraphic(floorTiles);  //floor
+                tile.addGraphic(wallTiles.getSprite(0, 0));
                 tile.solid = true
                 // console.log(tile)
             } else if (index % columns === 0) {     //left wall
@@ -43,8 +48,9 @@ export class Background extends Actor {
                 tilemap.tiles[tileCount - columns].addGraphic(cafWalls.getSprite(4, 0))
                 tile.solid = true
             } else if (index % columns === columns - 1) {   //right wall
-                tile.addGraphic(cafWalls.getSprite(1, 0));
-                tilemap.tiles[tileCount - 1].addGraphic(cafWalls.getSprite(3, 0))
+                if(wallTiles === doors) tile.addGraphic(floorTiles);  //floor
+                tile.addGraphic(wallTiles.getSprite(1, 0));
+                tilemap.tiles[tileCount - 1].addGraphic(wallTiles.getSprite(3, 0))
                 tile.solid = true
             } else if (index > tileCount - columns) {    //bottom wall
                 tile.addGraphic(cafWalls.getSprite(0, 0));
