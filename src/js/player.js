@@ -27,6 +27,7 @@ export class Player extends Actor {
         this.name = "player"
         this.body.collisionType = CollisionType.Active
         this.offset = new Vector(0, 25)
+        this.isRayCastable = false;
 
         this.collider.useBoxCollider(40, 50, Vector.Half, new Vector(0, 50));
         this.events.on("collisionstart", (e) => {
