@@ -1,4 +1,16 @@
-import { Actor, CollisionType, Color, Keys, Ray, Sound, SpriteSheet, TileMap, Vector, range, Animation } from "excalibur";
+import {
+  Actor,
+  CollisionType,
+  Color,
+  Keys,
+  Ray,
+  Sound,
+  SpriteSheet,
+  TileMap,
+  Vector,
+  range,
+  Animation,
+} from "excalibur";
 import { Resources } from "./resources";
 import { Enemy } from "./enemy";
 import { Keyfragment } from "./keyfragment";
@@ -114,36 +126,22 @@ export class Dog extends Actor {
       const offset = 5;
       let rayOrigin;
       if (this.dir.equals(Vector.Up)) {
-        rayOrigin = new Vector(
-          centerX,
-          bounds.top - offset,
-        );
+        rayOrigin = new Vector(centerX, bounds.top - offset);
       } else if (this.dir.equals(Vector.Down)) {
-        rayOrigin = new Vector(
-          centerX,
-          bounds.bottom + offset,
-        );
+        rayOrigin = new Vector(centerX, bounds.bottom + offset);
       } else if (this.dir.equals(Vector.Left)) {
-        rayOrigin = new Vector(
-          bounds.left - offset,
-          centerY,
-        );
+        rayOrigin = new Vector(bounds.left - offset, centerY);
       } else if (this.dir.equals(Vector.Right)) {
-        rayOrigin = new Vector(
-          bounds.right + offset,
-          centerY,
-        );
+        rayOrigin = new Vector(bounds.right + offset, centerY);
       }
-      
+
       const ray = new Ray(rayOrigin, this.dir.normalize());
       const hits = this.scene.physics.rayCast(ray, {
         searchAllColliders: true, // Stop direct bij het eerste doelwit
         maxDistance: 500,
         filter: (hit) => {
           const owner = hit.collider.owner;
-          return (
-            owner.isRayCastable === true
-          );
+          return owner.isRayCastable === true;
         },
       });
 
