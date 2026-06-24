@@ -5,6 +5,7 @@ import { Keyfragment } from "./keyfragment";
 import { DoorTrigger } from "./doorTrigger";
 import { Message } from "./message";
 import { Dog } from "./dog";
+import { Crowbar } from "./crowbar";
 
 export class Player extends Actor {
     speed = 450
@@ -32,10 +33,11 @@ export class Player extends Actor {
         this.collider.useBoxCollider(40, 50, Vector.Half, new Vector(0, 50));
         this.events.on("collisionstart", (e) => {
             const target = e.other.owner
-            if(target instanceof Dog) {
-                if(!target.follow) {
+            if (target instanceof Dog) {
+                if (!target.follow) {
                     target.follow = true;
                     target.actions.follow(this, 75)
+                    this.scene.door.triggerEnabled = true
                     //GO TO CUTSCENE
                 }
             }
@@ -55,6 +57,10 @@ export class Player extends Actor {
                     }
                     this.scene.add(new Message())
                 }
+            }
+            if (target instanceof Crowbar) {
+                target.kill()
+                this.scene.engine.collectedCrowbar = true;
             }
         })
     }
