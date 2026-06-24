@@ -3,7 +3,7 @@ import { Resources, ResourceLoader } from './resources.js'
 
 export class TableVertical extends Actor {
 
-    constructor(isReal = true) {
+    constructor(isReal = true, ) {
 
 
         const scale = 0.4;
@@ -15,7 +15,7 @@ export class TableVertical extends Actor {
         });
 
         this.isReal = isReal;
-
+        this.isRayCastable = true;
         this.tableSprite = Resources.TableVertical.toSprite();
         this.tableSprite.scale = new Vector(scale, scale);
         this.graphics.use(this.tableSprite);

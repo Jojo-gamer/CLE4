@@ -72,9 +72,8 @@ export class MazeTileCollisionBuilder {
 
   static createCollisionActors(rects) {
     return rects.map((rect) => {
-      return new Actor({
+      const actor = new Actor({
         name: 'path',
-        isRayCastable: true,
         x: rect.x,
         y: rect.y,
         width: rect.width,
@@ -82,6 +81,9 @@ export class MazeTileCollisionBuilder {
         anchor: Vector.Zero,
         collisionType: CollisionType.Passive
       })
+      actor.isRayCastable = true;
+      return actor;
+
     })
   }
 

@@ -15,6 +15,7 @@ export class Enemy extends Actor {
             color: Color.Green,
             z: 2
         })
+        this.isRayCastable = true;
         this.isReal = isReal;
         this.body.collisionType = CollisionType.Active
         

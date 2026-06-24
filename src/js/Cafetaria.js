@@ -8,6 +8,7 @@ import { TableHorizontal } from "./tablehorizontal.js";
 import { Dog } from './dog.js'
 import { Enemy } from "./enemy.js";
 import { CourtYard } from "./courtyard.js";
+import { EastMaze } from "./eastmaze.js";
 
 
 export class Cafetaria extends Scene {
@@ -45,7 +46,10 @@ export class Cafetaria extends Scene {
 
         this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, 'left', true));
         this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', false));
-        this.add(new DoorTrigger(1500, 1855, 150, 50, "Reception", 650, 100));
+
+        this.add(new DoorTrigger(140, 1300, 50, 150, "EastMaze", 1300, 5350));
+
+        this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 650, 100));
     }
 
     onActivate(ctx) {
@@ -68,6 +72,34 @@ export class Cafetaria extends Scene {
             const enemy = new Enemy(isReal)
             this.add(enemy)
         }
+
+        this.camera.strategy.lockToActor(this.player)
+        this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
+
+       
+
+        this.add(new DoorTrigger(140, 1300, 50, 150, "EastMaze", 1300, 5350));
+
+        this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 650, 100));
+
+        this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, 'left', false));
+
+        this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, 'up', false));
+    }
+
+    onActivate(ctx) {
+
+
+        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
+        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
+        this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
+        this.dog.z = 50
+
+
+        this.clearProps();
+
+        this.placePropRandomly(new TableHorizontal(false, true, 0))
+        this.placePropRandomly(new TableHorizontal(false, true, 1))
 
         for (let i = 0; i < 15; i++) {
             const isReal = Math.random() > 0.25;
@@ -147,7 +179,9 @@ export class Cafetaria extends Scene {
     }
 
     playerOutOfBounds() {
-        if (this.player.pos.x < 100 || this.player.pos.x > 2940 || this.player.pos.y < 100 || this.player.pos.y > 1900) {
+        if (this.player.pos.x < 150 || this.player.pos.x > 2840 || this.player.pos.y < 130 || this.player.pos.y > 1760 ) {
+            
+            
             if (!Resources.OutOfBoundsSound.isPlaying()) {
                 Resources.OutOfBoundsSound.play();
             }
@@ -155,7 +189,10 @@ export class Cafetaria extends Scene {
     }
 
     playerInBounds() {
-        if (this.player.pos.x > 180 && this.player.pos.x < 2814 && this.player.pos.y > 218 && this.player.pos.y < 1782) {
+        
+        if (this.player.pos.x > 157 && this.player.pos.x < 2830 && this.player.pos.y > 155 && this.player.pos.y < 1745 ) {
+            
+           
             if (Resources.OutOfBoundsSound.isPlaying()) {
                 Resources.OutOfBoundsSound.stop();
             }
