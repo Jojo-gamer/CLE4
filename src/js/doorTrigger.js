@@ -75,7 +75,7 @@ export class DoorTrigger extends Actor {
           this.graphics.use(doors.getSprite(5, 0));
           break;
         case "down":
-          this.graphics.use(doors.getSprite(7, 0));
+          this.graphics.use(doors.getSprite(6, 0));
           break;
         default:
       }
