@@ -5,8 +5,11 @@ import { Resources } from "./resources";
 import { MazeTileCollisionBuilder } from "./collisionbuilder";
 import { DoorTrigger } from "./doorTrigger";
 import { Dog } from "./dog";
+import { Rubble } from "./rubble";
 
 export class Reception extends Scene {
+    door;
+
     constructor() {
         const sceneWidth = 1280
         const sceneHeight = 1000
@@ -23,8 +26,6 @@ export class Reception extends Scene {
     }
 
     onInitialize(engine) {
-        // this.location = "EastWing" //engine.currentSceneName
-        // this.add(new Background(this.sceneWidth, this.sceneHeight, this.location))
         const bg = new Actor({
             x: 0,
             y: 0,
@@ -36,7 +37,7 @@ export class Reception extends Scene {
         bgImg.scale = new Vector((this.sceneWidth / bgImg.width), (this.sceneHeight / bgImg.height))
         bg.graphics.use(bgImg)
         this.add(bg)
-        this.addCollision()
+        this.addCollisions()
 
         this.player = new Player();
         const spawnPoint = this.engine.nextSpawn || { x: 640, y: 700 };
@@ -57,11 +58,12 @@ export class Reception extends Scene {
 
 
 
-    addCollision(engine) {
+    addCollisions(engine) {
         const tileWidth = 80
         const tileHeight = 62.5
-        const rubbleSprite = Resources.Rubble.toSprite()
-        this.add(new Actor({ width: rubbleSprite.width, height: rubbleSprite.height - 150, pos: vec(8 * tileWidth, 15 * tileHeight), graphic: rubbleSprite, scale: vec(0.7, 0.5), collisionType: CollisionType.Fixed }))
+        this.rubble = new Rubble(tileWidth, tileHeight)
+        this.add(this.rubble)
+        this.add(new Actor({ pos: vec(7 * tileWidth, 0), anchor: vec(0, 0), collisionType: CollisionType.Fixed, collider: new EdgeCollider({ begin: vec(0, 0), end: vec(4 * tileWidth, 0) }) }))
         this.add(new Actor({ width: 6 * tileWidth, height: tileHeight, anchor: vec(0, 0), color: Color.Black }))
         this.add(new Actor({ x: 10 * tileWidth, width: 6 * tileWidth, height: 1 * tileHeight, anchor: vec(0, 0), color: Color.Black }))
         this.add(new Actor({ pos: vec(0, 13 * tileHeight), width: 5 * tileWidth, height: 3 * tileHeight + 2, anchor: vec(0, 0), color: Color.Black }))
@@ -93,7 +95,7 @@ export class Reception extends Scene {
                 Shape.Box(tileWidth, 3 * tileHeight, vec(0, 0), vec(10 * tileWidth, 13 * tileHeight))
             ])
         }))
-        this.add(new DoorTrigger(8 * tileWidth, 10, 2 * tileWidth, tileHeight, "Cafetaria", 1500, 1700, 'up', true))
+        this.door = new DoorTrigger(8 * tileWidth, tileHeight, 2 * tileWidth, tileHeight, "Cafetaria", 1500, 1700, 'up', false)
+        this.add(this.door)
     }
-
 }
