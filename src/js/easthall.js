@@ -73,7 +73,7 @@ const bg = new Actor({
     height: WORLD_HEIGHT, // Explicitly give the actor the world height (2000)
     anchor: Vector.Zero   // Keep the top-left alignment
 })
-const bgImg = Resources.EastHallMap.toSprite();
+const bgImg = Resources.Afgrond.toSprite();
 bgImg.scale = new Vector((WORLD_WIDTH/bgImg.width),(WORLD_HEIGHT/bgImg.height))
 
 bg.graphics.use(bgImg)

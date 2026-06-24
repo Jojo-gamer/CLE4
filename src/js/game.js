@@ -10,6 +10,7 @@ import { Easthall } from './easthall.js'
 import { CourtYard } from './courtyard.js'
 import { GameOver } from './gameover.js'
 import { Reception } from './reception.js'
+import { EastMaze} from './eastmaze.js'
 import { EastWing } from './eastwing.js'
 import { Message } from './message.js'
 
@@ -37,9 +38,10 @@ export class Game extends Engine {
         this.updateLivesHud()
 
         this.addScene("Reception", new Reception())
-        this.addScene("Cafetaria", new Cafetaria())
+        this.addScene("Cafetaria", new Cafetaria()) 
         this.addScene("GameOver", new GameOver())
         this.addScene("EastHall", new Easthall())
+        this.addScene("EastMaze", new EastMaze())
         this.addScene("EastWing", new EastWing())
         this.addScene("CourtYard", new CourtYard())
 
@@ -78,7 +80,7 @@ export class Game extends Engine {
 
         hud.style.position = 'absolute';
         hud.style.top = '20px';
-        hud.style.right = '20px';
+        hud.style.right = '125px';
         hud.style.display = 'flex';
         hud.style.gap = '10px';
         hud.style.zIndex = '1000';
