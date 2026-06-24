@@ -13,6 +13,7 @@ export class Enemy extends Actor {
             height: 40,
             color: Color.Green,
         })
+        this.isRayCastable = true;
         this.isReal = isReal;
         this.body.collisionType = CollisionType.Active
     }

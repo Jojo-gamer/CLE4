@@ -15,7 +15,7 @@ export class mazewall extends Actor {
             });
     
             this.isReal = isReal;
-    
+            this.isRayCastable = true
             this.MazeHSprite = Resources.MazeWall.toSprite();
             this.MazeHSprite.scale = new Vector(scale, scale);
             this.MazeVSprite = Resources.WallVertical.toSprite();
