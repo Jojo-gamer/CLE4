@@ -1,16 +1,4 @@
-import {
-  Actor,
-  CollisionType,
-  Color,
-  Keys,
-  Ray,
-  Sound,
-  SpriteSheet,
-  TileMap,
-  Vector,
-  range,
-  Animation,
-} from "excalibur";
+import { Actor, CollisionType, Color, Keys, Ray, Sound, SpriteSheet, TileMap, Vector, range, Animation } from "excalibur";
 import { Resources } from "./resources";
 import { Enemy } from "./enemy";
 import { Keyfragment } from "./keyfragment";
@@ -26,6 +14,7 @@ export class Dog extends Actor {
     });
     this.fakedWall = false;
     this.wallCutscene = false;
+    this.isRayCastable = false;
     this.isReal = true;
     this.follow = follow;
   }
@@ -110,15 +99,15 @@ export class Dog extends Actor {
       this.graphics.flipHorizontal = true;
     }
 
-        if (this.player.dirRight) {
-            this.dir = Vector.Right
-        if (this.vel.x > 0) {
-                this.graphics.use(this.movingSide);
-              } else {
-                this.graphics.use(this.idleSide);
-              }
-              this.graphics.flipHorizontal = false;
-        }
+    if (this.player.dirRight) {
+      this.dir = Vector.Right;
+      if (this.vel.x > 0) {
+        this.graphics.use(this.movingSide);
+      } else {
+        this.graphics.use(this.idleSide);
+      }
+      this.graphics.flipHorizontal = false;
+    }
 
         //CUTSCENE TIME
         if (engine.currentSceneName == "EastWing" && !this.fakedWall && this.player.pos.x < 890) {
@@ -147,17 +136,40 @@ export class Dog extends Actor {
         }
 
     if (engine.input.keyboard.wasPressed(Keys.Space)) {
-      const rayOrigin = this.player.pos;
-      console.log(rayOrigin);
+      const bounds = this.player.collider.bounds;
+      const centerX = (bounds.left + bounds.right) / 2;
+      const centerY = (bounds.top + bounds.bottom) / 2;
+      const offset = 5;
+      let rayOrigin;
+      if (this.dir.equals(Vector.Up)) {
+        rayOrigin = new Vector(
+          centerX,
+          bounds.top - offset,
+        );
+      } else if (this.dir.equals(Vector.Down)) {
+        rayOrigin = new Vector(
+          centerX,
+          bounds.bottom + offset,
+        );
+      } else if (this.dir.equals(Vector.Left)) {
+        rayOrigin = new Vector(
+          bounds.left - offset,
+          centerY,
+        );
+      } else if (this.dir.equals(Vector.Right)) {
+        rayOrigin = new Vector(
+          bounds.right + offset,
+          centerY,
+        );
+      }
+      
       const ray = new Ray(rayOrigin, this.dir.normalize());
       const hits = this.scene.physics.rayCast(ray, {
         searchAllColliders: true, // Stop direct bij het eerste doelwit
-        maxDistance: 350,
+        maxDistance: 500,
         filter: (hit) => {
           const owner = hit.collider.owner;
           return (
-            owner !== this.player &&
-            owner !== this &&
             owner.isRayCastable === true
           );
         },
