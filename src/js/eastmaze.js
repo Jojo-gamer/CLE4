@@ -24,7 +24,7 @@ export class EastMaze extends Scene {
         const MAP_SCALE    = WORLD_WIDTH / MAP_WIDTH  
 
         this.player = new Player()
-        this.player.z = 999
+        this.player.z = 998
 
         
                  
