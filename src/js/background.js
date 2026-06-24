@@ -21,7 +21,13 @@ export class Background extends Actor {
             case "Cafetaria":
                 floorTiles = Resources.CafTile.toSprite()
                 break;
-            case "Eastwing" || "EW_Room1" || "EW_Room2":
+            case "EastWing":
+                floorTiles = Resources.WingTile.toSprite()
+                break;
+            case "EW_Room1":
+                floorTiles = Resources.WingTile.toSprite()
+                break;
+            case "EW_Room2":
                 floorTiles = Resources.WingTile.toSprite()
                 break;
             case "CourtYard":

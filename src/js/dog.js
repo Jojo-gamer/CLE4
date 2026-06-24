@@ -24,6 +24,8 @@ export class Dog extends Actor {
       scale: new Vector(0.6, 0.6),
       z: 1,
     });
+    this.fakedWall = false;
+    this.wallCutscene = false;
     this.isRayCastable = false;
     this.isReal = true;
     this.follow = follow;
@@ -118,6 +120,32 @@ export class Dog extends Actor {
       }
       this.graphics.flipHorizontal = false;
     }
+
+        //CUTSCENE TIME
+        if (engine.currentSceneName == "EastWing" && !this.fakedWall && this.player.pos.x < 890) {
+          this.actions.clearActions();
+          this.vel = new Vector(0,-367)
+          this.graphics.use(this.movingDown)
+        }
+
+        if (this.pos.y < -180) {
+          this.fakedWall = true;
+          this.vel = new Vector(0,367)
+        }
+
+        if (this.vel.y > 0 && this.fakedWall && !this.wallCutscene) {
+            console.log("bruh")
+            this.graphics.use(this.movingUp)
+          }
+
+        if (this.pos.y > 350 && this.fakedWall) {
+          this.wallCutscene = true;
+
+        }
+
+        if (this.wallCutscene) {
+            this.actions.follow(this.scene.player, 75);
+        }
 
     if (engine.input.keyboard.wasPressed(Keys.Space)) {
       const bounds = this.player.collider.bounds;
