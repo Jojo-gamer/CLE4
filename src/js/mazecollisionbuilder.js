@@ -131,6 +131,7 @@ export class MazeWallCollisionBuilder {
       
 
       actor.isReal = rect.isReal 
+      actor.isRayCastable = true
       
       return actor
     })

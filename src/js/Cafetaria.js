@@ -1,16 +1,5 @@
-import {
-  Actor,
-  Engine,
-  Vector,
-  DisplayMode,
-  BoundingBox,
-  Color,
-  SolverStrategy,
-  Timer,
-  Scene,
-  randomInRange,
-} from "excalibur";
-import { Resources, ResourceLoader } from "./resources.js";
+import { Actor, BoundingBox, Color, Scene, Vector, randomInRange } from "excalibur";
+import { Resources } from "./resources.js";
 import { Background } from "./background.js";
 import { DoorTrigger } from "./doorTrigger.js";
 import { Player } from "./player.js";
@@ -18,121 +7,81 @@ import { TableVertical } from "./tablevertical.js";
 import { TableHorizontal } from "./tablehorizontal.js";
 import { Dog } from "./dog.js";
 import { Enemy } from "./enemy.js";
-import { CourtYard } from "./courtyard.js";
 
 export class Cafetaria extends Scene {
-  isReal;
-  currentScene;
   constructor() {
-    const sceneWidth = 3000;
-    const sceneHeight = 2000;
-
-    super({
-      width: sceneWidth,
-      height: sceneHeight,
-      color: Color.Black,
-    });
-
+    super({ width: 3000, height: 2000, color: Color.Black });
     this.placedProps = [];
-    this.sceneWidth = sceneWidth;
-    this.sceneHeight = sceneHeight;
+    this.sceneWidth = 3000;
+    this.sceneHeight = 2000;
   }
+
   onInitialize(engine) {
-    this.location = engine.currentSceneName;
-    this.add(new Background(this.sceneWidth, this.sceneHeight, this.location));
-
-    this.player = new Player();
-    const spawnPoint = this.engine.nextSpawn;
-    this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
-    this.add(this.player);
-
-    this.dog = new Dog();
-    this.dog.pos = this.player.pos;
-    this.add(this.dog);
-
-    this.camera.strategy.lockToActor(this.player);
-    this.camera.strategy.limitCameraBounds(
-      new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight),
-    );
-
-    this.add(
-      new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", true),
-    );
-    this.add(
-      new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, "up", false),
-    );
-    this.add(new DoorTrigger(1500, 1855, 150, 50, "Reception", 650, 40));
+    this.add(new Background(this.sceneWidth, this.sceneHeight, engine.currentSceneName));
   }
 
   onActivate(ctx) {
     const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
-    this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
-    this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
-
-    for (let actor of this.actors) {
-      if (actor instanceof Enemy) {
-        actor.kill();
-      }
+    
+    // Player/Dog setup
+    if (!this.player) {
+        this.player = new Player();
+        this.add(this.player);
+        this.dog = new Dog(false);
+        this.add(this.dog);
     }
-    this.clearProps();
-
-    this.placePropRandomly(new TableHorizontal(false, true, 0));
-    this.placePropRandomly(new TableHorizontal(false, true, 1));
-
-    for (let i = 0; i < 5; i++) {
-      const isReal = Math.random() > 0.25;
-      const enemy = new Enemy(isReal);
-      this.add(enemy);
-    }
-
-    this.camera.strategy.lockToActor(this.player);
-    this.camera.strategy.limitCameraBounds(
-      new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight),
-    );
-
-    this.add(new DoorTrigger(140, 1300, 50, 150, "EastMaze", 1300, 5350));
-    this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 650, 100));
-    this.add(
-      new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", false),
-    );
-    this.add(
-      new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, "up", true),
-    );
-  }
-
-  onActivate(ctx) {
-    const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
+    
     this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
     this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
     this.dog.z = 50;
 
+    // Opschonen
+    this.killEnemies();
     this.clearProps();
 
+    // Setup props
     this.placePropRandomly(new TableHorizontal(false, true, 0));
     this.placePropRandomly(new TableHorizontal(false, true, 1));
+    for (let i = 0; i < 15; i++) this.placePropRandomly(new TableVertical(Math.random() > 0.25));
+    for (let i = 0; i < 15; i++) this.placePropRandomly(new TableHorizontal(Math.random() > 0.25));
 
-    for (let i = 0; i < 15; i++) {
-      const isReal = Math.random() > 0.25;
-      this.placePropRandomly(new TableVertical(isReal));
-    }
+    // Spawn vijanden
+    for (let i = 0; i < 5; i++) this.add(new Enemy(Math.random() > 0.25));
 
-    for (let i = 0; i < 15; i++) {
-      const isReal = Math.random() > 0.25;
-      this.placePropRandomly(new TableHorizontal(isReal));
-    }
+    // Camera & Deuren
+    this.camera.strategy.lockToActor(this.player);
+    this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight));
+
+    this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", true));
+    this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, "up", false));
+    this.add(new DoorTrigger(140, 1300, 50, 150, "EastMaze", 1300, 5350));
+    this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 650, 100));
   }
 
-  clearProps() {
-    this.placedProps.forEach((prop) => {
-      prop.kill();
-    });
-
-    this.placedProps = [];
+  onDeactivate(ctx) {
+    this.killEnemies();
   }
+
+
+  // ... rest van je helper functies (clearProps, killEnemies, placePropRandomly, etc.) blijven hetzelfde
+   
 
   onPreUpdate(engine, delta) {
     this.playerOutOfBounds();
     this.playerInBounds();
+  }
+
+  clearProps() {
+    this.placedProps.forEach((prop) => prop.kill());
+    this.placedProps = [];
+  }
+
+  killEnemies() {
+    this.actors.forEach((element) => {
+      if (element instanceof Enemy) {
+        element.kill();
+      }
+    });
   }
 
   placePropRandomly(propInstance) {
@@ -143,7 +92,6 @@ export class Cafetaria extends Scene {
       const randomX = randomInRange(300, 2600);
       const randomY = randomInRange(300, 1600);
 
-      // Calculate proposed Bounding Box based on this specific prop's dimensions
       const halfW = propInstance.width / 2 + padding;
       const halfH = propInstance.height / 2 + padding;
 
@@ -154,12 +102,10 @@ export class Cafetaria extends Scene {
         bottom: randomY + halfH,
       });
 
-      // Check for overlaps with ALL already placed props
       let isOverlapping = false;
       for (const placed of this.placedProps) {
         const pW = placed.width / 2 + padding;
         const pH = placed.height / 2 + padding;
-
         const placedBox = new BoundingBox({
           left: placed.pos.x - pW,
           top: placed.pos.y - pH,
@@ -173,41 +119,24 @@ export class Cafetaria extends Scene {
         }
       }
 
-      // If no overlap, set position, save it, and add to scene
       if (!isOverlapping) {
         propInstance.pos = new Vector(randomX, randomY);
-        this.placedProps.push(propInstance); // Add to the master list
+        this.placedProps.push(propInstance);
         this.add(propInstance);
         return;
       }
     }
-
-    console.warn("Could not find a free spot for a prop after 50 attempts!");
   }
 
   playerOutOfBounds() {
-    if (
-      this.player.pos.x < 100 ||
-      this.player.pos.x > 2940 ||
-      this.player.pos.y < 100 ||
-      this.player.pos.y > 1900
-    ) {
-      if (!Resources.OutOfBoundsSound.isPlaying()) {
-        Resources.OutOfBoundsSound.play();
-      }
+    if (this.player.pos.x < 100 || this.player.pos.x > 2940 || this.player.pos.y < 100 || this.player.pos.y > 1900) {
+      if (!Resources.OutOfBoundsSound.isPlaying()) Resources.OutOfBoundsSound.play();
     }
   }
 
   playerInBounds() {
-    if (
-      this.player.pos.x > 180 &&
-      this.player.pos.x < 2814 &&
-      this.player.pos.y > 218 &&
-      this.player.pos.y < 1782
-    ) {
-      if (Resources.OutOfBoundsSound.isPlaying()) {
-        Resources.OutOfBoundsSound.stop();
-      }
+    if (this.player.pos.x > 180 && this.player.pos.x < 2814 && this.player.pos.y > 218 && this.player.pos.y < 1782) {
+      if (Resources.OutOfBoundsSound.isPlaying()) Resources.OutOfBoundsSound.stop();
     }
   }
 }

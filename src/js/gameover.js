@@ -37,7 +37,7 @@ export class GameOver extends Scene {
             pos: new Vector(640, 400),
             font: new Font({
                 family: 'Arial',
-                size: 20,
+                size: 20,   
                 unit: FontUnit.Px,
                 color: Color.White
             }),
@@ -54,7 +54,8 @@ export class GameOver extends Scene {
 
     onPreUpdate(engine) {
         if (engine.input.keyboard.wasPressed(Keys.Space)) {
-            engine.goToScene('Reception');
+            // Activeer de grote schoonmaak!
+            engine.resetGame();
         }
     }
 }
