@@ -3,7 +3,7 @@ import { Actor, BaseAlign, Color, Font, FontUnit, Label, Vector } from "excalibu
 export class Message extends Label {
     constructor() {
         super({
-            text: "Deuren zijn geopend!",
+            text: "Deur is geopend!",
             z: 99999,
             font: new Font({
                 family: 'Arial',

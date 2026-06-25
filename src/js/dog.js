@@ -15,6 +15,7 @@ import {
 import { Resources } from "./resources";
 import { Enemy } from "./enemy";
 import { Keyfragment } from "./keyfragment";
+import { Crowbar } from "./crowbar";
 
 export class Dog extends Actor {
   constructor(follow = true) {
@@ -31,6 +32,8 @@ export class Dog extends Actor {
     this.isReal = true;
     this.follow = follow;
     this.rayDebug = null;
+    this.petted = false;
+    this.petCounter = 0;
   }
 
   onInitialize(engine) {
@@ -56,9 +59,15 @@ export class Dog extends Actor {
       grid: { rows: 1, columns: 4, spriteWidth: 128, spriteHeight: 128 },
     });
 
+    const dogPet = SpriteSheet.fromImageSource({
+      image: Resources.DogPet,
+      grid: {rows: 1, columns: 2, spriteWidth: 128, spriteHeight: 128}
+    })
+
     const movingUp = Animation.fromSpriteSheet(dogUp, range(0, 3), 75);
     const movingSide = Animation.fromSpriteSheet(dogSide, range(0, 3), 75);
     const movingDown = Animation.fromSpriteSheet(dogDown, range(0, 3), 75);
+    const goodBoy = Animation.fromSpriteSheet(dogPet, range(0,1), 60)
 
     const idleUp = dogUp.getSprite(0, 0);
     const idleSide = dogSide.getSprite(0, 0);
@@ -67,10 +76,13 @@ export class Dog extends Actor {
     this.graphics.add("movingUp", movingUp);
     this.graphics.add("movingSide", movingSide);
     this.graphics.add("movingDown", movingDown);
+    this.graphics.add("goodBoy", goodBoy)
 
     this.graphics.add("idleUp", idleUp);
     this.graphics.add("idleSide", idleSide);
     this.graphics.add("idleDown", idleDown);
+
+    this.goodBoy = this.graphics.use(goodBoy)
 
     this.movingUp = this.graphics.use(movingUp);
     this.movingSide = this.graphics.use(movingSide);
@@ -79,6 +91,7 @@ export class Dog extends Actor {
     this.idleUp = this.graphics.use(idleUp);
     this.idleSide = this.graphics.use(idleSide);
     this.idleDown = this.graphics.use(idleDown);
+    
   }
 
   onPreUpdate(engine) {
@@ -123,6 +136,23 @@ export class Dog extends Actor {
       this.graphics.flipHorizontal = false;
     }
 
+    //pet that dawg
+    this.playerDistance = this.player.pos.distance(this.pos)
+    
+    if (this.playerDistance < 60 && engine.input.keyboard.wasPressed(Keys.E)) {
+      this.beingPet = true;
+      this.petCounter = 0;
+    }
+
+    if (this.beingPet) {
+      this.petCounter++
+      this.graphics.use(this.goodBoy)
+      if (this.petCounter >= 50) {
+        this.beingPet = false;
+      }
+
+    }
+
     //CUTSCENE TIME
     if (
       engine.currentSceneName == "EastWing" &&
@@ -148,6 +178,9 @@ export class Dog extends Actor {
       this.wallCutscene = true;
     }
 
+    if (this.wallCutscene) {
+      this.actions.follow(this.scene.player, 75);
+    }
     if (this.wallCutscene) {
       this.actions.follow(this.scene.player, 75);
     }
@@ -196,10 +229,13 @@ export class Dog extends Actor {
             this.scene.add(new Keyfragment(owner.pos, owner.keyfragmentPart));
           }
         } else {
+          if (owner instanceof Crowbar && owner.isReal) {
+            owner.actions.fade(1, 1000)
+          }
           // console.log('WOOF')
           Resources.BarkSound.play();
           //chance to spawn new enemy
-          if (Math.random() > 0.25) {
+          if (Math.random() > 0.6) {
             // console.log('spawn')
 
             const isReal = Math.random() > 0.5;
