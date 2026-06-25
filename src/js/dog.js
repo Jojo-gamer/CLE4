@@ -174,7 +174,7 @@ export class Dog extends Actor {
       });
 
       const targetHit = hits.find((hit) => {
-        if (hit.distance > 0) {
+        if (hit.distance > 25) {
           return true; // Skip current path tile
         }
         return false; // Accept all other hits
