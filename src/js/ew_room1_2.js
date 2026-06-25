@@ -29,7 +29,7 @@ export class EW_Room1 extends Scene {
 
 
         this.player = new Player();
-                 const spawnPoint = this.engine.nextSpawn
+                 let spawnPoint = this.engine.nextSpawn
                  this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
                  this.add(this.player);
          
@@ -40,7 +40,19 @@ export class EW_Room1 extends Scene {
                  this.camera.strategy.lockToActor(this.player)
                  this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 1280, 720))
 
-                 this.add(new DoorTrigger(500,567,150,50,"EastWing",528,130, 'down', true))
+                this.EWDoor1toWing = new DoorTrigger(500,567,150,50,"EastWing",528,130, 'down', true)
+                this.EWDoor1to2 = new DoorTrigger(845,337,50,150,"EW_Room2",200,300, 'right', true)
+
+                this.add(this.EWDoor1toWing)
+                this.add(this.EWDoor1to2)
+                
+    }
+
+    onActivate(ctx) {
+        if (this.engine.currentSceneName == "EW_Room1") {
+            console.log("Dicks")
+            this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
+                }
     }
 }
 
@@ -69,7 +81,7 @@ export class EW_Room2 extends Scene {
         this.add(new Background(this.sceneWidth, this.sceneHeight, this.location))
 
         this.player = new Player();
-                 const spawnPoint = this.engine.nextSpawn
+                 let spawnPoint = this.engine.nextSpawn
                  this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
                  this.add(this.player);
          
@@ -80,6 +92,17 @@ export class EW_Room2 extends Scene {
                  this.camera.strategy.lockToActor(this.player)
                  this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 1280, 720))
 
-                 this.add(new DoorTrigger(500,567,150,50,"EastWing",920,130, 'down', true))
+                this.EWDoor2toWing = new DoorTrigger(500,567,150,50,"EastWing",920,130, 'down', true)
+                this.EWDoor2to1 = new DoorTrigger(150,337,50,150,"EW_Room1",800,300, 'left', true)
+
+                this.add(this.EWDoor2toWing)
+                this.add(this.EWDoor2to1)
+    }
+
+    onActivate(ctx) {
+        if (this.engine.currentSceneName == "EW_Room2") {
+            console.log("Balls")
+            this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
+        }
     }
 }
