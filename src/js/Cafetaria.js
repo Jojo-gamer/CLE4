@@ -18,6 +18,10 @@ export class Cafetaria extends Scene {
 
   onInitialize(engine) {
     this.add(new Background(this.sceneWidth, this.sceneHeight, engine.currentSceneName));
+
+    this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", true));
+    this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1700, "up", false));
+    this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 650, 100, "down"));
   }
 
   onActivate(ctx) {
@@ -52,10 +56,7 @@ export class Cafetaria extends Scene {
     this.camera.strategy.lockToActor(this.player);
     this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight));
 
-    this.add(new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", true));
-    this.add(new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1940, "up", false));
-    this.add(new DoorTrigger(140, 1300, 50, 150, "EastMaze", 1300, 5350));
-    this.add(new DoorTrigger(1500, 1850, 150, 50, "Reception", 650, 100));
+    
   }
 
   onDeactivate(ctx) {
@@ -63,7 +64,7 @@ export class Cafetaria extends Scene {
   }
 
 
-  // ... rest van je helper functies (clearProps, killEnemies, placePropRandomly, etc.) blijven hetzelfde
+  
    
 
   onPreUpdate(engine, delta) {

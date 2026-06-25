@@ -122,9 +122,9 @@ export class EastMaze extends Scene {
         this.player = this.engine.player;
 
         // 2. Voeg de speler toe als hij er nog niet in zit
-        if (!this.player.scene) {
+        // if (!this.player.scene) {
             this.add(this.player);
-        }
+        // }
 
         // 3. Speler positie
         const spawnPoint = this.engine.nextSpawn || { x: 400, y: 400 };

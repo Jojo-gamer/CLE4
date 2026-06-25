@@ -53,6 +53,7 @@ export class CourtYard extends Scene {
 
     this.add(
       new DoorTrigger(1500, 1860, 150, 50, "Cafetaria", 1500, 150, "down"),
+      new DoorTrigger(150, 1200, 50, 150, "EastHall", 4100, 1030, "left"),
     );
   }
 }
