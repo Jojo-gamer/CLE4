@@ -13,7 +13,6 @@ const Resources = {
     TableVertical: new ImageSource('/images/entities/props/table-vertical-500x500px.png'),
     TableHorizontal: new ImageSource('/images/entities/props/table-horizontal-500x500px.png'),
     Key: new ImageSource('./images/entities/utils/key.png'),
-    BarkSound: new Sound('/images/entities/sounds/minecraft-dog-bark.mp3'),
     DogFront: new ImageSource('./images/entities/dog/dog-front-128x128.png'),
     DogBack: new ImageSource('./images/entities/dog/dog-back-128x128.png'),
     DogSide: new ImageSource('./images/entities/dog/dog-side-128x128.png'),
@@ -22,8 +21,6 @@ const Resources = {
     KnightBack: new ImageSource('./images/entities/enemy/knight/knight-back-640x640.png'),
     FullHeart: new ImageSource('/images/entities/UI/fullheart.png'),
     EmptyHeart: new ImageSource('/images/entities/UI/emptyheart.png'),
-    OutOfBoundsSound: new Sound('/images/entities/sounds/outofbounds.mp3'),
-    DogPet: new Sound('images/entities/sounds/petdog.ogg'),
     WallVertical: new ImageSource('/images/wall-vertical.png'),
     MazeWall: new ImageSource('/images/wall-tiles-128x128.png'),
     EastHallMap: new ImageSource('/images/east-hall.map.jpg'),
@@ -37,6 +34,10 @@ const Resources = {
     GameOver: new ImageSource('./images/gameover.png'),
     Keys: new ImageSource('/images/entities/utils/sleutels.png'),
     GrassTile: new ImageSource('./images/grass-tiles-128x128.png'),
+    BarkSound: new Sound('/images/entities/sounds/minecraft-dog-bark.mp3'),
+    OutOfBoundsSound: new Sound('/images/entities/sounds/outofbounds.mp3'),
+    DogPet: new Sound('/images/entities/sounds/Wolf_whine.mp3'),
+    DogCutscene: new ImageSource('./images/cutscenes/opening/dog-cutscene-1920x1080.png'),
 }
 
 export const cafWalls = SpriteSheet.fromImageSource({
@@ -62,6 +63,12 @@ export const doors = SpriteSheet.fromImageSource({
 const ResourceLoader = new Loader()
 for (let res of Object.values(Resources)) {
     ResourceLoader.addResource(res)
+    if (res.path) console.log('loading:', res.path)
 }
+
+// const ResourceLoader = new Loader()
+// for (let res of Object.values(Resources)) {
+//     ResourceLoader.addResource(res)
+// }
 
 export { Resources, ResourceLoader }

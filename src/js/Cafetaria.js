@@ -25,6 +25,7 @@ export class Cafetaria extends Scene {
     isReal;
     currentScene;
     placedProps = [];
+    canMove = true;
     
     constructor() {
       super();
