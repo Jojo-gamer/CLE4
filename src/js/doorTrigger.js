@@ -22,8 +22,7 @@ export class DoorTrigger extends Actor {
     });
 
     this.destinationScene = destinationScene;
-    this.spawnX = spawnX;
-    this.spawnY = spawnY;
+    this.spawn = {x: spawnX, y:spawnY}
     this.body.collisionType = CollisionType.Passive;
     this.location = location;
     this.triggerEnabled = active;
@@ -47,17 +46,19 @@ export class DoorTrigger extends Actor {
         this.graphics.use(doors.getSprite(4, 0));
         this.graphics.offset = new Vector(-90, 0);
         break;
+      case "empty":
+        break;  
       default:
     }
 
     this.on("collisionstart", (evt) => {
       if (!this.triggerEnabled) return;
       if (evt.other.owner.name === "player") {
-        engine.nextSpawn = {
-          x: this.spawnX,
-          y: this.spawnY,
-        };
-        engine.goToScene(this.destinationScene);
+        engine.goToScene(this.destinationScene, {
+          sceneActivationData: {
+            spawn: this.spawn,
+          },
+        });
       }
     });
   }
