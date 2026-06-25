@@ -51,6 +51,16 @@ export class EastWing extends Scene {
 
     this.add(new Background(this.sceneWidth, this.sceneHeight, this.location));
 
+    const blockade = new Actor({ width: 150, height: 600 });
+    const blockadeGraphics = Resources.RubbleSide.toSprite();
+
+    blockadeGraphics.scale = new Vector(0.5, 0.5);
+    blockade.graphics.use(blockadeGraphics);
+    blockade.pos = new Vector(670, 375);
+    blockade.z = 0
+
+    this.add(blockade)
+
     this.player = new Player();
     this.add(this.player);
 
@@ -88,8 +98,8 @@ export class EastWing extends Scene {
 
   onActivate(ctx) {
     if (this.dog.wallCutscene && !this.addedRealDoor) {
-      this.fakeDoor.location = 'up';
-      this.fakeDoor.graphics.offset = new Vector(0, -30)
+      this.fakeDoor.location = "up";
+      this.fakeDoor.graphics.offset = new Vector(0, -30);
       this.addedRealDoor = true;
     }
 
