@@ -152,9 +152,9 @@ export class Dog extends Actor {
     if (engine.input.keyboard.wasPressed(Keys.Space)) {
       const bounds = this.player.collider.bounds;
       const rayDirection = this.dir.normalize();
-      const rayOrigin = this.player.pos.add(rayDirection.scale(35))
+      const rayOrigin = this.player.pos.add(new Vector(0, this.player.offset.y));
       
-      const maxDistance = 500
+      const maxDistance = 150
 
       const ray = new Ray(rayOrigin, rayDirection);
       const hits = this.scene.physics.rayCast(ray, {
@@ -186,7 +186,7 @@ export class Dog extends Actor {
           owner.body.collisionType = CollisionType.Passive;
           owner.actions.clearActions();
           owner.actions.fade(0.3, 200);
-          owner.isRayCastable = true;
+          owner.isRayCastable = false;
 
           console.log("hit that fade cuhhh");
           // console.log(owner)
