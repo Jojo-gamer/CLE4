@@ -38,7 +38,8 @@ const Resources = {
     OutOfBoundsSound: new Sound('/images/entities/sounds/outofbounds.mp3'),
     DogPetSound: new Sound('/images/entities/sounds/Wolf_whine.mp3'),
     DogCutscene: new ImageSource('./images/cutscenes/opening/dog-cutscene-1920x1080.png'),
-    RubbleSide: new ImageSource('./images/rubble-side.png')
+    RubbleSide: new ImageSource('./images/rubble-side.png'),
+    Outside: new ImageSource('./images/fences-tiles-128x128.png')
 }
 
 export const cafWalls = SpriteSheet.fromImageSource({
@@ -57,6 +58,16 @@ export const doors = SpriteSheet.fromImageSource({
         spriteWidth: 128,
         spriteHeight: 128,
         columns: 9,
+        rows: 1,
+    }
+})
+
+export const outside = SpriteSheet.fromImageSource({
+    image: Resources.Outside,
+    grid: {
+        spriteWidth: 128,
+        spriteHeight: 128,
+        columns: 4,
         rows: 1,
     }
 })
