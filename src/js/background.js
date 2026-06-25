@@ -1,11 +1,10 @@
-import { Actor, Color, TileMap, Vector } from "excalibur";
-import { Resources, cafWalls, doors } from "./resources.js";
+import { Actor, TileMap, Vector } from "excalibur";
+import { Resources, cafWalls, outside } from "./resources.js";
 
 
 export class Background extends Actor {
     constructor(width, height, location, blockade = null) {
         super();
-
 
         const tileWidth = 128
         const tileHeight = 128
@@ -16,6 +15,8 @@ export class Background extends Actor {
 
         let floorTiles;
         let wallTiles = cafWalls
+        let rightTopCorner = cafWalls.getSprite(1, 0)
+        let rightBottomCorner = cafWalls.getSprite(3, 0)
 
         switch (location) {
             case "Cafetaria":
@@ -31,8 +32,10 @@ export class Background extends Actor {
                 floorTiles = Resources.WingTile.toSprite()
                 break;
             case "CourtYard":
-                floorTiles = Resources.GrassTile.toSprite()
-                wallTiles = doors
+                floorTiles = outside.getSprite(3, 0)
+                wallTiles = outside
+                rightTopCorner = outside.getSprite(2, 0)
+                rightBottomCorner = cafWalls.getSprite(0, 0)
         }
 
         const tilemap = new TileMap({
@@ -48,29 +51,24 @@ export class Background extends Actor {
                 tile.addGraphic(floorTiles);  //floor
                 tile.addGraphic(wallTiles.getSprite(0, 0));
                 tile.solid = true
-                // console.log(tile)
             } else if (index % columns === 0) {     //left wall
                 tile.addGraphic(cafWalls.getSprite(2, 0));
                 tilemap.tiles[tileCount - columns].addGraphic(cafWalls.getSprite(4, 0))
                 tile.solid = true
             } else if (index % columns === columns - 1) {   //right wall
-                if(wallTiles === doors) tile.addGraphic(floorTiles);  //floor
-                tile.addGraphic(wallTiles.getSprite(1, 0));
-                tilemap.tiles[tileCount - 1].addGraphic(wallTiles.getSprite(3, 0))
+                if (index === columns - 1) tile.addGraphic(rightTopCorner)
+                if (index === tileCount - 1) tile.addGraphic(rightBottomCorner)
+                if (index !== columns - 1 && index !== tileCount - 1) tile.addGraphic(wallTiles.getSprite(1, 0));
                 tile.solid = true
 
             } else if (index > tileCount - columns) {    //bottom wall
                 tile.addGraphic(cafWalls.getSprite(0, 0));
                 tile.solid = true
-                tile.z = 5
+                tile.z = 500
             } else {
                 tile.addGraphic(floorTiles);  //floor
             }
             index++
-        }
-        if(blockade) {
-            blockade.z = 1
-            this.addChild(blockade)
         }
         this.addChild(tilemap)
 

@@ -198,8 +198,9 @@ export class EastMaze extends Scene {
         // }
 
         // 3. Speler positie
-        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 400 };
-        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
+    const spawn = ctx.data?.spawn ?? { x: 400, y: 500 };
+    this.player.pos = new Vector(spawn.x, spawn.y);
+    this.dog.pos = new Vector(spawn.x, spawn.y);
 
         // 4. Hond setup (haal uit engine of maak aan)
         if (!this.engine.dog) {

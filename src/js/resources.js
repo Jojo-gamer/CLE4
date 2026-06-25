@@ -26,19 +26,19 @@ const Resources = {
     MazeWall: new ImageSource('/images/wall-tiles-128x128.png'),
     Afgrond: new ImageSource('/images/afgrond.png'),
     EastHallWay: new ImageSource('/images/East-maze.png'),
-    Reception: new ImageSource('./images/reception-map.png'),
+    Reception: new ImageSource('./images/reception-map-v2.png'),
     EastHallMap: new ImageSource('/images/East-hall-map.png'),
     floorTile: new ImageSource('/images/floortile.png'),
     Rubble: new ImageSource('./images/rubble.png'),
     Crowbar: new ImageSource('./images/entities/utils/crowbar.png'),
     GameOver: new ImageSource('./images/gameover.png'),
     Keys: new ImageSource('/images/entities/utils/sleutels.png'),
-    GrassTile: new ImageSource('./images/grass-tiles-128x128.png'),
     BarkSound: new Sound('/images/entities/sounds/minecraft-dog-bark.mp3'),
     OutOfBoundsSound: new Sound('/images/entities/sounds/outofbounds.mp3'),
     DogPetSound: new Sound('/images/entities/sounds/Wolf_whine.mp3'),
     DogCutscene: new ImageSource('./images/cutscenes/opening/dog-cutscene-1920x1080.png'),
-    RubbleSide: new ImageSource('./images/rubble-side.png')
+    RubbleSide: new ImageSource('./images/rubble-side.png'),
+    Outside: new ImageSource('./images/fences-tiles-128x128.png')
 }
 
 export const cafWalls = SpriteSheet.fromImageSource({
@@ -57,6 +57,16 @@ export const doors = SpriteSheet.fromImageSource({
         spriteWidth: 128,
         spriteHeight: 128,
         columns: 9,
+        rows: 1,
+    }
+})
+
+export const outside = SpriteSheet.fromImageSource({
+    image: Resources.Outside,
+    grid: {
+        spriteWidth: 128,
+        spriteHeight: 128,
+        columns: 4,
         rows: 1,
     }
 })

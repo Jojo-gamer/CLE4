@@ -36,10 +36,10 @@ export class CutSceneTrigger extends Actor {
 
     const sheet = SpriteSheet.fromImageSource({
       image: this.resource,
-      grid: { rows: 1, columns: this.columns, spriteWidth: this.spriteWidth, spriteHeight: this.spriteHeight }
+      grid: { rows: 1, columns: 4, spriteWidth: 1920, spriteHeight: 1080 }
     });
-    const animation = Animation.fromSpriteSheet(sheet, range(0, this.columns - 1), this.frameTime);
-    animation.scale = new Vector(engine.drawWidth / this.spriteWidth, engine.drawHeight / this.spriteHeight);
+    const animation = Animation.fromSpriteSheet(sheet, range(0, 3), this.frameTime);
+    animation.scale = new Vector(0.7,0.7);
 
     cutsceneScreen.graphics.use(animation);
 
