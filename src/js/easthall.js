@@ -167,10 +167,10 @@ export class Easthall extends Scene {
     this.add(doorHallway);
 
     this.eastDoor = new DoorTrigger(
-      4268,
+      4256,
       1035,
-      90,
-      180,
+      50,
+      150,
       "CourtYard",
       500,
       500,

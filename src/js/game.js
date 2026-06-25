@@ -1,23 +1,19 @@
-import "../css/style.css";
-import {
-  Actor,
-  Engine,
-  Vector,
-  DisplayMode,
-  BoundingBox,
-  Color,
-} from "excalibur";
-import { Resources, ResourceLoader } from "./resources.js";
-import { Player } from "./player.js";
-import { Cafetaria } from "./Cafetaria.js";
-import { Easthall } from "./easthall.js";
-import { CourtYard } from "./courtyard.js";
-import { GameOver } from "./gameover.js";
-import { Reception } from "./reception.js";
-import { EastMaze } from "./eastmaze.js";
-import { EastWing } from "./eastwing.js";
-import { EW_Room1, EW_Room2 } from "./ew_room1_2.js";
-import { Crowbar } from "./crowbar.js";
+import '../css/style.css'
+import { Actor, Engine, Vector, DisplayMode, BoundingBox, SolverStrategy, Timer, Color } from "excalibur"
+import { Resources, ResourceLoader } from './resources.js'
+import { Player } from './player.js'
+import { Enemy } from './enemy.js'
+import { Background } from './background.js'
+import { DoorTrigger } from './doorTrigger.js'
+import { Cafetaria } from './Cafetaria.js'
+import { Easthall } from './easthall.js'
+import { CourtYard } from './courtyard.js'
+import { GameOver } from './gameover.js'
+import { Reception } from './reception.js'
+import { EastMaze} from './eastmaze.js'
+import { EastWing } from './eastwing.js'
+import { Message } from './message.js'
+import { EW_Room1, EW_Room2 } from './ew_room1_2.js'
 
 export class Game extends Engine {
   timer = 0;
