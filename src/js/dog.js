@@ -15,6 +15,7 @@ import {
 import { Resources } from "./resources";
 import { Enemy } from "./enemy";
 import { Keyfragment } from "./keyfragment";
+import { Crowbar } from "./crowbar";
 
 export class Dog extends Actor {
   constructor(follow = true) {
@@ -151,6 +152,9 @@ export class Dog extends Actor {
     if (this.wallCutscene) {
       this.actions.follow(this.scene.player, 75);
     }
+    if (this.wallCutscene) {
+      this.actions.follow(this.scene.player, 75);
+    }
 
     if (engine.input.keyboard.wasPressed(Keys.Space)) {
       const bounds = this.player.collider.bounds;
@@ -196,10 +200,13 @@ export class Dog extends Actor {
             this.scene.add(new Keyfragment(owner.pos, owner.keyfragmentPart));
           }
         } else {
+          if (owner instanceof Crowbar && owner.isReal) {
+            owner.actions.fade(1, 1000)
+          }
           // console.log('WOOF')
           Resources.BarkSound.play();
           //chance to spawn new enemy
-          if (Math.random() > 0.25) {
+          if (Math.random() > 0.6) {
             // console.log('spawn')
 
             const isReal = Math.random() > 0.5;
