@@ -62,15 +62,11 @@ export class Background extends Actor {
             } else if (index > tileCount - columns) {    //bottom wall
                 tile.addGraphic(cafWalls.getSprite(0, 0));
                 tile.solid = true
-                tile.z = 5
+                tile.z = 500
             } else {
                 tile.addGraphic(floorTiles);  //floor
             }
             index++
-        }
-        if(blockade) {
-            blockade.z = 1
-            this.addChild(blockade)
         }
         this.addChild(tilemap)
 

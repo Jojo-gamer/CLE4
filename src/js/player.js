@@ -22,7 +22,7 @@ export class Player extends Actor {
             width: 60,
             height: 100,
             color: Color.Black,
-            z: 2
+            z: 999
         })
         // this.body.mass = 10
         this.name = "player"

@@ -50,16 +50,17 @@ export class EastWing extends Scene {
   onInitialize(engine) {
     this.location = engine.currentSceneName;
 
-    const blockade = new Actor({ width: 150, height: 600 });
+    const blockade = new Actor({ width: 150, height: 530, z: 1 });
     const blockadeGraphics = Resources.RubbleSide.toSprite();
 
-    blockadeGraphics.scale = new Vector(0.5, 0.5);
+    blockadeGraphics.scale = new Vector(0.4, 0.4);
     blockade.graphics.use(blockadeGraphics);
-    blockade.pos = new Vector(670, 375);
-    blockade.z = blockade.body.collisionType = CollisionType.Fixed;
+    blockade.pos = new Vector(670, 335);
+    blockade.body.collisionType = CollisionType.Fixed;
 
-    this.add(new Background(this.sceneWidth, this.sceneHeight, this.location, blockade));
+    this.add(blockade)
 
+    this.add(new Background(this.sceneWidth, this.sceneHeight, this.location, ));
     this.player = new Player();
     this.add(this.player);
 
