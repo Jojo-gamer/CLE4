@@ -10,7 +10,7 @@ import {
   Vector,
   range,
   Animation,
-  Line
+  Line,
 } from "excalibur";
 import { Resources } from "./resources";
 import { Enemy } from "./enemy";
@@ -123,38 +123,43 @@ export class Dog extends Actor {
       this.graphics.flipHorizontal = false;
     }
 
-        //CUTSCENE TIME
-        if (engine.currentSceneName == "EastWing" && !this.fakedWall && this.player.pos.x < 890) {
-          this.actions.clearActions();
-          this.vel = new Vector(0,-367)
-          this.graphics.use(this.movingDown)
-        }
+    //CUTSCENE TIME
+    if (
+      engine.currentSceneName == "EastWing" &&
+      !this.fakedWall &&
+      this.player.pos.x < 890
+    ) {
+      this.actions.clearActions();
+      this.vel = new Vector(0, -367);
+      this.graphics.use(this.movingDown);
+    }
 
-        if (this.pos.y < -180) {
-          this.fakedWall = true;
-          this.vel = new Vector(0,367)
-        }
+    if (this.pos.y < -180) {
+      this.fakedWall = true;
+      this.vel = new Vector(0, 367);
+    }
 
-        if (this.vel.y > 0 && this.fakedWall && !this.wallCutscene) {
-            console.log("bruh")
-            this.graphics.use(this.movingUp)
-          }
+    if (this.vel.y > 0 && this.fakedWall && !this.wallCutscene) {
+      console.log("bruh");
+      this.graphics.use(this.movingUp);
+    }
 
-        if (this.pos.y > 350 && this.fakedWall) {
-          this.wallCutscene = true;
+    if (this.pos.y > 350 && this.fakedWall) {
+      this.wallCutscene = true;
+    }
 
-        }
-
-        if (this.wallCutscene) {
-            this.actions.follow(this.scene.player, 75);
-        }
+    if (this.wallCutscene) {
+      this.actions.follow(this.scene.player, 75);
+    }
 
     if (engine.input.keyboard.wasPressed(Keys.Space)) {
       const bounds = this.player.collider.bounds;
       const rayDirection = this.dir.normalize();
-      const rayOrigin = this.player.pos.add(new Vector(0, this.player.offset.y));
-      
-      const maxDistance = 150
+      const rayOrigin = this.player.pos.add(
+        new Vector(0, this.player.offset.y),
+      );
+
+      const maxDistance = 150;
 
       const ray = new Ray(rayOrigin, rayDirection);
       const hits = this.scene.physics.rayCast(ray, {
@@ -167,9 +172,6 @@ export class Dog extends Actor {
       });
 
       const targetHit = hits.find((hit) => hit.distance > 0);
-
-        const rayLength = targetHit ? targetHit.distance : maxDistance;
-        this.drawRayDebug(rayOrigin, rayDirection, rayLength);
 
       if (targetHit) {
         const owner = targetHit.collider.owner;
@@ -208,32 +210,4 @@ export class Dog extends Actor {
       }
     }
   }
-
-  drawRayDebug(rayOrigin, direction, length) {
-  if (this.rayDebug) {
-    this.rayDebug.kill();
-  }
-
-  const debugRay = new Actor({
-    pos: rayOrigin,
-    anchor: Vector.Zero,
-    z: 999,
-    collisionType: CollisionType.PreventCollision,
-  });
-
-  debugRay.graphics.use(
-    new Line({
-      start: Vector.Zero,
-      end: new Vector(length, 0),
-      color: Color.Lime,
-      thickness: 2,
-    })
-  );
-
-  debugRay.rotation = Math.atan2(direction.y, direction.x);
-  this.scene.add(debugRay);
-  this.rayDebug = debugRay;
-}
-
-
 }
