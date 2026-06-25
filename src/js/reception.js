@@ -40,8 +40,6 @@ export class Reception extends Scene {
         this.addCollisions()
 
         this.player = new Player();
-        const spawnPoint = this.engine.nextSpawn || { x: 640, y: 700 };
-        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
         this.add(this.player);
 
         this.dog = new Dog(false)
@@ -52,11 +50,10 @@ export class Reception extends Scene {
         this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight))
     }
 
-
-
-
-
-
+    onActivate(ctx) {
+        const spawn = ctx.data?.spawn ?? { x: 400, y: 500 };
+        this.player.pos = new Vector(spawn.x, spawn.y);
+    }
 
     addCollisions(engine) {
         const tileWidth = 80

@@ -31,6 +31,7 @@ export class CourtYard extends Scene {
         this.sceneWidth = sceneWidth
         this.sceneHeight = sceneHeight
     }
+
     onInitialize(engine) {
         this.background = new Background(this.sceneWidth, this.sceneHeight, engine.currentSceneName)
         this.add(this.background)
@@ -38,8 +39,6 @@ export class CourtYard extends Scene {
         this.add(new CrowbarSpawn(this.sceneWidth, this.sceneHeight))
 
         this.player = new Player();
-        const spawnPoint = this.engine.nextSpawn;
-        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
         this.add(this.player);
 
         this.dog = new Dog();
@@ -65,8 +64,14 @@ export class CourtYard extends Scene {
             new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight),
         );
 
-        this.cafDoor =  new DoorTrigger(1500, 1860, 150, 50, "Cafetaria", 1500, 150, "down", false)
+        this.cafDoor = new DoorTrigger(1500, 1860, 150, 50, "Cafetaria", 1500, 150, "down", false)
         this.add(this.cafDoor);
         this.add(new DoorTrigger(130, 1000, 50, 100, "EastHall", 4150, 980, "left"))
+    }
+
+    onActivate(ctx) {
+        const spawn = ctx.data?.spawn ?? { x: 400, y: 500 };
+        this.player.pos = new Vector(spawn.x, spawn.y);
+        this.dog.pos = new Vector(spawn.x, spawn.y);
     }
 }
