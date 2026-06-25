@@ -23,6 +23,7 @@ const Resources = {
     FullHeart: new ImageSource('/images/entities/UI/fullheart.png'),
     EmptyHeart: new ImageSource('/images/entities/UI/emptyheart.png'),
     OutOfBoundsSound: new Sound('/images/entities/sounds/outofbounds.mp3'),
+    DogPet: new Sound('images/entities/sounds/petdog.ogg'),
     WallVertical: new ImageSource('/images/wall-vertical.png'),
     MazeWall: new ImageSource('/images/wall-tiles-128x128.png'),
     EastHallMap: new ImageSource('/images/east-hall.map.jpg'),

@@ -72,6 +72,7 @@ export class Player extends Actor {
             }
         }
     }
+    
 
     if (target instanceof Crowbar) {
         target.kill();
@@ -232,6 +233,10 @@ export class Player extends Actor {
         }
 
         this.vel = new Vector(xVel, yVel)
+
+        if (engine.input.keyboard.wasPressed(Keys.P)) {
+            Resources.DogPet.play()
+        }
     }
 
     loseLife(e) {
