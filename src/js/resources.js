@@ -33,7 +33,6 @@ const Resources = {
     Crowbar: new ImageSource('./images/entities/utils/crowbar.png'),
     GameOver: new ImageSource('./images/gameover.png'),
     Keys: new ImageSource('/images/entities/utils/sleutels.png'),
-    GrassTile: new ImageSource('./images/grass-tiles-128x128.png'),
     BarkSound: new Sound('/images/entities/sounds/minecraft-dog-bark.mp3'),
     OutOfBoundsSound: new Sound('/images/entities/sounds/outofbounds.mp3'),
     DogPetSound: new Sound('/images/entities/sounds/Wolf_whine.mp3'),
