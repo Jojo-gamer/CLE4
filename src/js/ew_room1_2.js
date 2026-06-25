@@ -29,8 +29,6 @@ export class EW_Room1 extends Scene {
 
 
         this.player = new Player();
-                 let spawnPoint = this.engine.nextSpawn
-                 this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
                  this.add(this.player);
          
                  this.dog = new Dog()
@@ -48,12 +46,11 @@ export class EW_Room1 extends Scene {
                 
     }
 
-    onActivate(ctx) {
-        if (this.engine.currentSceneName == "EW_Room1") {
-            console.log("Dicks")
-            this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
-                }
-    }
+  onActivate(ctx) {
+    const spawn = ctx.data?.spawn ?? { x: 400, y: 500 };
+    this.player.pos = new Vector(spawn.x, spawn.y);
+    this.dog.pos = new Vector(spawn.x, spawn.y);
+  }
 }
 
 
@@ -81,8 +78,6 @@ export class EW_Room2 extends Scene {
         this.add(new Background(this.sceneWidth, this.sceneHeight, this.location))
 
         this.player = new Player();
-                 let spawnPoint = this.engine.nextSpawn
-                 this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
                  this.add(this.player);
          
                  this.dog = new Dog()
@@ -99,10 +94,9 @@ export class EW_Room2 extends Scene {
                 this.add(this.EWDoor2to1)
     }
 
-    onActivate(ctx) {
-        if (this.engine.currentSceneName == "EW_Room2") {
-            console.log("Balls")
-            this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
-        }
-    }
+  onActivate(ctx) {
+    const spawn = ctx.data?.spawn ?? { x: 400, y: 500 };
+    this.player.pos = new Vector(spawn.x, spawn.y);
+    this.dog.pos = new Vector(spawn.x, spawn.y);
+  }
 }

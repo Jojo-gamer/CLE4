@@ -39,8 +39,12 @@ export class Game extends Engine {
     this.addScenes();
     
     // Initial spawn
-    this.nextSpawn = { x: 640, y: 700 };
-    this.goToScene("Reception");
+    this.spawn = { x: 640, y: 700 };
+    this.goToScene("Reception", {
+          sceneActivationData: {
+            spawn: this.spawn,
+          },
+        });
   }
 
   addScenes() {

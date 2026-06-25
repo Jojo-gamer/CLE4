@@ -33,19 +33,16 @@ export class Easthall extends Scene {
     const WORLD_HEIGHT = 1440;
     this.player = new Player();
     this.player.z = 999;
-    const spawnPoint = this.engine.nextSpawn ?? { x: 300, y: 300 };
     const bgImg = Resources.EastHallMap.toSprite();
-
-    this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
     this.add(this.player);
     this.camera.strategy.lockToActor(this.player);
     this.camera.strategy.limitCameraBounds(
       new BoundingBox(0, 0, WORLD_WIDTH, WORLD_HEIGHT),
     );
 
-    const dog = new Dog();
-    dog.z = 999;
-    this.add(dog);
+    this.dog = new Dog();
+    this.dog.z = 999;
+    this.add(this.dog);
 
     const bg = new Actor({
       x: 0,
@@ -124,7 +121,7 @@ export class Easthall extends Scene {
         ) {
           this.player.loseLife();
           this.player.pos = new Vector(852, 710);
-          dog.pos = new Vector(840, 710);
+          this.dog.pos = new Vector(840, 710);
         }
       }
     });
@@ -172,8 +169,8 @@ export class Easthall extends Scene {
       50,
       150,
       "CourtYard",
-      150, 
-      1200,
+      200,
+      1000,
       "right",
       false,
     );
@@ -211,5 +208,11 @@ export class Easthall extends Scene {
     if (this.player.hasKeys) {
       this.eastDoor.triggerEnabled = true;
     }
+  }
+
+  onActivate(ctx) {
+    const spawn = ctx.data?.spawn ?? { x: 400, y: 500 };
+    this.player.pos = new Vector(spawn.x, spawn.y);
+    this.dog.pos = new Vector(spawn.x, spawn.y);
   }
 }

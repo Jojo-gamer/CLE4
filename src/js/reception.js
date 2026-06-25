@@ -81,11 +81,6 @@ export class Reception extends Scene {
 
 
         this.player = new Player();
-
-        const spawnPoint = this.engine.nextSpawn || { x: 640, y: 700 };
-
-        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y)
-
         this.add(this.player);
 
 
@@ -114,11 +109,10 @@ export class Reception extends Scene {
 
     }
 
-
-
-
-
-
+    onActivate(ctx) {
+        const spawn = ctx.data?.spawn ?? { x: 400, y: 500 };
+        this.player.pos = new Vector(spawn.x, spawn.y);
+    }
 
 
 

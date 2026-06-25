@@ -131,29 +131,42 @@ export class Player extends Actor {
                     }
 
                 }
-
-                this.scene.add(new Message());
-
             }
 
+            if (target instanceof Enemy) {
+                if (target.body.collisionType === CollisionType.Active) {
+                    this.loseLife();
+                }
+            }
+
+            if (target instanceof Keyfragment) {
+                target.kill();
+                this.keyfragmentCount++;
+
+                // ✅ VEILIGHEIDSCHECK: Controleer of de scene bestaat en doorloop de lijst veilig
+                if (this.keyfragmentCount >= 2) {
+                    if (this.scene && this.scene.actors) {
+                        this.scene.eastWingDoor.triggerEnabled = true;
+                        this.scene.add(new Message());
+                    }
+                }
+            }
+
+            if (target instanceof Crowbar) {
+                if (target.isReal && target.graphics.opacity > 0.7) {
+                    this.gameEngine.collectedCrowbar = true;
+                    this.scene.cafDoor.triggerEnabled = true;
+                    console.log(this.gameEngine)
+                    this.gameEngine.director.scenes.Cafetaria.courtyardDoor.triggerEnabled = true
+                    target.kill();
+                    this.scene.add(new Message());
+                } else if (!target.isReal) {
+                    target.kill();
+                }
+            }
         }
-
     }
-
-   
-
-
-
-    if (target instanceof Crowbar) {
-
-        target.kill();
-
-        this.gameEngine.collectedCrowbar = true; // Gebruik this.gameEngine voor globale variabelen
-
-    }
-
-});
-
+        });
     }
 
 
@@ -531,55 +544,29 @@ export class Player extends Actor {
 
 
     gameOver() {
+        this.scene.engine.isGameOver = true;
 
-    this.scene.engine.isGameOver = true;
+        // ✅ Kill the dog so it stops processing input
+        this.scene.actors
+            .filter(a => a.constructor.name === 'Dog')
+            .forEach(a => a.kill());
 
-
-
-    // ✅ Kill the dog so it stops processing input
-
-    this.scene.actors
-
-        .filter(a => a.constructor.name === 'Dog')
-
-        .forEach(a => a.kill());
+        this.gameEngine.lives = 5;
 
 
+        this.lives = 5;
+        this.isInvulnerable = false;
+        this.keyfragmentCount = 0;
 
-    this.gameEngine.lives = 5;
+        if (this.gameEngine.updateLivesHud) {
+            this.gameEngine.updateLivesHud();
+        }
 
+        Resources.BarkSound.stop();
 
-
-
-
-    this.lives = 5;
-
-    this.isInvulnerable = false;
-
-    this.keyfragmentCount = 0;  
-
-
-
-    if (this.gameEngine.updateLivesHud) {
-
-        this.gameEngine.updateLivesHud();
-
+        this.scene.engine.goToScene("GameOver", {
+            sceneActivationData: { TimeScore: this.scene.engine.timer },
+            destinationIn: new FadeInOut({ duration: 2000, direction: 'in' })
+        })
     }
-
-
-
-    Resources.BarkSound.stop();
-
-
-
-    this.scene.engine.goToScene("GameOver", {
-
-        sceneActivationData: { TimeScore: this.scene.engine.timer },
-
-        destinationIn: new FadeInOut({ duration: 2000, direction: 'in' })
-
-    })
-
-}
-
 }
