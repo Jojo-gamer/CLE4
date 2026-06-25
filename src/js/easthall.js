@@ -158,8 +158,8 @@ export class Easthall extends Scene {
       90,
       180,
       "EastMaze",
-      1417,
-      500,
+      1325,
+      300,
       "left",
       true,
     );

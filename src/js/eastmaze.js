@@ -62,7 +62,7 @@ export class EastMaze extends Scene {
         this.player = new Player()
         this.player.z = 998
 
-        this.add(new DoorTrigger(1416, 350, 50, 150, "EastHall", 100, 150));
+        this.add(new DoorTrigger(1416, 350, 50, 150, "EastHall", 142, 152));
         this.add(new DoorTrigger(1400, 5350, 50, 150, "EastWing", 230, 350));
 
         
