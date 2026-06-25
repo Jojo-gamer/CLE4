@@ -3,7 +3,7 @@ import { Resources, cafWalls, doors } from "./resources.js";
 
 
 export class Background extends Actor {
-    constructor(width, height, location) {
+    constructor(width, height, location, blockade = null) {
         super();
 
 
@@ -68,7 +68,12 @@ export class Background extends Actor {
             }
             index++
         }
-
+        if(blockade) {
+            blockade.z = 1
+            this.addChild(blockade)
+        }
         this.addChild(tilemap)
+
+
     }
 }

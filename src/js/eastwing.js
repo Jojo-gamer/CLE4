@@ -9,6 +9,7 @@ import {
   Timer,
   Scene,
   randomInRange,
+  CollisionType,
 } from "excalibur";
 import { Resources, ResourceLoader } from "./resources.js";
 import { Background } from "./background.js";
@@ -49,17 +50,15 @@ export class EastWing extends Scene {
   onInitialize(engine) {
     this.location = engine.currentSceneName;
 
-    this.add(new Background(this.sceneWidth, this.sceneHeight, this.location));
-
     const blockade = new Actor({ width: 150, height: 600 });
     const blockadeGraphics = Resources.RubbleSide.toSprite();
 
     blockadeGraphics.scale = new Vector(0.5, 0.5);
     blockade.graphics.use(blockadeGraphics);
     blockade.pos = new Vector(670, 375);
-    blockade.z = 0
+    blockade.z = blockade.body.collisionType = CollisionType.Fixed;
 
-    this.add(blockade)
+    this.add(new Background(this.sceneWidth, this.sceneHeight, this.location, blockade));
 
     this.player = new Player();
     this.add(this.player);
