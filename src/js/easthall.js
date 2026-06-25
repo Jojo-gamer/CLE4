@@ -158,7 +158,11 @@ export class Easthall extends Scene {
       90,
       180,
       "EastMaze",
+<<<<<<< HEAD
       1370,
+=======
+      1325,
+>>>>>>> 0852f26f14800f034b445ee0e92a9119a4979df7
       300,
       "left",
       true,
@@ -167,10 +171,10 @@ export class Easthall extends Scene {
     this.add(doorHallway);
 
     this.eastDoor = new DoorTrigger(
-      4268,
+      4256,
       1035,
-      90,
-      180,
+      50,
+      150,
       "CourtYard",
       150, 
       1200,

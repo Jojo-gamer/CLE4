@@ -1,5 +1,16 @@
-import { Actor, BoundingBox, Color, Scene, Vector, randomInRange } from "excalibur";
-import { Resources } from "./resources.js";
+import {
+    Actor,
+    Engine,
+    Vector,
+    DisplayMode,
+    BoundingBox,
+    Color,
+    SolverStrategy,
+    Timer,
+    Scene,
+    randomInRange,
+} from "excalibur";
+import { Resources, ResourceLoader } from "./resources.js";
 import { Background } from "./background.js";
 import { DoorTrigger } from "./doorTrigger.js";
 import { Player } from "./player.js";
@@ -9,12 +20,12 @@ import { Dog } from "./dog.js";
 import { Enemy } from "./enemy.js";
 
 export class Cafetaria extends Scene {
-  constructor() {
-    super({ width: 3000, height: 2000, color: Color.Black });
-    this.placedProps = [];
-    this.sceneWidth = 3000;
-    this.sceneHeight = 2000;
-  }
+    isReal;
+    currentScene;
+    constructor() {
+        const sceneWidth = 3000;
+        const sceneHeight = 2000;
+    }
 
   onInitialize(engine) {
     this.add(new Background(this.sceneWidth, this.sceneHeight, engine.currentSceneName));
@@ -57,7 +68,8 @@ export class Cafetaria extends Scene {
     this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight));
 
     
-  }
+  
+}
 
   onDeactivate(ctx) {
     this.killEnemies();
@@ -85,23 +97,23 @@ export class Cafetaria extends Scene {
     });
   }
 
-  placePropRandomly(propInstance) {
-    const maxAttempts = 50;
-    const padding = 10;
+    placePropRandomly(propInstance) {
+        const maxAttempts = 50;
+        const padding = 10;
 
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      const randomX = randomInRange(300, 2600);
-      const randomY = randomInRange(300, 1600);
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            const randomX = randomInRange(300, 2600);
+            const randomY = randomInRange(300, 1600);
 
       const halfW = propInstance.width / 2 + padding;
       const halfH = propInstance.height / 2 + padding;
 
-      const proposedBox = new BoundingBox({
-        left: randomX - halfW,
-        top: randomY - halfH,
-        right: randomX + halfW,
-        bottom: randomY + halfH,
-      });
+            const proposedBox = new BoundingBox({
+                left: randomX - halfW,
+                top: randomY - halfH,
+                right: randomX + halfW,
+                bottom: randomY + halfH,
+            });
 
       let isOverlapping = false;
       for (const placed of this.placedProps) {
@@ -114,11 +126,11 @@ export class Cafetaria extends Scene {
           bottom: placed.pos.y + pH,
         });
 
-        if (proposedBox.intersect(placedBox)) {
-          isOverlapping = true;
-          break;
-        }
-      }
+                if (proposedBox.intersect(placedBox)) {
+                    isOverlapping = true;
+                    break;
+                }
+            }
 
       if (!isOverlapping) {
         propInstance.pos = new Vector(randomX, randomY);

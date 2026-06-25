@@ -10,6 +10,7 @@ import {
   Vector,
   range,
   Animation,
+  Line,
 } from "excalibur";
 import { Resources } from "./resources";
 import { Enemy } from "./enemy";
@@ -29,6 +30,7 @@ export class Dog extends Actor {
     this.isRayCastable = false;
     this.isReal = true;
     this.follow = follow;
+    this.rayDebug = null;
   }
 
   onInitialize(engine) {
@@ -121,64 +123,56 @@ export class Dog extends Actor {
       this.graphics.flipHorizontal = false;
     }
 
-        //CUTSCENE TIME
-        if (engine.currentSceneName == "EastWing" && !this.fakedWall && this.player.pos.x < 890) {
-          this.actions.clearActions();
-          this.vel = new Vector(0,-367)
-          this.graphics.use(this.movingDown)
-        }
+    //CUTSCENE TIME
+    if (
+      engine.currentSceneName == "EastWing" &&
+      !this.fakedWall &&
+      this.player.pos.x < 890
+    ) {
+      this.actions.clearActions();
+      this.vel = new Vector(0, -367);
+      this.graphics.use(this.movingDown);
+    }
 
-        if (this.pos.y < -180) {
-          this.fakedWall = true;
-          this.vel = new Vector(0,367)
-        }
+    if (this.pos.y < -180) {
+      this.fakedWall = true;
+      this.vel = new Vector(0, 367);
+    }
 
-        if (this.vel.y > 0 && this.fakedWall && !this.wallCutscene) {
-            console.log("bruh")
-            this.graphics.use(this.movingUp)
-          }
+    if (this.vel.y > 0 && this.fakedWall && !this.wallCutscene) {
+      console.log("bruh");
+      this.graphics.use(this.movingUp);
+    }
 
-        if (this.pos.y > 350 && this.fakedWall) {
-          this.wallCutscene = true;
+    if (this.pos.y > 350 && this.fakedWall) {
+      this.wallCutscene = true;
+    }
 
-        }
-
-        if (this.wallCutscene) {
-            this.actions.follow(this.scene.player, 75);
-        }
+    if (this.wallCutscene) {
+      this.actions.follow(this.scene.player, 75);
+    }
 
     if (engine.input.keyboard.wasPressed(Keys.Space)) {
       const bounds = this.player.collider.bounds;
-      const centerX = (bounds.left + bounds.right) / 2;
-      const centerY = (bounds.top + bounds.bottom) / 2;
-      const offset = 5;
-      let rayOrigin;
-      if (this.dir.equals(Vector.Up)) {
-        rayOrigin = new Vector(centerX, bounds.top - offset);
-      } else if (this.dir.equals(Vector.Down)) {
-        rayOrigin = new Vector(centerX, bounds.bottom + offset);
-      } else if (this.dir.equals(Vector.Left)) {
-        rayOrigin = new Vector(bounds.left - offset, centerY);
-      } else if (this.dir.equals(Vector.Right)) {
-        rayOrigin = new Vector(bounds.right + offset, centerY);
-      }
+      const rayDirection = this.dir.normalize();
+      const rayOrigin = this.player.pos.add(
+        new Vector(0, this.player.offset.y),
+      );
 
-      const ray = new Ray(rayOrigin, this.dir.normalize());
+      const maxDistance = 150;
+
+      const ray = new Ray(rayOrigin, rayDirection);
       const hits = this.scene.physics.rayCast(ray, {
         searchAllColliders: true, // Stop direct bij het eerste doelwit
-        maxDistance: 500,
+        maxDistance,
         filter: (hit) => {
           const owner = hit.collider.owner;
           return owner.isRayCastable === true;
         },
       });
 
-      const targetHit = hits.find((hit) => {
-        if (hit.distance > 0) {
-          return true; // Skip current path tile
-        }
-        return false; // Accept all other hits
-      });
+      const targetHit = hits.find((hit) => hit.distance > 0);
+
       if (targetHit) {
         const owner = targetHit.collider.owner;
         console.log(owner);
@@ -194,7 +188,7 @@ export class Dog extends Actor {
           owner.body.collisionType = CollisionType.Passive;
           owner.actions.clearActions();
           owner.actions.fade(0.3, 200);
-          owner.isRayCastable = true;
+          owner.isRayCastable = false;
 
           console.log("hit that fade cuhhh");
           // console.log(owner)
