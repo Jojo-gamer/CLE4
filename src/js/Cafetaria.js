@@ -48,8 +48,8 @@ export class Cafetaria extends Scene {
             new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight),
         );
 
-        this.eastWingDoor = new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", true)
-        this.courtyardDoor = new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1750, "up", false)
+        this.eastWingDoor = new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", false)
+        this.courtyardDoor = new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1750, "up", true)
 
         this.add(this.eastWingDoor);
         this.add(this.courtyardDoor);
