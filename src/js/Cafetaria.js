@@ -49,7 +49,7 @@ export class Cafetaria extends Scene {
         );
 
         this.eastWingDoor = new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", false)
-        this.courtyardDoor = new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1750, "up", true)
+        this.courtyardDoor = new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1750, "up", false)
 
         this.add(this.eastWingDoor);
         this.add(this.courtyardDoor);
