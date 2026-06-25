@@ -41,8 +41,6 @@ export class Cafetaria extends Scene {
         this.add(new Background(this.sceneWidth, this.sceneHeight, this.location));
 
         this.player = new Player();
-        const spawnPoint = this.engine.nextSpawn;
-        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
         this.add(this.player);
 
         this.dog = new Dog();
@@ -54,19 +52,17 @@ export class Cafetaria extends Scene {
             new BoundingBox(0, 0, this.sceneWidth, this.sceneHeight),
         );
 
-        this.eastWingDoor = new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", false)
+        this.eastWingDoor = new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", true)
         this.courtyardDoor = new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1750, "up", false)
 
         this.add(this.eastWingDoor);
         this.add(this.courtyardDoor);
         this.add(
-            new DoorTrigger(1500, 1855, 150, 50, "Reception", 650, 40, "down")
+            new DoorTrigger(1500, 1855, 150, 50, "Reception", 650, 100, "down")
         );
     }
 
     onActivate(ctx) {
-        const spawnPoint = this.engine.nextSpawn || { x: 400, y: 500 };
-
         // Player/Dog setup
         if (!this.player) {
             this.player = new Player();
@@ -75,8 +71,9 @@ export class Cafetaria extends Scene {
             this.add(this.dog);
         }
 
-        this.player.pos = new Vector(spawnPoint.x, spawnPoint.y);
-        this.dog.pos = new Vector(this.player.pos.x, this.player.pos.y);
+        const spawn = ctx.data?.spawn ?? { x: 400, y: 500 };
+        this.player.pos = new Vector(spawn.x, spawn.y);
+        this.dog.pos = new Vector(spawn.x, spawn.y);
         this.dog.z = 50;
 
         // Opschonen
