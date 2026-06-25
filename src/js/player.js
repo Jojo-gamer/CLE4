@@ -35,49 +35,52 @@ export class Player extends Actor {
 
         this.collider.useBoxCollider(40, 50, Vector.Half, new Vector(0, 50));
         this.events.on("collisionstart", (e) => {
-    const target = e.other.owner;
+            const target = e.other.owner;
 
-    if (target instanceof Dog) {
-        if (!target.follow) {
-            target.follow = true;
-            target.actions.follow(this, 75);
-            
-            // ✅ VEILIGHEIDSCHECK: Kijk of de scene EN de door bestaan voordat je ze aanpast
-            if (this.scene && this.scene.door) {
-                this.scene.door.triggerEnabled = true;
-            }
-        }
-    }
+            if (target instanceof Dog) {
+                if (!target.follow) {
+                    target.follow = true;
+                    target.actions.follow(this, 75);
 
-    if (target instanceof Enemy) {
-        if (target.body.collisionType === CollisionType.Active) {
-            this.loseLife();
-        }
-    }
-
-    if (target instanceof Keyfragment) {
-        target.kill();
-        this.keyfragmentCount++;
-        
-        // ✅ VEILIGHEIDSCHECK: Controleer of de scene bestaat en doorloop de lijst veilig
-        if (this.keyfragmentCount >= 2) {
-            if (this.scene && this.scene.actors) {
-                for (let actor of this.scene.actors) {
-                    // Nog een check of het echt een DoorTrigger is
-                    if (actor instanceof DoorTrigger) {
-                        actor.triggerEnabled = true;
+                    // ✅ VEILIGHEIDSCHECK: Kijk of de scene EN de door bestaan voordat je ze aanpast
+                    if (this.scene && this.scene.door) {
+                        this.scene.door.triggerEnabled = true;
                     }
                 }
-                this.scene.add(new Message());
             }
-        }
-    }
 
-    if (target instanceof Crowbar) {
-        target.kill();
-        this.gameEngine.collectedCrowbar = true; // Gebruik this.gameEngine voor globale variabelen
-    }
-});
+            if (target instanceof Enemy) {
+                if (target.body.collisionType === CollisionType.Active) {
+                    this.loseLife();
+                }
+            }
+
+            if (target instanceof Keyfragment) {
+                target.kill();
+                this.keyfragmentCount++;
+
+                // ✅ VEILIGHEIDSCHECK: Controleer of de scene bestaat en doorloop de lijst veilig
+                if (this.keyfragmentCount >= 2) {
+                    if (this.scene && this.scene.actors) {
+                        this.scene.eastWingDoor.triggerEnabled = true;
+                        this.scene.add(new Message());
+                    }
+                }
+            }
+
+            if (target instanceof Crowbar) {
+                if (target.isReal && target.graphics.opacity > 0.7) {
+                    this.gameEngine.collectedCrowbar = true;
+                    this.scene.cafDoor.triggerEnabled = true;
+                    console.log(this.gameEngine)
+                    this.gameEngine.director.scenes.Cafetaria.courtyardDoor.triggerEnabled = true
+                    target.kill();
+                    this.scene.add(new Message());
+                } else if (!target.isReal) {
+                    target.kill();
+                }
+            }
+        });
     }
 
     onInitialize(engine) {
@@ -260,29 +263,29 @@ export class Player extends Actor {
     // }
 
     gameOver() {
-    this.scene.engine.isGameOver = true;
+        this.scene.engine.isGameOver = true;
 
-    // ✅ Kill the dog so it stops processing input
-    this.scene.actors
-        .filter(a => a.constructor.name === 'Dog')
-        .forEach(a => a.kill());
+        // ✅ Kill the dog so it stops processing input
+        this.scene.actors
+            .filter(a => a.constructor.name === 'Dog')
+            .forEach(a => a.kill());
 
-    this.gameEngine.lives = 5;
+        this.gameEngine.lives = 5;
 
 
-    this.lives = 5;
-    this.isInvulnerable = false; 
-    this.keyfragmentCount = 0;   
+        this.lives = 5;
+        this.isInvulnerable = false;
+        this.keyfragmentCount = 0;
 
-    if (this.gameEngine.updateLivesHud) {
-        this.gameEngine.updateLivesHud();
+        if (this.gameEngine.updateLivesHud) {
+            this.gameEngine.updateLivesHud();
+        }
+
+        Resources.BarkSound.stop();
+
+        this.scene.engine.goToScene("GameOver", {
+            sceneActivationData: { TimeScore: this.scene.engine.timer },
+            destinationIn: new FadeInOut({ duration: 2000, direction: 'in' })
+        })
     }
-
-    Resources.BarkSound.stop();
-
-    this.scene.engine.goToScene("GameOver", {
-        sceneActivationData: { TimeScore: this.scene.engine.timer },
-        destinationIn: new FadeInOut({ duration: 2000, direction: 'in' })
-    })
-}
 }
