@@ -34,6 +34,8 @@ export class Cafetaria extends Scene {
         
     }
     onInitialize() {
+
+      this.add(new Background(this.sceneWidth, this.sceneHeight, "Cafetaria"));
         this.player = new Player();
         this.add(this.player);
 
