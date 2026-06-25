@@ -163,27 +163,27 @@ export class EastMaze extends Scene {
     }
   }
 
-  onActivate(ctx) {
-    // 1. Haal de centrale speler op
-    if (!this.engine.player) {
-      this.engine.player = new Player();
-    }
-    this.player = this.engine.player;
+//   onActivate(ctx) {
+//     // 1. Haal de centrale speler op
+//     if (!this.engine.player) {
+//       this.engine.player = new Player();
+//     }
+//     this.player = this.engine.player;
 
-    // 2. Voeg de speler toe als hij er nog niet in zit
-    if (!this.player.scene) {
-      this.add(this.player);
-    }
+//     // 2. Voeg de speler toe als hij er nog niet in zit
+//     if (!this.player.scene) {
+//       this.add(this.player);
+//     }
 
-    const spawn = ctx.data?.spawn ?? { x: 400, y: 500 };
-    this.player.pos = new Vector(spawn.x, spawn.y);
+//     const spawn = ctx.data?.spawn ?? { x: 400, y: 500 };
+//     this.player.pos = new Vector(spawn.x, spawn.y);
 
-    // 4. Hond setup (haal uit engine of maak aan)
-    if (!this.engine.dog) {
-      this.engine.dog = new Dog(true); // Zet follow op true
-    }
-    this.dog = this.engine.dog;
-}
+//     // 4. Hond setup (haal uit engine of maak aan)
+//     if (!this.engine.dog) {
+//       this.engine.dog = new Dog(true); // Zet follow op true
+//     }
+//     this.dog = this.engine.dog;
+// }
 
     onActivate(ctx) {
         // 1. Haal de centrale speler op
