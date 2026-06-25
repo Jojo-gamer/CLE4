@@ -30,6 +30,7 @@ export class Player extends Actor {
         this.offset = new Vector(0, 25)
         this.isRayCastable = false;
         
+        
         this.hasKeys = false;
 
         this.collider.useBoxCollider(40, 50, Vector.Half, new Vector(0, 50));
@@ -142,7 +143,7 @@ export class Player extends Actor {
         this.dirUp = false;
         this.dirDown = false;
         this.dirLeft = false;
-        this.dirLeft = false;
+        this.dirRight = false;
 
     }
 

@@ -10,6 +10,7 @@ import {
   Vector,
   range,
   Animation,
+  Line
 } from "excalibur";
 import { Resources } from "./resources";
 import { Enemy } from "./enemy";
@@ -29,6 +30,7 @@ export class Dog extends Actor {
     this.isRayCastable = false;
     this.isReal = true;
     this.follow = follow;
+    this.rayDebug = null;
   }
 
   onInitialize(engine) {
@@ -149,36 +151,26 @@ export class Dog extends Actor {
 
     if (engine.input.keyboard.wasPressed(Keys.Space)) {
       const bounds = this.player.collider.bounds;
-      const centerX = (bounds.left + bounds.right) / 2;
-      const centerY = (bounds.top + bounds.bottom) / 2;
-      const offset = 5;
-      let rayOrigin;
-      if (this.dir.equals(Vector.Up)) {
-        rayOrigin = new Vector(centerX, bounds.top - offset);
-      } else if (this.dir.equals(Vector.Down)) {
-        rayOrigin = new Vector(centerX, bounds.bottom + offset);
-      } else if (this.dir.equals(Vector.Left)) {
-        rayOrigin = new Vector(bounds.left - offset, centerY);
-      } else if (this.dir.equals(Vector.Right)) {
-        rayOrigin = new Vector(bounds.right + offset, centerY);
-      }
+      const rayDirection = this.dir.normalize();
+      const rayOrigin = this.player.pos.add(rayDirection.scale(35))
+      
+      const maxDistance = 500
 
-      const ray = new Ray(rayOrigin, this.dir.normalize());
+      const ray = new Ray(rayOrigin, rayDirection);
       const hits = this.scene.physics.rayCast(ray, {
         searchAllColliders: true, // Stop direct bij het eerste doelwit
-        maxDistance: 500,
+        maxDistance,
         filter: (hit) => {
           const owner = hit.collider.owner;
           return owner.isRayCastable === true;
         },
       });
 
-      const targetHit = hits.find((hit) => {
-        if (hit.distance > 0) {
-          return true; // Skip current path tile
-        }
-        return false; // Accept all other hits
-      });
+      const targetHit = hits.find((hit) => hit.distance > 0);
+
+        const rayLength = targetHit ? targetHit.distance : maxDistance;
+        this.drawRayDebug(rayOrigin, rayDirection, rayLength);
+
       if (targetHit) {
         const owner = targetHit.collider.owner;
         console.log(owner);
@@ -216,4 +208,32 @@ export class Dog extends Actor {
       }
     }
   }
+
+  drawRayDebug(rayOrigin, direction, length) {
+  if (this.rayDebug) {
+    this.rayDebug.kill();
+  }
+
+  const debugRay = new Actor({
+    pos: rayOrigin,
+    anchor: Vector.Zero,
+    z: 999,
+    collisionType: CollisionType.PreventCollision,
+  });
+
+  debugRay.graphics.use(
+    new Line({
+      start: Vector.Zero,
+      end: new Vector(length, 0),
+      color: Color.Lime,
+      thickness: 2,
+    })
+  );
+
+  debugRay.rotation = Math.atan2(direction.y, direction.x);
+  this.scene.add(debugRay);
+  this.rayDebug = debugRay;
+}
+
+
 }
