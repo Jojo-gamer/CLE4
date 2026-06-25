@@ -19,27 +19,23 @@ import { TableHorizontal } from "./tablehorizontal.js";
 import { Dog } from "./dog.js";
 import { Enemy } from "./enemy.js";
 
+
+
 export class Cafetaria extends Scene {
     isReal;
     currentScene;
+    placedProps = [];
+    canMove = true;
+    
     constructor() {
-        const sceneWidth = 3000;
-        const sceneHeight = 2000;
-
-        super({
-            width: sceneWidth,
-            height: sceneHeight,
-            color: Color.Black,
-        });
-
-        this.placedProps = [];
-        this.sceneWidth = sceneWidth;
-        this.sceneHeight = sceneHeight;
+      super();
+        this.sceneWidth = 3000;
+        this.sceneHeight = 2000;
+        
     }
-    onInitialize(engine) {
-        this.location = engine.currentSceneName;
-        this.add(new Background(this.sceneWidth, this.sceneHeight, this.location));
+    onInitialize() {
 
+      this.add(new Background(this.sceneWidth, this.sceneHeight, "Cafetaria"));
         this.player = new Player();
         this.add(this.player);
 

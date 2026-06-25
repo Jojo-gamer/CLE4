@@ -39,7 +39,7 @@ export class GameOver extends Scene {
                 family: 'Arial',
                 size: 20,   
                 unit: FontUnit.Px,
-                color: Color.White
+                color: Color.Black
             }),
         })
         this.scoreLabel.graphics.anchor = new Vector(0.5, 0.5)
@@ -49,7 +49,7 @@ export class GameOver extends Scene {
     onActivate(ctx) {
         const TimeScore = ctx.data.TimeScore
         console.log(`timescore: ${TimeScore}`)
-        this.scoreLabel.text = `Je hebt een score van ${TimeScore} gehaald!`
+        this.scoreLabel.text = `Je hebt het ${TimeScore} seconden overleefd!`
     }
 
     onPreUpdate(engine) {

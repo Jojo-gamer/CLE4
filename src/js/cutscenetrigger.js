@@ -1,71 +1,84 @@
-import { Actor, CollisionType, Color, ScreenElement, Vector } from "excalibur";
-import { Resources } from './resources.js';
+import { Actor, CollisionType, Color, Font, Keys, Label, ScreenElement, SpriteSheet, Animation, range, TextAlign, Vector } from "excalibur";
 
 export class CutSceneTrigger extends Actor {
-  constructor(x, y, width, height) {
+  constructor({ resource, columns, spriteWidth, spriteHeight, frameTime = 2000, showSpacebarHint = false }) {
     super({
-      x,
-      y,
-      width,
-      height,
-      color: Color.Transparent 
-      
+      width: 0,
+      height: 0,
+      color: Color.Transparent,
     });
-
     this.body.collisionType = CollisionType.Passive;
-    
-    
-    this.hasPlayed = false; 
+    this.hasPlayed = false;
+
+    this.resource = resource;
+    this.columns = columns;
+    this.spriteWidth = spriteWidth;
+    this.spriteHeight = spriteHeight;
+    this.frameTime = frameTime;
+    this.showSpacebarHint = showSpacebarHint;
   }
 
-  onInitialize(engine) {
-    
-    this.cutsceneScreen = new ScreenElement({
-        x: engine.halfDrawWidth,
-        y: engine.halfDrawHeight,
-        z: 100 
-    });
-    engine.add(this.cutsceneScreen);
-
-    // De collision check
-    this.on("collisionstart", (evt) => {
-     
-      if (evt.other.owner.name === "player" && !this.hasPlayed) {
-        
-        this.hasPlayed = true; 
-        
-        
-        this.startStory(engine, evt.other.owner);
-      }
-    });
-  }
-
+  // ✅ Geen onInitialize meer - alles wordt aangemaakt in startStory
 
   async startStory(engine, speler) {
-      player.canMove = false; 
+    if (this.hasPlayed) return;
+    this.hasPlayed = true;
 
-      const readTime = 5000; 
+    speler.isCutscenePlaying = true;
+    let skip = false;
 
+    // ✅ Listener om de cutscene te skippen met SPATIE
+    const skipHandler = () => { skip = true; };
+    engine.input.keyboard.on('press', skipHandler);
 
-      this.cutsceneScreen.graphics.use(Resources.Cutscene1.toSprite());
-      await this.wait(readTime); 
+    const cutsceneScreen = new ScreenElement({ x: 0, y: 0, z: 100, anchor: Vector.Zero });
+    engine.add(cutsceneScreen);
 
-     
-      this.cutsceneScreen.graphics.use(Resources.Cutscene2.toSprite());
-      await this.wait(readTime);
+    const sheet = SpriteSheet.fromImageSource({
+      image: this.resource,
+      grid: { rows: 1, columns: this.columns, spriteWidth: this.spriteWidth, spriteHeight: this.spriteHeight }
+    });
+    const animation = Animation.fromSpriteSheet(sheet, range(0, this.columns - 1), this.frameTime);
+    animation.scale = new Vector(engine.drawWidth / this.spriteWidth, engine.drawHeight / this.spriteHeight);
 
+    cutsceneScreen.graphics.use(animation);
+
+    // ✅ Wacht, MAAR check constant of er geskipt wordt
+    // We wachten niet in één keer 8 seconden, maar in kleine stapjes
+    for(let i = 0; i < (this.columns * this.frameTime / 100); i++) {
+        await this.wait(100);
+        if (skip) break; 
+    }
     
-      this.cutsceneScreen.graphics.use(Resources.Cutscene3.toSprite());
-      await this.wait(readTime);
+    cutsceneScreen.graphics.hide();
 
-      
-      this.cutsceneScreen.graphics.hide();
+    // ✅ Hint label (Alleen als er niet geskipt is, of toon het alsnog kort)
+    if (this.showSpacebarHint && !skip) {
+      const hintLabel = new Label({
+        text: "Druk op SPATIE om de realiteit te checken",
+        pos: new Vector(engine.halfDrawWidth, engine.drawHeight - 60),
+        font: new Font({ size: 24, color: Color.White, textAlign: TextAlign.Center, family: 'Arial' })
+      });
+      engine.add(hintLabel);
 
-      player.canMove = true;
+      await new Promise(resolve => {
+        const check = setInterval(() => {
+          if (engine.input.keyboard.wasPressed(Keys.Space) || skip) {
+            clearInterval(check);
+            resolve();
+          }
+        }, 100);
+      });
+      hintLabel.kill();
+    }
+
+    // ✅ Cleanup
+    engine.input.keyboard.off('press', skipHandler); // Belangrijk: haal de listener weg!
+    cutsceneScreen.kill();
+    speler.isCutscenePlaying = false;
   }
 
-  
-  wait(milliseconds) {
-      return new Promise(resolve => setTimeout(resolve, milliseconds));
+  wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
