@@ -17,6 +17,7 @@ import { DoorTrigger } from "./doorTrigger.js";
 import { Player } from "./player.js";
 import { MazeTileCollisionBuilder } from "./collisionbuilder.js";
 import { Dog } from "./dog.js";
+import { Message } from "./message.js";
 
 export class Easthall extends Scene {
   constructor() {
@@ -146,6 +147,7 @@ export class Easthall extends Scene {
       if (e.other.owner.name === "player") {
         keys.kill();
         this.player.hasKeys = true;
+        this.add(new Message())
       }
     });
 
