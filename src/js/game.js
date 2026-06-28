@@ -14,6 +14,7 @@ import { EastMaze} from './eastmaze.js'
 import { EastWing } from './eastwing.js'
 import { Message } from './message.js'
 import { EW_Room1, EW_Room2 } from './ew_room1_2.js'
+import { EndScene } from './endscene.js'
 
 export class Game extends Engine {
   timer = 0;
@@ -57,6 +58,7 @@ export class Game extends Engine {
     this.addScene("EW_Room1", new EW_Room1());
     this.addScene("EW_Room2", new EW_Room2());
     this.addScene("CourtYard", new CourtYard());
+    this.addScene("Endscene", new EndScene())
   }
 
   onPostUpdate(engine) {

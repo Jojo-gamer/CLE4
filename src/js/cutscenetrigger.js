@@ -28,10 +28,14 @@ export class CutSceneTrigger extends Actor {
     let skip = false;
 
     // ✅ Listener om de cutscene te skippen met SPATIE
-    const skipHandler = () => { skip = true; };
+    const skipHandler = (evt) => {
+      if (evt.key === Keys.Space) {
+        skip = true;
+      }
+    };
     engine.input.keyboard.on('press', skipHandler);
 
-    const cutsceneScreen = new ScreenElement({ x: 0, y: 0, z: 100, anchor: Vector.Zero });
+    const cutsceneScreen = new ScreenElement({ x: 0, y: 0, z: 1000, anchor: Vector.Zero });
     engine.add(cutsceneScreen);
 
     const sheet = SpriteSheet.fromImageSource({
@@ -39,17 +43,17 @@ export class CutSceneTrigger extends Actor {
       grid: { rows: 1, columns: 4, spriteWidth: 1920, spriteHeight: 1080 }
     });
     const animation = Animation.fromSpriteSheet(sheet, range(0, 3), this.frameTime);
-    animation.scale = new Vector(0.7,0.7);
+    animation.scale = new Vector(0.7, 0.7);
 
     cutsceneScreen.graphics.use(animation);
 
     // ✅ Wacht, MAAR check constant of er geskipt wordt
     // We wachten niet in één keer 8 seconden, maar in kleine stapjes
-    for(let i = 0; i < (this.columns * this.frameTime / 100); i++) {
-        await this.wait(100);
-        if (skip) break; 
+    for (let i = 0; i < (this.columns * this.frameTime / 100); i++) {
+      await this.wait(90);
+      if (skip) break;
     }
-    
+
     cutsceneScreen.graphics.hide();
 
     // ✅ Hint label (Alleen als er niet geskipt is, of toon het alsnog kort)
