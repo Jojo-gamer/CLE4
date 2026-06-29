@@ -108,6 +108,9 @@ export class Game extends Engine {
     this.updateLivesHud();
     this.nextSpawn = { x: 640, y: 700 };
 
+    this.player = null;
+    this.dog = null;
+
     // Verwijder oude scenes
     const sceneNames = ["Reception", "Cafetaria", "EastHall", "EastMaze", "EastWing", "CourtYard", "EW_Room1", "EW_Room2"];
     sceneNames.forEach(name => this.removeScene(name));
