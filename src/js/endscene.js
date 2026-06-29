@@ -54,9 +54,8 @@ export class EndScene extends Scene {
     }
 
     onActivate(ctx) {
-        console.log(ctx.engine.timer)
         const TimeScore = ctx.engine.timer
-        if (TimeScore < 10) {
+        if (TimeScore < 30) {
             this.background = new Actor({ anchor: vec(0, 0), pos: vec(0, 0), width: 1280, height: 720, z: -1 })
             this.background.graphics.use(Resources.Matrix.toSprite())
             this.add(this.background)            

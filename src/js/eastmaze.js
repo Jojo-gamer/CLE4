@@ -139,7 +139,7 @@ export class EastMaze extends Scene {
     this.add(bg);
 
     const rects = await MazeWallCollisionBuilder.fromImage(
-      "/images/East-maze.png",
+      "./images/east-maze.png",
       MAP_WIDTH,
       MAP_HEIGHT,
       {
