@@ -74,13 +74,12 @@ export class EastMaze extends Scene {
     this.player = new Player();
     this.player.z = 998;
 
-    this.add(new DoorTrigger(1416, 350, 50, 150, "EastHall", 142, 152));
-    this.add(new DoorTrigger(1400, 5350, 50, 150, "EastWing", 230, 350));
+    this.add(new DoorTrigger(1416, 350, 50, 150, "EastHall", 142, 152, "right"));
+    this.add(new DoorTrigger(1400, 5350, 50, 150, "EastWing", 230, 350, "right"));
 
     this.dog = new Dog();
     this.dog.z = 999;
     this.dog.pos = this.player.pos;
-    this.add(this.dog);
 
     this.camera.strategy.lockToActor(this.player);
     this.camera.strategy.limitCameraBounds(
@@ -158,12 +157,22 @@ export class EastMaze extends Scene {
       wall.z = 1;
       this.add(wall);
 
-      
+      // GEWIJZIGD: We maken de hitbox NIET onzichtbaar, maar plakken de graphics er direct op!
       this.applyTiledGraphics(wall);
     }
-  
+  }
 
+  onActivate(ctx) {
+    // 1. Haal de centrale speler op
+    if (!this.engine.player) {
+      this.engine.player = new Player();
+    }
+    this.player = this.engine.player;
 
+    // 2. Voeg de speler toe als hij er nog niet in zit
+    if (!this.player.scene) {
+      this.add(this.player);
+    }
 
     // 3. Speler positie
     const spawn = ctx.data?.spawn ?? { x: 400, y: 500 };
