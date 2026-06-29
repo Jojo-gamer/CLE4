@@ -1,20 +1,30 @@
-import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode, BoundingBox, SolverStrategy, Timer, Color } from "excalibur"
-import { Resources, ResourceLoader } from './resources.js'
-import { Player } from './player.js'
-import { Enemy } from './enemy.js'
-import { Background } from './background.js'
-import { DoorTrigger } from './doorTrigger.js'
-import { Cafetaria } from './Cafetaria.js'
-import { Easthall } from './easthall.js'
-import { CourtYard } from './courtyard.js'
-import { GameOver } from './gameover.js'
-import { Reception } from './reception.js'
-import { EastMaze} from './eastmaze.js'
-import { EastWing } from './eastwing.js'
-import { Message } from './message.js'
-import { EW_Room1, EW_Room2 } from './ew_room1_2.js'
-import { EndScene } from './endscene.js'
+import "../css/style.css";
+import {
+  Actor,
+  Engine,
+  Vector,
+  DisplayMode,
+  BoundingBox,
+  SolverStrategy,
+  Timer,
+  Color,
+  Buttons,
+} from "excalibur";
+import { Resources, ResourceLoader } from "./resources.js";
+import { Player } from "./player.js";
+import { Enemy } from "./enemy.js";
+import { Background } from "./background.js";
+import { DoorTrigger } from "./doorTrigger.js";
+import { Cafetaria } from "./Cafetaria.js";
+import { Easthall } from "./easthall.js";
+import { CourtYard } from "./courtyard.js";
+import { GameOver } from "./gameover.js";
+import { Reception } from "./reception.js";
+import { EastMaze } from "./eastmaze.js";
+import { EastWing } from "./eastwing.js";
+import { Message } from "./message.js";
+import { EW_Room1, EW_Room2 } from "./ew_room1_2.js";
+import { EndScene } from "./endscene.js";
 
 export class Game extends Engine {
   timer = 0;
@@ -38,14 +48,24 @@ export class Game extends Engine {
     this.setupLivesHud();
     this.updateLivesHud();
     this.addScenes();
-    
+
+    this.input.gamepads.enabled = true;
+    this.input.gamepads.setMinimumGamepadConfiguration({
+      axis: 4,
+      buttons: 6,
+    });
+    this.input.gamepads.on("connect", (ce) => {
+      console.log("Gamepad connected", ce);
+      this.gamepad = ce.gamepad;
+    });
+
     // Initial spawn
     this.spawn = { x: 640, y: 700 };
     this.goToScene("Reception", {
-          sceneActivationData: {
-            spawn: this.spawn,
-          },
-        });
+      sceneActivationData: {
+        spawn: this.spawn,
+      },
+    });
   }
 
   addScenes() {
@@ -58,7 +78,7 @@ export class Game extends Engine {
     this.addScene("EW_Room1", new EW_Room1());
     this.addScene("EW_Room2", new EW_Room2());
     this.addScene("CourtYard", new CourtYard());
-    this.addScene("Endscene", new EndScene())
+    this.addScene("Endscene", new EndScene());
   }
 
   onPostUpdate(engine) {
@@ -66,7 +86,7 @@ export class Game extends Engine {
     if (this.framecount === 60) {
       this.framecount = 0;
       this.timer++;
-      // console.log(this.timer);
+      //console.log(this.timer);
     }
   }
 
@@ -94,7 +114,10 @@ export class Game extends Engine {
     this.livesHud.innerHTML = "";
     for (let index = 0; index < 5; index++) {
       const heart = document.createElement("img");
-      heart.src = index < lives ? "images/entities/UI/fullheart.png" : "images/entities/UI/emptyheart.png";
+      heart.src =
+        index < lives
+          ? "images/entities/UI/fullheart.png"
+          : "images/entities/UI/emptyheart.png";
       heart.style.width = "40px";
       heart.style.height = "auto";
       this.livesHud.appendChild(heart);
@@ -105,19 +128,27 @@ export class Game extends Engine {
     this.timer = 0;
     this.framecount = 0;
     this.lives = 5;
+    this.collectedCrowbar = false;
+    this.gamepad = undefined;
     this.updateLivesHud();
     this.nextSpawn = { x: 640, y: 700 };
     this.collectedCrowbar = false;
+
+    this.player = null;
+    this.dog = null;
 
     // Verwijder oude scenes
     const sceneNames = ["Reception", "Cafetaria", "EastHall", "EastMaze", "EastWing", "CourtYard", "EW_Room1", "EW_Room2"];
     sceneNames.forEach(name => this.removeScene(name));
 
-    // Voeg nieuwe toe
     this.addScenes();
 
-    await this.goToScene("Reception");
+    this.spawn = { x: 640, y: 700 };
+    await this.goToScene("Reception", {
+      sceneActivationData: {
+        spawn: this.spawn,
+      },
+    });
   }
 }
-
 new Game();

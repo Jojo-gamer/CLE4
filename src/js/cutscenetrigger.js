@@ -25,6 +25,8 @@ export class CutSceneTrigger extends Actor {
     if (this.hasPlayed) return;
     this.hasPlayed = true;
 
+    this.gamepad = engine.gamepad ?? engine.input.gamepads.at(0);
+
     speler.isCutscenePlaying = true;
     let skip = false;
 
@@ -34,16 +36,34 @@ export class CutSceneTrigger extends Actor {
         skip = true;
       }
     };
-    engine.input.keyboard.on('press', skipHandler);
+    engine.input.keyboard.on("press", skipHandler);
 
-    const cutsceneScreen = new ScreenElement({ x: 0, y: 0, z: 1000, anchor: Vector.Zero });
+    const gamepadSkipHandler = (evt) => {
+      if (evt.button === Buttons.Face4) {
+        skip = true;
+      }
+    };
+    if (this.gamepad) {
+      this.gamepad.on("button", gamepadSkipHandler);
+    }
+
+    const cutsceneScreen = new ScreenElement({
+      x: 0,
+      y: 0,
+      z: 1000,
+      anchor: Vector.Zero,
+    });
     engine.add(cutsceneScreen);
 
     const sheet = SpriteSheet.fromImageSource({
       image: this.resource,
-      grid: { rows: 1, columns: 4, spriteWidth: 1920, spriteHeight: 1080 }
+      grid: { rows: 1, columns: 4, spriteWidth: 1920, spriteHeight: 1080 },
     });
-    const animation = Animation.fromSpriteSheet(sheet, range(0, 3), this.frameTime);
+    const animation = Animation.fromSpriteSheet(
+      sheet,
+      range(0, 3),
+      this.frameTime,
+    );
     animation.scale = new Vector(0.7, 0.7);
 
     cutsceneScreen.graphics.use(animation);
@@ -78,13 +98,16 @@ export class CutSceneTrigger extends Actor {
     // }
 
     // ✅ Cleanup
-    engine.input.keyboard.off('press', skipHandler); // Belangrijk: haal de listener weg!
+    engine.input.keyboard.off("press", skipHandler); // Belangrijk: haal de listener weg!
+    if (this.gamepad) {
+      this.gamepad.off("button", gamepadSkipHandler);
+    }
     cutsceneScreen.kill();
     speler.isCutscenePlaying = false;
     this.scene.add(new Message(this.showMessage))
   }
 
   wait(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

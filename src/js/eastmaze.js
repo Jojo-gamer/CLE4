@@ -85,7 +85,6 @@ export class EastMaze extends Scene {
     this.dog = new Dog();
     this.dog.z = 999;
     this.dog.pos = this.player.pos;
-    this.add(this.dog);
 
     this.camera.strategy.lockToActor(this.player);
     this.camera.strategy.limitCameraBounds(
@@ -135,7 +134,7 @@ export class EastMaze extends Scene {
       height: WORLD_HEIGHT,
       anchor: Vector.Zero,
     });
-    const bgImg = Resources.EastHallWay.toSprite();
+    const bgImg = Resources.EastMaze.toSprite();
     bgImg.scale = new Vector(
       WORLD_WIDTH / bgImg.width,
       WORLD_HEIGHT / bgImg.height,
