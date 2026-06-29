@@ -179,7 +179,7 @@ export class Easthall extends Scene {
     this.add(this.eastDoor);
 
     const rects = await MazeTileCollisionBuilder.fromImage(
-      "/images/East-hall-map.png",
+      "./images/east-hall-map.png",
       WORLD_WIDTH,
       WORLD_HEIGHT,
       {

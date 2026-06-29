@@ -59,9 +59,9 @@ export class CutSceneTrigger extends Actor {
     // ✅ Hint label (Alleen als er niet geskipt is, of toon het alsnog kort)
     if (this.showSpacebarHint && !skip) {
       const hintLabel = new Label({
-        text: "Druk op SPATIE om de realiteit te checken",
-        pos: new Vector(engine.halfDrawWidth, engine.drawHeight - 60),
-        font: new Font({ size: 24, color: Color.White, textAlign: TextAlign.Center, family: 'Arial' })
+        text: "Druk op SPATIE om het object voor je te checken",
+        pos: new Vector(engine.halfDrawWidth, engine.drawHeight - 100),
+        font: new Font({ size: 36, color: Color.Black, textAlign: TextAlign.Center, family: 'Arial' })
       });
       engine.add(hintLabel);
 

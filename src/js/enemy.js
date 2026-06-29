@@ -65,7 +65,7 @@ export class Enemy extends Actor {
 
     onPostUpdate(engine) {
         const direction = this.scene.player.pos.sub(this.pos).normalize() // sub is subtraction, normalize zet een vector om naar een vector met lengte 1, maar met dezelfde richting.
-        const speed = 180 // pixels per seconde
+        const speed = 100 // pixels per seconde
 
         //Sprite Logic
 
@@ -106,7 +106,7 @@ export class Enemy extends Actor {
 
     spawn() {
         this.pos = new Vector(randomIntInRange(300, this.scene.sceneWidth - 300), randomIntInRange(300, this.scene.sceneHeight - 300))
-        console.log(this.pos)
+        // console.log(this.pos)
         if (this.scene.player.pos.distance(this.pos) <= 700) this.spawn();
     }
 

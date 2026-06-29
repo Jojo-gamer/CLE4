@@ -66,7 +66,7 @@ export class Game extends Engine {
     if (this.framecount === 60) {
       this.framecount = 0;
       this.timer++;
-      console.log(this.timer);
+      // console.log(this.timer);
     }
   }
 

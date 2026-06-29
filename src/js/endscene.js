@@ -38,7 +38,7 @@ export class EndScene extends Scene {
         this.add(hints)
 
         this.scoreLabel = new Label({
-            text: 'You finished in <i>undifined</i> seconds',
+            text: 'You finished in ... seconds',
             pos: new Vector(640, 400),
             font: new Font({
                 family: 'Arial',
@@ -54,16 +54,14 @@ export class EndScene extends Scene {
     }
 
     onActivate(ctx) {
-        // const TimeScore = ctx.data.timeScore
-        console.log(ctx.engine.timer)
         const TimeScore = ctx.engine.timer
-        if (TimeScore < 10) {
+        if (TimeScore < 30) {
             this.background = new Actor({ anchor: vec(0, 0), pos: vec(0, 0), width: 1280, height: 720, z: -1 })
             this.background.graphics.use(Resources.Matrix.toSprite())
             this.add(this.background)            
             this.message.text = `HACKER!`
         } else {
-            this.background.kill()
+            if(this.background) this.background.kill()
             this.message.text = `WELL DONE!`
         }
         this.scoreLabel.text = `You finished in ${TimeScore} seconds!`

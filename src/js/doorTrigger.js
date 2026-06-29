@@ -59,19 +59,6 @@ export class DoorTrigger extends Actor {
             spawn: this.spawn,
           },
         });
-        //   if (this.destinationScene === "Endscene") {
-        //     engine.goToScene(this.destinationScene, {
-        //       sceneActivationData: {
-        //         timeScore: engine.timer
-        //       },
-        //     });
-        //   } else {
-        //     engine.goToScene(this.destinationScene, {
-        //       sceneActivationData: {
-        //         spawn: this.spawn,
-        //       },
-        //     });
-        //   }
       }
     });
   }
