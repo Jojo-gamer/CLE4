@@ -18,6 +18,7 @@ import { TableVertical } from "./tablevertical.js";
 import { TableHorizontal } from "./tablehorizontal.js";
 import { Dog } from "./dog.js";
 import { Enemy } from "./enemy.js";
+import { Message } from "./message.js";
 
 
 
@@ -26,16 +27,16 @@ export class Cafetaria extends Scene {
     currentScene;
     placedProps = [];
     canMove = true;
-    
+
     constructor() {
-      super();
+        super();
         this.sceneWidth = 3000;
         this.sceneHeight = 2000;
-        
+
     }
     onInitialize() {
 
-      this.add(new Background(this.sceneWidth, this.sceneHeight, "Cafetaria"));
+        this.add(new Background(this.sceneWidth, this.sceneHeight, "Cafetaria"));
         this.player = new Player();
         this.add(this.player);
 
@@ -49,13 +50,17 @@ export class Cafetaria extends Scene {
         );
 
         this.eastWingDoor = new DoorTrigger(130, 1000, 50, 150, "EastWing", 2200, 310, "left", false)
-        this.courtyardDoor = new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1750, "up", true)
+        this.courtyardDoor = new DoorTrigger(1500, 140, 150, 50, "CourtYard", 1500, 1750, "up", false)
 
         this.add(this.eastWingDoor);
         this.add(this.courtyardDoor);
         this.add(
             new DoorTrigger(1500, 1855, 150, 50, "Reception", 650, 100, "down")
         );
+        
+        const message = new Message()
+        message.text = "Vind 2 key fragments!"
+        this.add(message)
     }
 
     onActivate(ctx) {

@@ -37,8 +37,10 @@ const Resources = {
     OutOfBoundsSound: new Sound('/images/entities/sounds/outofbounds.mp3'),
     DogPetSound: new Sound('/images/entities/sounds/Wolf_whine.mp3'),
     DogCutscene: new ImageSource('./images/cutscenes/opening/dog-cutscene-1920x1080.png'),
+    OpeningCutscene: new ImageSource('./images/cutscenes/opening/opening-cutscene-1920x1080.png'),
     RubbleSide: new ImageSource('./images/rubble-side.png'),
-    Outside: new ImageSource('./images/fences-tiles-128x128.png')
+    Outside: new ImageSource('./images/fences-tiles-128x128.png'),
+    Matrix: new ImageSource('./images/matrix.gif')
 }
 
 export const cafWalls = SpriteSheet.fromImageSource({
