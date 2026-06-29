@@ -1,9 +1,9 @@
 import { Actor, BaseAlign, Color, Font, FontUnit, Label, Vector } from "excalibur";
 
 export class Message extends Label {
-    constructor() {
+    constructor(text = "Deur is geopend!") {
         super({
-            text: "Deur is geopend!",
+            text: text,
             z: 99999,
             font: new Font({
                 family: 'Arial',
@@ -18,11 +18,11 @@ export class Message extends Label {
 
     onInitialize(engine) {
         this.addChild(new Actor({
-            width: 400,
+            width: this.getTextWidth() * 3,
             height: 50,
             y: 10,
             z: -1,
-            color: Color.Azure
+            color: Color.fromHex('#4e0654')
         }))
 
         this.actions.delay(2000).fade(0, 1000).callMethod(() => this.kill())

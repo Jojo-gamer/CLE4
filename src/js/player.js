@@ -79,6 +79,8 @@ export class Player extends Actor {
                     this.scene.add(new Message());
                 } else if (!target.isReal) {
                     target.kill();
+                    const message = new Message("The real one never ran away...")
+                    this.scene.add(message)
                 }
             }
         });
