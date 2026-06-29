@@ -25,7 +25,7 @@ const Resources = {
     WallVertical: new ImageSource('./images/wall-vertical.png'),
     MazeWall: new ImageSource('./images/wall-tiles-128x128.png'),
     Afgrond: new ImageSource('./images/afgrond.png'),
-    EastHallWay: new ImageSource('./images/east-maze.png'),
+    EastMaze: new ImageSource('./images/east-maze.png'),
     Reception: new ImageSource('./images/reception-map-v2.png'),
     EastHallMap: new ImageSource('./images/east-hall-map.png'),
     floorTile: new ImageSource('./images/floortile.png'),

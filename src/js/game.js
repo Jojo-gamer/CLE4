@@ -132,22 +132,12 @@ export class Game extends Engine {
     this.gamepad = undefined;
     this.updateLivesHud();
 
-    const sceneNames = [
-      "Reception",
-      "Cafetaria",
-      "EastHall",
-      "EastMaze",
-      "EastWing",
-      "CourtYard",
-      "EW_Room1",
-      "EW_Room2",
-    ];
+    this.player = null;
+    this.dog = null;
 
-    sceneNames.forEach((name) => {
-      if (this.scenes[name]) {
-        this.removeScene(name);
-      }
-    });
+    // Verwijder oude scenes
+    const sceneNames = ["Reception", "Cafetaria", "EastHall", "EastMaze", "EastWing", "CourtYard", "EW_Room1", "EW_Room2"];
+    sceneNames.forEach(name => this.removeScene(name));
 
     this.addScenes();
 
