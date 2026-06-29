@@ -3,7 +3,7 @@ import { Resources } from "./resources";
 export class GameOver extends Scene {
     #scoreLabel;
 
-    onInitialize() {
+    onInitialize(engine) {
 
         this.gamepad = engine.gamepad ?? engine.input.gamepads.at(0)
 
@@ -57,7 +57,7 @@ export class GameOver extends Scene {
     }
 
     onPreUpdate(engine) {
-        if (engine.input.keyboard.wasPressed(Keys.Space)) {
+        if (engine.input.keyboard.wasPressed(Keys.Space) || this.gamepad?.isButtonPressed(Buttons.Face4)) {
             // Activeer de grote schoonmaak!
             engine.resetGame();
         }

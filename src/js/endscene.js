@@ -9,7 +9,7 @@ export class EndScene extends Scene {
     #comparisonLabel;
     #closeLeaderboardButton;
 
-    onInitialize() {
+    onInitialize(engine) {
         this.message = new Label({
             text: 'WELL DONE!',
             pos: new Vector(640, 320),
