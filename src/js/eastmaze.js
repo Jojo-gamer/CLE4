@@ -263,8 +263,8 @@ export class EastMaze extends Scene {
   }
 
   onPostUpdate(engine) {
-    if(this.player.pos.y < 4000 && !this.hintAdded) {
-      this.add(new Message("Zie je de zwarte lijnen?"))
+    if(this.player.pos.y < 4300 && !this.hintAdded) {
+      this.add(new Message("Zie je de overeenkomsten?"))
       this.hintAdded = true
     }
   }

@@ -50,18 +50,19 @@ export class EndScene extends Scene {
         this.scoreLabel.graphics.anchor = new Vector(0.5, 0.5)
         this.add(this.scoreLabel)
 
-        this.setupLeaderboardUi();
     }
 
     onActivate(ctx) {
+        this.setupLeaderboardUi();
+
         const TimeScore = ctx.engine.timer
         if (TimeScore < 30) {
             this.background = new Actor({ anchor: vec(0, 0), pos: vec(0, 0), width: 1280, height: 720, z: -1 })
             this.background.graphics.use(Resources.Matrix.toSprite())
-            this.add(this.background)            
+            this.add(this.background)
             this.message.text = `HACKER!`
         } else {
-            if(this.background) this.background.kill()
+            if (this.background) this.background.kill()
             this.message.text = `WELL DONE!`
         }
         this.scoreLabel.text = `You finished in ${TimeScore} seconds!`
