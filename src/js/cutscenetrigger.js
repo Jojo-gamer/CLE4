@@ -1,7 +1,28 @@
-import { Actor, CollisionType, Color, Font, Keys, Label, ScreenElement, SpriteSheet, Animation, range, TextAlign, Vector } from "excalibur";
+import {
+  Actor,
+  CollisionType,
+  Color,
+  Font,
+  Keys,
+  Buttons,
+  Label,
+  ScreenElement,
+  SpriteSheet,
+  Animation,
+  range,
+  TextAlign,
+  Vector,
+} from "excalibur";
 
 export class CutSceneTrigger extends Actor {
-  constructor({ resource, columns, spriteWidth, spriteHeight, frameTime = 2000, showSpacebarHint = false }) {
+  constructor({
+    resource,
+    columns,
+    spriteWidth,
+    spriteHeight,
+    frameTime = 2000,
+    showSpacebarHint = false,
+  }) {
     super({
       width: 0,
       height: 0,
@@ -24,6 +45,8 @@ export class CutSceneTrigger extends Actor {
     if (this.hasPlayed) return;
     this.hasPlayed = true;
 
+    this.gamepad = engine.gamepad ?? engine.input.gamepads.at(0);
+
     speler.isCutscenePlaying = true;
     let skip = false;
 
@@ -33,23 +56,41 @@ export class CutSceneTrigger extends Actor {
         skip = true;
       }
     };
-    engine.input.keyboard.on('press', skipHandler);
+    engine.input.keyboard.on("press", skipHandler);
 
-    const cutsceneScreen = new ScreenElement({ x: 0, y: 0, z: 1000, anchor: Vector.Zero });
+    const gamepadSkipHandler = (evt) => {
+      if (evt.button === Buttons.Face4) {
+        skip = true;
+      }
+    };
+    if (this.gamepad) {
+      this.gamepad.on("button", gamepadSkipHandler);
+    }
+
+    const cutsceneScreen = new ScreenElement({
+      x: 0,
+      y: 0,
+      z: 1000,
+      anchor: Vector.Zero,
+    });
     engine.add(cutsceneScreen);
 
     const sheet = SpriteSheet.fromImageSource({
       image: this.resource,
-      grid: { rows: 1, columns: 4, spriteWidth: 1920, spriteHeight: 1080 }
+      grid: { rows: 1, columns: 4, spriteWidth: 1920, spriteHeight: 1080 },
     });
-    const animation = Animation.fromSpriteSheet(sheet, range(0, 3), this.frameTime);
+    const animation = Animation.fromSpriteSheet(
+      sheet,
+      range(0, 3),
+      this.frameTime,
+    );
     animation.scale = new Vector(0.7, 0.7);
 
     cutsceneScreen.graphics.use(animation);
 
     // ✅ Wacht, MAAR check constant of er geskipt wordt
     // We wachten niet in één keer 8 seconden, maar in kleine stapjes
-    for (let i = 0; i < (this.columns * this.frameTime / 100); i++) {
+    for (let i = 0; i < (this.columns * this.frameTime) / 100; i++) {
       await this.wait(90);
       if (skip) break;
     }
@@ -61,11 +102,16 @@ export class CutSceneTrigger extends Actor {
       const hintLabel = new Label({
         text: "Druk op SPATIE om het object voor je te checken",
         pos: new Vector(engine.halfDrawWidth, engine.drawHeight - 100),
-        font: new Font({ size: 36, color: Color.Black, textAlign: TextAlign.Center, family: 'Arial' })
+        font: new Font({
+          size: 36,
+          color: Color.Black,
+          textAlign: TextAlign.Center,
+          family: "Arial",
+        }),
       });
       engine.add(hintLabel);
 
-      await new Promise(resolve => {
+      await new Promise((resolve) => {
         const check = setInterval(() => {
           if (engine.input.keyboard.wasPressed(Keys.Space) || skip) {
             clearInterval(check);
@@ -77,12 +123,15 @@ export class CutSceneTrigger extends Actor {
     }
 
     // ✅ Cleanup
-    engine.input.keyboard.off('press', skipHandler); // Belangrijk: haal de listener weg!
+    engine.input.keyboard.off("press", skipHandler); // Belangrijk: haal de listener weg!
+    if (this.gamepad) {
+      this.gamepad.off("button", gamepadSkipHandler);
+    }
     cutsceneScreen.kill();
     speler.isCutscenePlaying = false;
   }
 
   wait(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

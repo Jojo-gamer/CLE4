@@ -8,6 +8,7 @@ import {
   SolverStrategy,
   Timer,
   Color,
+  Buttons,
 } from "excalibur";
 import { Resources, ResourceLoader } from "./resources.js";
 import { Player } from "./player.js";
@@ -56,12 +57,6 @@ export class Game extends Engine {
     this.input.gamepads.on("connect", (ce) => {
       console.log("Gamepad connected", ce);
       this.gamepad = ce.gamepad;
-      ce.gamepad.on("button", (be) => {
-        console.log(be.button);
-        if (be.button === Buttons.Face4) {
-          console.log("dit gaat Blaffen");
-        }
-      });
     });
 
     // Initial spawn
@@ -146,7 +141,6 @@ export class Game extends Engine {
       "CourtYard",
       "EW_Room1",
       "EW_Room2",
-      "Endscene",
     ];
 
     sceneNames.forEach((name) => {

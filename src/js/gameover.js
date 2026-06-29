@@ -1,9 +1,13 @@
-import { Color, Font, FontUnit, Keys, Label, Scene, Vector } from "excalibur";
+import { Color, Font, FontUnit, Keys, Label, Scene, Buttons, Vector } from "excalibur";
 import { Resources } from "./resources";
 export class GameOver extends Scene {
     #scoreLabel;
 
     onInitialize() {
+
+        this.gamepad = engine.gamepad ?? engine.input.gamepads.at(0)
+
+
         let message = new Label({
             text: 'Game Over',
             pos: new Vector(640, 320),

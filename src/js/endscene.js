@@ -1,4 +1,4 @@
-import { Actor, Color, Font, FontUnit, Keys, Label, Scene, vec, Vector } from "excalibur";
+import { Actor, Buttons, Color, Font, FontUnit, Keys, Label, Scene, vec, Vector } from "excalibur";
 import { Resources } from "./resources";
 
 export class EndScene extends Scene {
@@ -23,6 +23,10 @@ export class EndScene extends Scene {
         // message.graphics.scale = new Vector (3,3)
         this.message.graphics.anchor = new Vector(0.5, 0.5)
         this.add(this.message)
+
+        this.gamepad = engine.gamepad ?? engine.input.gamepads.at(0)
+
+
 
         let hints = new Label({
             text: 'Press [Space] to try again',
@@ -72,7 +76,7 @@ export class EndScene extends Scene {
     }
 
     onPreUpdate(engine) {
-        if (engine.input.keyboard.wasPressed(Keys.Space)) {
+        if (engine.input.keyboard.wasPressed(Keys.Space) || this.gamepad.isButtonPressed(Buttons.Face4)) {
             // Activeer de grote schoonmaak!
             engine.resetGame();
         }
