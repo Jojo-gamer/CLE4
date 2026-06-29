@@ -225,6 +225,10 @@ export class Dog extends Actor {
 
           // console.log("hit that fade cuhhh");
           // console.log(owner)
+          if(engine.currentSceneName === "EastHall") {
+            Resources.BarkSound.play();
+          }
+
           if (owner.hasKeyFragment) {
             this.scene.add(new Keyfragment(owner.pos, owner.keyfragmentPart));
           }

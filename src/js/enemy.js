@@ -65,7 +65,7 @@ export class Enemy extends Actor {
 
     onPostUpdate(engine) {
         const direction = this.scene.player.pos.sub(this.pos).normalize() // sub is subtraction, normalize zet een vector om naar een vector met lengte 1, maar met dezelfde richting.
-        const speed = 180 // pixels per seconde
+        const speed = 100 // pixels per seconde
 
         //Sprite Logic
 
