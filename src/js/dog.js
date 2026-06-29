@@ -176,7 +176,7 @@ export class Dog extends Actor {
     }
 
     if (this.vel.y > 0 && this.fakedWall && !this.wallCutscene) {
-      console.log("bruh");
+      // console.log("bruh");
       this.graphics.use(this.movingUp);
     }
 
@@ -214,15 +214,15 @@ export class Dog extends Actor {
 
       if (targetHit) {
         const owner = targetHit.collider.owner;
-        console.log(owner);
-        console.log(
-          "Owner found:",
-          owner.name,
-          "isReal:",
-          owner.isReal,
-          "isTileMap:",
-          owner instanceof TileMap,
-        );
+        // console.log(owner);
+        // console.log(
+        //   "Owner found:",
+        //   owner.name,
+        //   "isReal:",
+        //   owner.isReal,
+        //   "isTileMap:",
+        //   owner instanceof TileMap,
+        // );
         if (!owner.isReal && !(owner instanceof TileMap)) {
           owner.body.collisionType = CollisionType.Passive;
           owner.actions.clearActions();
