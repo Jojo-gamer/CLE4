@@ -38,12 +38,12 @@ export class GameOver extends Scene {
 
         this.scoreLabel = new Label({
             text: '',
-            pos: new Vector(640, 400),
+            pos: new Vector(640, 500),
             font: new Font({
                 family: 'Arial',
                 size: 20,   
                 unit: FontUnit.Px,
-                color: Color.Black
+                color: Color.White
             }),
         })
         this.scoreLabel.graphics.anchor = new Vector(0.5, 0.5)

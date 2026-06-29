@@ -1,28 +1,8 @@
-import {
-  Actor,
-  CollisionType,
-  Color,
-  Font,
-  Keys,
-  Buttons,
-  Label,
-  ScreenElement,
-  SpriteSheet,
-  Animation,
-  range,
-  TextAlign,
-  Vector,
-} from "excalibur";
+import { Actor, CollisionType, Color, Font, Keys, Label, ScreenElement, SpriteSheet, Animation, range, TextAlign, Vector } from "excalibur";
+import { Message } from "./message";
 
 export class CutSceneTrigger extends Actor {
-  constructor({
-    resource,
-    columns,
-    spriteWidth,
-    spriteHeight,
-    frameTime = 2000,
-    showSpacebarHint = false,
-  }) {
+  constructor({ resource, columns, spriteWidth, spriteHeight, frameTime = 2000, message }) {
     super({
       width: 0,
       height: 0,
@@ -36,7 +16,7 @@ export class CutSceneTrigger extends Actor {
     this.spriteWidth = spriteWidth;
     this.spriteHeight = spriteHeight;
     this.frameTime = frameTime;
-    this.showSpacebarHint = showSpacebarHint;
+    this.showMessage = message;
   }
 
   // ✅ Geen onInitialize meer - alles wordt aangemaakt in startStory
@@ -90,37 +70,32 @@ export class CutSceneTrigger extends Actor {
 
     // ✅ Wacht, MAAR check constant of er geskipt wordt
     // We wachten niet in één keer 8 seconden, maar in kleine stapjes
-    for (let i = 0; i < (this.columns * this.frameTime) / 100; i++) {
-      await this.wait(90);
+    for (let i = 0; i < (this.columns * this.frameTime / 100); i++) {
+      await this.wait(95);
       if (skip) break;
     }
 
     cutsceneScreen.graphics.hide();
 
     // ✅ Hint label (Alleen als er niet geskipt is, of toon het alsnog kort)
-    if (this.showSpacebarHint && !skip) {
-      const hintLabel = new Label({
-        text: "Druk op SPATIE om het object voor je te checken",
-        pos: new Vector(engine.halfDrawWidth, engine.drawHeight - 100),
-        font: new Font({
-          size: 36,
-          color: Color.Black,
-          textAlign: TextAlign.Center,
-          family: "Arial",
-        }),
-      });
-      engine.add(hintLabel);
+    // if (this.showSpacebarHint && !skip) {
+    //   const hintLabel = new Label({
+    //     text: "Druk op SPATIE om de realiteit te checken",
+    //     pos: new Vector(engine.halfDrawWidth, engine.drawHeight - 60),
+    //     font: new Font({ size: 24, color: Color.White, textAlign: TextAlign.Center, family: 'Arial' })
+    //   });
+    //   engine.add(hintLabel);
 
-      await new Promise((resolve) => {
-        const check = setInterval(() => {
-          if (engine.input.keyboard.wasPressed(Keys.Space) || skip) {
-            clearInterval(check);
-            resolve();
-          }
-        }, 100);
-      });
-      hintLabel.kill();
-    }
+    //   await new Promise(resolve => {
+    //     const check = setInterval(() => {
+    //       if (engine.input.keyboard.wasPressed(Keys.Space) || skip) {
+    //         clearInterval(check);
+    //         resolve();
+    //       }
+    //     }, 100);
+    //   });
+    //   hintLabel.kill();
+    // }
 
     // ✅ Cleanup
     engine.input.keyboard.off("press", skipHandler); // Belangrijk: haal de listener weg!
@@ -129,6 +104,7 @@ export class CutSceneTrigger extends Actor {
     }
     cutsceneScreen.kill();
     speler.isCutscenePlaying = false;
+    this.scene.add(new Message(this.showMessage))
   }
 
   wait(ms) {

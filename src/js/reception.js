@@ -70,18 +70,17 @@ export class Reception extends Scene {
             spriteWidth: 512,
             spriteHeight: 270,
             frameTime: 2000,
-            showSpacebarHint: false
+            message: "Vind een crowbar!"
         })
         this.add(this.cutSceneStart)
-        this.cutSceneStart.startStory(engine, this.player);
-
+        this.cutSceneStart.startStory(engine, this.player)
         this.cutsceneTrigger = new CutSceneTrigger({
             resource: Resources.DogCutscene,
             columns: 4,
             spriteWidth: 512,   // ← was 480
             spriteHeight: 270,  // ← was 1080
             frameTime: 2000,
-            showSpacebarHint: true
+            message: "Druk op SPATIE om de realiteit te checken"
         });
         this.add(this.cutsceneTrigger);
     }
