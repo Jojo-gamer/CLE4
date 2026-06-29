@@ -223,8 +223,10 @@ export class Dog extends Actor {
           owner.actions.fade(0.3, 200);
           owner.isRayCastable = false;
 
-          console.log("hit that fade cuhhh");
-          // console.log(owner)
+          if(engine.currentSceneName === "EastHall") {
+            Resources.BarkSound.play();
+          }
+
           if (owner.hasKeyFragment) {
             this.scene.add(new Keyfragment(owner.pos, owner.keyfragmentPart));
           }

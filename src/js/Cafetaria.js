@@ -100,8 +100,6 @@ export class Cafetaria extends Scene {
     }
 
 
-    // ... rest van je helper functies (clearProps, killEnemies, placePropRandomly, etc.) blijven hetzelfde
-
 
     onPreUpdate(engine, delta) {
         this.playerOutOfBounds();
