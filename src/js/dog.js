@@ -3,6 +3,7 @@ import {
   CollisionType,
   Color,
   Keys,
+  Buttons,
   Ray,
   Sound,
   SpriteSheet,
@@ -43,6 +44,9 @@ export class Dog extends Actor {
     this.player = this.scene.player;
     this.dir = Vector.Right;
 
+    //initialize controller
+    this.gamepad = engine.gamepad ?? engine.input.gamepads.at(0);
+
     //Importing sprite sheets
     const dogUp = SpriteSheet.fromImageSource({
       image: Resources.DogFront,
@@ -61,13 +65,13 @@ export class Dog extends Actor {
 
     const dogPet = SpriteSheet.fromImageSource({
       image: Resources.DogPet,
-      grid: {rows: 1, columns: 2, spriteWidth: 128, spriteHeight: 128}
-    })
+      grid: { rows: 1, columns: 2, spriteWidth: 128, spriteHeight: 128 },
+    });
 
     const movingUp = Animation.fromSpriteSheet(dogUp, range(0, 3), 75);
     const movingSide = Animation.fromSpriteSheet(dogSide, range(0, 3), 75);
     const movingDown = Animation.fromSpriteSheet(dogDown, range(0, 3), 75);
-    const goodBoy = Animation.fromSpriteSheet(dogPet, range(0,1), 60)
+    const goodBoy = Animation.fromSpriteSheet(dogPet, range(0, 1), 60);
 
     const idleUp = dogUp.getSprite(0, 0);
     const idleSide = dogSide.getSprite(0, 0);
@@ -76,13 +80,13 @@ export class Dog extends Actor {
     this.graphics.add("movingUp", movingUp);
     this.graphics.add("movingSide", movingSide);
     this.graphics.add("movingDown", movingDown);
-    this.graphics.add("goodBoy", goodBoy)
+    this.graphics.add("goodBoy", goodBoy);
 
     this.graphics.add("idleUp", idleUp);
     this.graphics.add("idleSide", idleSide);
     this.graphics.add("idleDown", idleDown);
 
-    this.goodBoy = this.graphics.use(goodBoy)
+    this.goodBoy = this.graphics.use(goodBoy);
 
     this.movingUp = this.graphics.use(movingUp);
     this.movingSide = this.graphics.use(movingSide);
@@ -91,7 +95,6 @@ export class Dog extends Actor {
     this.idleUp = this.graphics.use(idleUp);
     this.idleSide = this.graphics.use(idleSide);
     this.idleDown = this.graphics.use(idleDown);
-    
   }
 
   onPreUpdate(engine) {
@@ -137,20 +140,23 @@ export class Dog extends Actor {
     }
 
     //pet that dawg
-    this.playerDistance = this.player.pos.distance(this.pos)
-    
-    if (this.playerDistance < 60 && engine.input.keyboard.wasPressed(Keys.E)) {
+    this.playerDistance = this.player.pos.distance(this.pos);
+
+    if (
+      this.playerDistance < 60 &&
+      (engine.input.keyboard.wasPressed(Keys.E) ||
+        this.gamepad.isButtonPressed(Buttons.Face1))
+    ) {
       this.beingPet = true;
       this.petCounter = 0;
     }
 
     if (this.beingPet) {
-      this.petCounter++
-      this.graphics.use(this.goodBoy)
+      this.petCounter++;
+      this.graphics.use(this.goodBoy);
       if (this.petCounter >= 50) {
         this.beingPet = false;
       }
-
     }
 
     //CUTSCENE TIME
@@ -185,7 +191,7 @@ export class Dog extends Actor {
       this.actions.follow(this.scene.player, 75);
     }
 
-    if (engine.input.keyboard.wasPressed(Keys.Space)) {
+    if (engine.input.keyboard.wasPressed(Keys.Space) || this.gamepad.isButtonPressed(Buttons.Face4)) {
       const bounds = this.player.collider.bounds;
       const rayDirection = this.dir.normalize();
       const rayOrigin = this.player.pos.add(
@@ -223,7 +229,7 @@ export class Dog extends Actor {
           owner.actions.fade(0.3, 200);
           owner.isRayCastable = false;
 
-          if(engine.currentSceneName === "EastHall") {
+          if (engine.currentSceneName === "EastHall") {
             Resources.BarkSound.play();
           }
 
@@ -232,7 +238,7 @@ export class Dog extends Actor {
           }
         } else {
           if (owner instanceof Crowbar && owner.isReal) {
-            owner.actions.fade(1, 1000)
+            owner.actions.fade(1, 1000);
           }
           // console.log('WOOF')
           Resources.BarkSound.play();
