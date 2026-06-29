@@ -76,7 +76,7 @@ export const outside = SpriteSheet.fromImageSource({
 const ResourceLoader = new Loader()
 for (let res of Object.values(Resources)) {
     ResourceLoader.addResource(res)
-    if (res.path) console.log('loading:', res.path)
+    // if (res.path) console.log('loading:', res.path)
 }
 
 // const ResourceLoader = new Loader()

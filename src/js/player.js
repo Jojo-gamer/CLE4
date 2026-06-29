@@ -73,7 +73,7 @@ export class Player extends Actor {
                 if (target.isReal && target.graphics.opacity > 0.7) {
                     this.gameEngine.collectedCrowbar = true;
                     this.scene.cafDoor.triggerEnabled = true;
-                    console.log(this.gameEngine)
+                    // console.log(this.gameEngine)
                     this.gameEngine.director.scenes.Cafetaria.courtyardDoor.triggerEnabled = true
                     target.kill();
                     this.scene.add(new Message());

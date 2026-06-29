@@ -106,7 +106,7 @@ export class Enemy extends Actor {
 
     spawn() {
         this.pos = new Vector(randomIntInRange(300, this.scene.sceneWidth - 300), randomIntInRange(300, this.scene.sceneHeight - 300))
-        console.log(this.pos)
+        // console.log(this.pos)
         if (this.scene.player.pos.distance(this.pos) <= 700) this.spawn();
     }
 
