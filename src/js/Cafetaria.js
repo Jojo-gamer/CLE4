@@ -58,8 +58,7 @@ export class Cafetaria extends Scene {
             new DoorTrigger(1500, 1855, 150, 50, "Reception", 650, 100, "down")
         );
         
-        const message = new Message()
-        message.text = "Vind 2 key fragments!"
+        const message = new Message("Vind 2 key fragments!")
         this.add(message)
     }
 

@@ -6,6 +6,7 @@ import {
   Scene,
   CollisionType,
   GraphicsGroup,
+  Trigger,
 } from "excalibur";
 import { Resources } from "./resources.js";
 import { DoorTrigger } from "./doorTrigger.js";
@@ -13,10 +14,13 @@ import { Player } from "./player.js";
 import { MazeWallCollisionBuilder } from "./mazecollisionbuilder.js";
 import { Dog } from "./dog.js";
 import { Enemy } from "./enemy.js";
+import { Message } from "./message.js";
 
 const TILE_SIZE = 128;
 
 export class EastMaze extends Scene {
+  hintAdded = false
+
   constructor() {
     super({
       width: 1440,
@@ -32,6 +36,7 @@ export class EastMaze extends Scene {
     const MAP_HEIGHT = 1024;
     const MAP_SCALE = WORLD_WIDTH / MAP_WIDTH;
 
+    this.add(new Message("Check the walls"))
     // ==========================================
     // DE MAGISCHE TRUC VOOR DE ENEMY SPAWN
     // ==========================================
@@ -254,5 +259,12 @@ export class EastMaze extends Scene {
         element.kill();
       }
     });
+  }
+
+  onPostUpdate(engine) {
+    if(this.player.pos.y < 4300 && !this.hintAdded) {
+      this.add(new Message("Zie je de overeenkomsten?"))
+      this.hintAdded = true
+    }
   }
 }

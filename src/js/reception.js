@@ -13,6 +13,7 @@ import { DoorTrigger } from "./doorTrigger";
 import { Dog } from "./dog";
 import { CutSceneTrigger } from "./cutscenetrigger";
 import { Rubble } from "./rubble";
+import { TableHorizontal } from "./tablehorizontal";
 
 
 
@@ -70,18 +71,17 @@ export class Reception extends Scene {
             spriteWidth: 512,
             spriteHeight: 270,
             frameTime: 2000,
-            showSpacebarHint: false
+            message: "Vind een crowbar!"
         })
         this.add(this.cutSceneStart)
-        this.cutSceneStart.startStory(engine, this.player);
-
+        this.cutSceneStart.startStory(engine, this.player)
         this.cutsceneTrigger = new CutSceneTrigger({
             resource: Resources.DogCutscene,
             columns: 4,
             spriteWidth: 512,   // ← was 480
             spriteHeight: 270,  // ← was 1080
-            frameTime: 2000,
-            showSpacebarHint: true
+            frameTime: 4000,
+            message: "Druk op SPATIE om de realiteit te checken. LETOP dit zal aandacht trekken"
         });
         this.add(this.cutsceneTrigger);
     }
@@ -134,5 +134,8 @@ export class Reception extends Scene {
         this.add(this.door)
         this.escapeDoor = new DoorTrigger(8 * tileWidth, 16 * tileHeight, 4 * tileWidth, tileHeight, "Endscene", 0, 0) //, false)
         this.add(this.escapeDoor)
+        const table = new TableHorizontal(false, false)
+        table.pos = vec(8 * tileWidth, 3* tileHeight)
+        this.add(table)
     }
 }

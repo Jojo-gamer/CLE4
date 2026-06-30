@@ -131,6 +131,8 @@ export class Game extends Engine {
     this.collectedCrowbar = false;
     this.gamepad = undefined;
     this.updateLivesHud();
+    this.nextSpawn = { x: 640, y: 700 };
+    this.collectedCrowbar = false;
 
     this.player = null;
     this.dog = null;
