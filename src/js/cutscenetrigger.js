@@ -1,4 +1,4 @@
-import { Actor, CollisionType, Color, Font, Keys, Label, ScreenElement, SpriteSheet, Animation, range, TextAlign, Vector } from "excalibur";
+import { Actor, CollisionType, Color, Font, Keys, Buttons, Label, ScreenElement, SpriteSheet, Animation, range, TextAlign, Vector } from "excalibur";
 import { Message } from "./message";
 
 export class CutSceneTrigger extends Actor {
