@@ -113,7 +113,7 @@ export class CutSceneTrigger extends Actor {
 
       await new Promise((resolve) => {
         const check = setInterval(() => {
-          if (engine.input.keyboard.wasPressed(Keys.Space) || skip) {
+          if (engine.input.keyboard.wasPressed(Keys.Space) || skip || this.gamepad.isButtonPressed(Buttons.Face4)) {
             clearInterval(check);
             resolve();
           }
