@@ -95,6 +95,7 @@ export class Dog extends Actor {
     this.idleUp = this.graphics.use(idleUp);
     this.idleSide = this.graphics.use(idleSide);
     this.idleDown = this.graphics.use(idleDown);
+
   }
 
   onPreUpdate(engine) {
@@ -250,6 +251,8 @@ export class Dog extends Actor {
             const enemy = new Enemy(isReal);
             this.scene.add(enemy);
           }
+          // 3. Apply it to an actor
+          owner.graphics.material = engine.outlineMaterial; // Apply outline
         }
       }
     }
