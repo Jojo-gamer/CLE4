@@ -210,7 +210,7 @@ export class Dog extends Actor {
         },
       });
 
-      const targetHit = hits.find((hit) => hit.distance > 0);
+      const targetHit = hits.find((hit) => hit.distance >= 0);
 
       if (targetHit) {
         const owner = targetHit.collider.owner;
