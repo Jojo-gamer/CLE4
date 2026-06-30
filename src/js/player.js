@@ -198,8 +198,8 @@ export class Player extends Actor {
     if (this.gamepad) {
       const x = this.gamepad.getAxes(Axes.LeftStickX);
       const y = this.gamepad.getAxes(Axes.LeftStickY);
-      console.log(x);
-      console.log(y);
+      // console.log(x);
+      // console.log(y);
 
       if (x < -0.5) {
         this.dirLeft = true;
