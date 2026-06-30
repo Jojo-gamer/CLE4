@@ -1,4 +1,4 @@
-import { Actor, CollisionType, Color, Font, Keys, Label, ScreenElement, SpriteSheet, Animation, range, TextAlign, Vector } from "excalibur";
+import { Actor, CollisionType, Color, Font, Keys, Buttons, Label, ScreenElement, SpriteSheet, Animation, range, TextAlign, Vector } from "excalibur";
 import { Message } from "./message";
 
 export class CutSceneTrigger extends Actor {
@@ -88,7 +88,7 @@ export class CutSceneTrigger extends Actor {
 
     //   await new Promise(resolve => {
     //     const check = setInterval(() => {
-    //       if (engine.input.keyboard.wasPressed(Keys.Space) || skip) {
+    //       if (engine.input.keyboard.wasPressed(Keys.Space) || skip || this.gamepad.isButtonPressed(Buttons.Face4)) {
     //         clearInterval(check);
     //         resolve();
     //       }
