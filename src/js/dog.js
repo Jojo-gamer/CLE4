@@ -95,6 +95,7 @@ export class Dog extends Actor {
     this.idleUp = this.graphics.use(idleUp);
     this.idleSide = this.graphics.use(idleSide);
     this.idleDown = this.graphics.use(idleDown);
+
   }
 
   onPreUpdate(engine) {
@@ -210,7 +211,7 @@ export class Dog extends Actor {
         },
       });
 
-      const targetHit = hits.find((hit) => hit.distance > 0);
+      const targetHit = hits.find((hit) => hit.distance >= 0);
 
       if (targetHit) {
         const owner = targetHit.collider.owner;
@@ -250,6 +251,8 @@ export class Dog extends Actor {
             const enemy = new Enemy(isReal);
             this.scene.add(enemy);
           }
+          // 3. Apply it to an actor
+          owner.graphics.material = engine.outlineMaterial; // Apply outline
         }
       }
     }

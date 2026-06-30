@@ -25,6 +25,7 @@ import { EastWing } from "./eastwing.js";
 import { Message } from "./message.js";
 import { EW_Room1, EW_Room2 } from "./ew_room1_2.js";
 import { EndScene } from "./endscene.js";
+import { outlineShader } from "./outline.js";
 
 export class Game extends Engine {
   timer = 0;
@@ -45,6 +46,12 @@ export class Game extends Engine {
   }
 
   startGame() {
+    // 2. Create the Material in your engine setup
+    this.outlineMaterial = this.graphicsContext.createMaterial({
+      name: 'outline',
+      fragmentSource: outlineShader
+    });
+
     this.setupLivesHud();
     this.updateLivesHud();
     this.addScenes();
